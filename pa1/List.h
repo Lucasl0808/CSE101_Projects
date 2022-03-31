@@ -1,13 +1,19 @@
 #pragma once
 
+typedef struct NodeObj* Node;
 typedef struct ListObj* List;
 
+struct NodeObj{
+	Node next;
+	Node prev;
+	int value;
+}
 struct ListObj{
 	int length;
 	int index;
 	int front;
 	int back;
-	int value;
+	Node listElement;
 }
 
 List newList(void);
