@@ -1,24 +1,10 @@
 #pragma once
 
-typedef struct NodeObj* Node;
 typedef struct ListObj* List;
 
-struct NodeObj{
-	Node next;
-	Node prev;
-	int value;
-}
-struct ListObj{
-	int length;
-	int index;
-	int front;
-	int back;
-	Node listElement;
-}
-
 List newList(void);
-
 void freeList(List *pL);
+
 //Access functions
 int length(List L);
 int index(List L);
