@@ -20,6 +20,7 @@ typedef struct NodeObj{
 typedef struct ListObj{
 	int length;
 	int index;
+	Node cursor;
 	Node front;
 	Node back;
 }ListObj;
@@ -45,6 +46,7 @@ List newList(void){
 	L->index = -1;
 	L->front = NULL;
 	L->back = NULL;
+	L->cursor = NULL;
 	return L;
 }
 
@@ -60,4 +62,28 @@ void freeList(List* pL){
 	}
 }
 
+//Access Functions
 
+//length(List L) returns total number of elements in L.
+int length(List L){
+	if(L == NULL){
+		printf("List Error: length() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	return(L->length);
+}
+
+//index(List L) returns index of the cursor element if it is defined, otherwise it returns -1
+//inside constructor, cursor element is initialized as -1
+int index(List L){
+	if(L == NULL){
+		printf("List Error: index on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(L->cursor == NULL){
+		return -1;
+	}
+	else{
+		return L->index;
+	}
+}
