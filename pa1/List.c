@@ -7,6 +7,7 @@
 #include "List.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 //Private Nodes
 typedef struct NodeObj* Node;
@@ -86,4 +87,86 @@ int index(List L){
 	else{
 		return L->index;
 	}
+}
+
+//front(List L) returns front element of the list
+//pre: length() > 0
+
+int front(List L){
+	if(L == NULL){
+		printf("List Error: front() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0){
+		printf("List Error: front() on a List of length 0 or less");
+		exit(EXIT_FAILURE);
+	}
+	return(L->front->value);
+}
+
+//back(List L) returns back element of the list
+//pre: length() > 0
+
+int back(List L){
+	if(L == NULL){
+		printf("List Error: back() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0){
+		printf("List Error: back() on a List of length 0 or less");
+		exit(EXIT_FAILURE);
+	}
+	return(L->back->value);
+}
+
+//get(List L) returns the cursor element of the list
+//pre: length() > 0 and index() >= 0
+
+int get(List L){
+	if(L == NULL){
+		printf("List Error: get() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0){
+		printf("List Error: get() on a List of length 0 or less");
+		exit(EXIT_FAILURE);
+	}
+	if(index(L) < 0){
+		printf("List Error: get() on an index of less than 0");
+		exit(EXIT_FAILURE);
+	}
+	return(L->cursor->value);
+}
+
+//equals(List A, List B) returns true if A = B, and false otherwise
+
+bool equals(List A, List B){
+	if(A == NULL){
+		printf("List Error: equals() on NULL List A");
+		exit(EXIT_FAILURE);
+	}
+	if(B == NULL){
+		printf("List Error: equals() on NULL List B");
+		exit(EXIT_FAILURE);
+	}
+	eq = (A->length == B->length);
+	AF = A->front;
+	BF = B->front;
+	while(eq && AF != NULL){
+		eq = (AF->value == BF->value);
+		AF = AF->next;
+		BF = BF->next;
+	}
+	return eq;
+}
+
+//Manipulation procedures
+
+void clear(List L){
+	if(L == NULL){
+		printf("List Error: clear() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	F = L->front;
+	//start here --- clear all nodes in the list
 }
