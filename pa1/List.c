@@ -162,11 +162,40 @@ bool equals(List A, List B){
 
 //Manipulation procedures
 
+//clear(List L) returns L to an empty state (no nodes)
+
 void clear(List L){
 	if(L == NULL){
 		printf("List Error: clear() on a NULL List");
 		exit(EXIT_FAILURE);
 	}
-	F = L->front;
-	//start here --- clear all nodes in the list
+	while(L->front != NULL){
+		freeNode((*L)->front);
+		L->front = L->next;
+	}
+	L->length = 0;
+	L->index = -1;
+	L->cursor = NULL;
+	L->back = NULL;
+	//all nodes should be freed and values are reset
 }
+
+//set(List L, int x) overwrites cursor element with x
+//pre: length() > 0 and index() >= 0
+void set(List L, int x){
+	if(L == NULL){
+		printf("List Error: set() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0){
+		printf("List Error: set() on a List of length 0 or less");
+		exit(EXIT_FAILURE);
+	}
+	if(index(L) < 0){
+		printf("List Error: set() on a List with cursor index < 0");
+		exit(EXIT_FAILURE);
+	}
+	L->cursor->value = x;
+}
+
+
