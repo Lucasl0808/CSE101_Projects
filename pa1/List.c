@@ -51,19 +51,16 @@ List newList(void){
 	return L;
 }
 
-//delete the front element of the list until the list is empty 
 //when the list is empty, free the list and set its pointer to NULL
-/*
+
 void freeList(List* pL){
 	if(pL != NULL && *pL != NULL){
-		while(length(*pL) > 0){
-			deleteFront(*pL);
-		}
+		clear(*pL);
 		free(*pL);
 		*pL = NULL;
 	}
 }
-*/
+
 //Access Functions
 
 //length(List L) returns total number of elements in L.
@@ -172,9 +169,11 @@ void clear(List L){
 		printf("List Error: clear() on a NULL List");
 		exit(EXIT_FAILURE);
 	}
+	Node N = NULL;
 	while(L->front != NULL){
-		freeNode(&L->front);
+		N = L->front;
 		L->front = L->front->next;
+		freeNode(&N);
 	}
 	L->length = 0;
 	L->index = -1;
@@ -347,6 +346,38 @@ void insertBefore(List L, int x){
 	L->index += 1;
 }
 
+//insertAfter(List L, int x) inserts a new element after the cursor node
+//pre: length(L) > 0 and index(L) >= 0
+
+void insertAfter(List L, int x){
+	if(L == NULL){
+		printf("List Error: insertAfter() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0){
+		printf("List Error: insertAfter() on a List of length 0");
+		exit(EXIT_FAILURE);
+	}
+	if(index(L) < 0){
+		printf("List ErrorL insertAfter() on a List with invalid cursor index");
+		exit(EXIT_FAILURE);
+	}
+	Node N = nodeCreate(x);
+	if(index(L) == length(L) -1){
+		N->prev = L->back;
+		L->back->next = N;
+		L->back = N;
+	}
+	else{
+		L->cursor->next->prev = N;
+		N->next = L->cursor->next;
+		N->prev = L->cursor;
+		L->cursor->next = N;
+	}
+	L->length += 1;
+
+}
+
 void printList(FILE* out, List L){
 	moveFront(L);
 	int x;
@@ -376,7 +407,15 @@ int main(void){
 	printf("\n");
 	moveFront(L);
 	insertBefore(L, 0);
+	moveBack(L);
+	insertAfter(L, 8);
+	insertAfter(L, 7);
 	printList(stdout, L);
 	printf("\n");
+	printf("length = %d\n", length(L));
+	printf("index = %d\n", index(L));
+	printf("front = %d\n", front(L));
+	printf("back = %d\n", back(L));
+	freeList(&L);
 	return 1;
 }
