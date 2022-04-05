@@ -378,6 +378,34 @@ void insertAfter(List L, int x){
 
 }
 
+//deleteFront(List L) deletes the node at the front of the List
+//pre: length(L) > 0
+
+void deleteFront(List L){
+	if(L == NULL){
+		printf("List Error: deleteFront() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0){
+		printf("List Error: deleteFront() on a List of length 0");
+		exit(EXIT_FAILURE);
+	}
+	Node N = L->front;
+	if(length(L) == 1){
+		L->front = NULL;
+		L->back = NULL;
+		L->cursor = NULL;
+		L->index = -1;
+	}
+	else{
+		L->front = L->front->next;
+		L->index -= 1;
+		
+	}
+	L->length -= 1;
+	freeNode(&N);
+}
+
 void printList(FILE* out, List L){
 	moveFront(L);
 	int x;
@@ -387,6 +415,8 @@ void printList(FILE* out, List L){
 		moveNext(L);
 	}
 }
+
+
 
 int main(void){
 	List L = newList();
@@ -416,6 +446,8 @@ int main(void){
 	printf("index = %d\n", index(L));
 	printf("front = %d\n", front(L));
 	printf("back = %d\n", back(L));
+	deleteFront(L);
+	printList(stdout, L);
 	freeList(&L);
 	return 1;
 }
