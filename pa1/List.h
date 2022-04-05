@@ -1,5 +1,7 @@
 #pragma once
-
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
 typedef struct ListObj* List;
 
 List newList(void);
