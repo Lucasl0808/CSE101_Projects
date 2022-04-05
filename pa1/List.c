@@ -198,4 +198,68 @@ void set(List L, int x){
 	L->cursor->value = x;
 }
 
+//moveFront(List L) moves cursor to the front element, does nothing otherwise
+
+void moveFront(List L){
+	if(L == NULL){
+		//printf("List Error: moveFront() on a NULL List");
+		//exit(EXIT_FAILURE);
+		return;
+	}
+	if(length(L) <= 0){
+		//printf("List Error: moveFront() on a List of length 0");
+		//exit(EXIT_FAILURE);
+		return;
+	}
+	L->cursor = L->front;
+	L->index = 0;
+}	
+
+//moveBack(List L) moves cursor to the back element, does nothing otherwise
+
+void moveBack(List L){
+	if(L == NULL){
+		return;
+	}
+	if(length(L) <= 0){
+		return;
+	}
+	L->cursor = L->back;
+	L->index = length(L) -1;
+}
+
+//movePrev(List L) moves the cursor to the previous node if it is defined and not at the front
+
+void movePrev(List L){
+	if(L == NULL){
+		return;
+	}
+	if(L->cursor == NULL){
+		return;
+	}
+	if(L->cursor == L->front){
+		L->cursor = NULL;
+		return;
+	}
+	L->cursor = L->cursor->prev;
+	L->index -= 1;
+}
+
+//moveNext(List L) moves the cursor to the next node if it is defined and not at the back
+
+void moveNext(List L){
+	if(L == NULL){
+		return;
+	}
+	if(L->cursor == NULL){
+		return;
+	}
+	if(L->cursor == L->back){
+		L->cursor = NULL;
+		return;
+	}
+	L->cursor = L->cursor->next;
+	L->index += 1;
+}
+
 
