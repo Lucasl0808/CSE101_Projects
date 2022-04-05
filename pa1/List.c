@@ -328,5 +328,18 @@ void insertBefore(List L, int x){
 		printf("List Error: insertBefore() on a List with invalid cursor index");
 		exit(EXIT_FAILURE);
 	}
-	
+	Node N = nodeCreate(x);
+	if(index(L) == 0){
+		N->next = L->front;
+		L->front->prev = N;
+		L->front = N;
+	}
+	else{
+		L->cursor->prev->next = N;
+		N->prev = L->cursor->prev;
+		N->next = L->cursor;
+		L->cursor->prev = N;
+	}
+	L->length += 1;
+	L->index += 1;
 }
