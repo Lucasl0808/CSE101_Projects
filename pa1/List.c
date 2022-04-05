@@ -262,4 +262,32 @@ void moveNext(List L){
 	L->index += 1;
 }
 
+//prepend(List L, int x) inserts element before the front element in the list
+
+void prepend(List L, int x){
+	if(L == NULL){
+		printf("List Error: prepend() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	Node N = nodeCreate(x);
+	
+	if(length(L) == 0){
+		L->front = N;
+		L->back = N;
+		L->length += 1;
+		if(index(L) >=0){
+			L->index += 1;
+		}
+	}
+	else{
+		L->front->prev = N;
+		N->next = L->front;
+		L->front = N;
+		L->length += 1;
+		if(index(L) >= 0){
+			L->index += 1;
+		}	
+	}
+}
+
 
