@@ -274,7 +274,6 @@ void prepend(List L, int x){
 	if(length(L) == 0){
 		L->front = N;
 		L->back = N;
-		L->length += 1;
 		if(index(L) >=0){
 			L->index += 1;
 		}
@@ -283,11 +282,30 @@ void prepend(List L, int x){
 		L->front->prev = N;
 		N->next = L->front;
 		L->front = N;
-		L->length += 1;
 		if(index(L) >= 0){
 			L->index += 1;
 		}	
 	}
+	L->length += 1;
 }
 
+//append(List L, int x) adds an element to the back of the list 
 
+void append(List L, int x){
+	if(L == NULL){
+		printf("List Error: append() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	Node N = nodeCreate(x);
+
+	if(length(L) == 0){
+		L->front = N;
+		L->back = N;
+	}
+	else{
+		L->back->next = N;
+		N->prev = L->back;
+		L->back = N;
+	}
+	L->length += 1;
+}
