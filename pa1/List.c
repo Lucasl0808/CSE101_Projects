@@ -53,6 +53,7 @@ List newList(void){
 
 //delete the front element of the list until the list is empty 
 //when the list is empty, free the list and set its pointer to NULL
+/*
 void freeList(List* pL){
 	if(pL != NULL && *pL != NULL){
 		while(length(*pL) > 0){
@@ -62,7 +63,7 @@ void freeList(List* pL){
 		*pL = NULL;
 	}
 }
-
+*/
 //Access Functions
 
 //length(List L) returns total number of elements in L.
@@ -149,6 +150,8 @@ bool equals(List A, List B){
 		printf("List Error: equals() on NULL List B");
 		exit(EXIT_FAILURE);
 	}
+	bool eq;
+	Node AF, BF;
 	eq = (A->length == B->length);
 	AF = A->front;
 	BF = B->front;
@@ -170,8 +173,8 @@ void clear(List L){
 		exit(EXIT_FAILURE);
 	}
 	while(L->front != NULL){
-		freeNode((*L)->front);
-		L->front = L->next;
+		freeNode(&L->front);
+		L->front = L->front->next;
 	}
 	L->length = 0;
 	L->index = -1;
@@ -342,4 +345,38 @@ void insertBefore(List L, int x){
 	}
 	L->length += 1;
 	L->index += 1;
+}
+
+void printList(FILE* out, List L){
+	moveFront(L);
+	int x;
+	while(index(L) >= 0){
+		x = get(L);
+		fprintf(out, "%d ", x);
+		moveNext(L);
+	}
+}
+
+int main(void){
+	List L = newList();
+	append(L, 2);
+	append(L, 3);
+	prepend(L, 1);
+	append(L, 4);
+	append(L, 6);
+	printList(stdout, L);
+	moveFront(L);
+	printf("front element is %d\n", L->cursor->value);
+	moveNext(L);
+	printf("cursor element is %d\n", L->cursor->value);
+	moveBack(L);
+	printf("back element is %d\n", L->cursor->value);
+	insertBefore(L, 5);
+	printList(stdout, L);
+	printf("\n");
+	moveFront(L);
+	insertBefore(L, 0);
+	printList(stdout, L);
+	printf("\n");
+	return 1;
 }
