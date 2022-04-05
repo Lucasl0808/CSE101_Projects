@@ -309,3 +309,18 @@ void append(List L, int x){
 	}
 	L->length += 1;
 }
+
+//insertBefore(List L, int x) inserts a new element before the cursor node
+//pre: length(L) > 0 and index(L) >= 0
+
+void insertBefore(List L, int x){
+	if(L == NULL){
+		printf("List Error: insertBefore() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0){
+		printf("List Error: insertBefore() on a List of length 0");
+		exit(EXIT_FAILURE);
+	}
+	
+}
