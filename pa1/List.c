@@ -239,6 +239,7 @@ void movePrev(List L){
 	}
 	if(L->cursor == L->front){
 		L->cursor = NULL;
+		L->index = -1;
 		return;
 	}
 	L->cursor = L->cursor->prev;
@@ -256,6 +257,7 @@ void moveNext(List L){
 	}
 	if(L->cursor == L->back){
 		L->cursor = NULL;
+		L->index = -1;
 		return;
 	}
 	L->cursor = L->cursor->next;
@@ -320,6 +322,10 @@ void insertBefore(List L, int x){
 	}
 	if(length(L) <= 0){
 		printf("List Error: insertBefore() on a List of length 0");
+		exit(EXIT_FAILURE);
+	}
+	if(index(L) < 0){
+		printf("List Error: insertBefore() on a List with invalid cursor index");
 		exit(EXIT_FAILURE);
 	}
 	
