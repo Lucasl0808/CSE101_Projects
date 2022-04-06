@@ -398,12 +398,80 @@ void deleteFront(List L){
 		L->index = -1;
 	}
 	else{
-		L->front = L->front->next;
-		L->index -= 1;
+		if(L->front == L->cursor){
+			L->index = -1;
+			L->cursor = NULL;
+			L->front = L->front->next;
+		}
+		else{
+			L->front = L->front->next;
+			L->index -= 1;
+		}
 		
 	}
 	L->length -= 1;
 	freeNode(&N);
+}
+
+void deleteBack(List L){
+	if(L == NULL){
+		printf("List Error: deleteBack() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0){
+		printf("List Error: deleteBack() on a List of length 0");
+		exit(EXIT_FAILURE);
+	}
+	//Node N = L->back;
+	if(length(L) == 1){
+		Node N = L->back;
+		L->front = NULL;
+		L->back = NULL;
+		L->cursor = NULL;
+		L->index = -1;
+		freeNode(&N);
+	}
+	else{
+		if(L->index == length(L) -1){
+			L->index = -1;
+			L->cursor = NULL;
+			L->back = L->back->prev;
+		}
+		else{
+			L->back = L->back->prev;
+		}
+	}
+	L->length -= 1;
+	//freeNode(&N);
+}
+
+//delete(List L) deletes the cursor node in L
+//pre: length(L) > 0 and index(L) >= 0
+
+void delete(List L){
+	if(L == NULL){
+		printf("List Error: delete() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
+	if(length(L) <= 0 || index(L) < 0){
+		printf("List Error: delete() on a List with invalid length or index");
+		exit(EXIT_FAILURE);
+	}
+	if(L->cursor == L->front){
+		deleteFront(L);
+	}
+	else if(L->cursor == L->back){
+		deleteBack(L);
+	}
+	else{
+		Node N = L->cursor;
+		L->cursor->prev->next = L->cursor->next;
+		L->cursor->next->prev = L->cursor->prev;
+		freeNode(&N);
+		L->cursor = NULL;
+		L->index = -1;		
+	}
+	L->length -= 1;
 }
 
 void printList(FILE* out, List L){
@@ -448,6 +516,27 @@ int main(void){
 	printf("back = %d\n", back(L));
 	deleteFront(L);
 	printList(stdout, L);
+	printf("\n");
+	deleteBack(L);
+	printList(stdout, L);
+	printf("\n");
 	freeList(&L);
+
+	List A = newList();
+	List B = newList();
+	append(A, 4);
+	append(B, 4);
+	printf("A = B is %d\n", equals(A, B));
+	printList(stdout, A);
+	printf("\n");
+	printList(stdout, B);
+	deleteFront(A);
+	deleteBack(B);
+	printList(stdout, A);
+	printf("\n");
+	printList(stdout, B);
+	printf("\n");
+	freeList(&A);
+	freeList(&B);
 	return 1;
 }
