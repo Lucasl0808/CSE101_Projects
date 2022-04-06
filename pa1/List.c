@@ -474,6 +474,21 @@ void delete(List L){
 	L->length -= 1;
 }
 
+//copyList(List L) returns new list representing the same sequence as L. Cursor is undefined in the new list
+List copyList(List L){
+	List A = newList();
+	moveFront(L);
+	int x;
+	while(index(L) >= 0){
+		x = get(L);
+		append(A, x);
+		moveNext(L);
+	}
+	A->cursor = NULL;
+	A->index = -1;
+	return A;
+}
+
 void printList(FILE* out, List L){
 	moveFront(L);
 	int x;
@@ -527,6 +542,12 @@ int main(void){
 	printf("index to delete = %d\n", index(L));
 	delete(L);
 	printList(stdout, L);
+	List G = copyList(L);
+	printf("\n");
+	printList(stdout, G);
+	printf("\n");
+	printf("copy list = copied list = %d\n", equals(G, L));
+	freeList(&G);
 	freeList(&L);
 
 	List A = newList();
