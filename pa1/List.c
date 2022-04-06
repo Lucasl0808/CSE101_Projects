@@ -520,6 +520,13 @@ int main(void){
 	deleteBack(L);
 	printList(stdout, L);
 	printf("\n");
+	moveFront(L);
+	moveNext(L);
+	moveNext(L);
+	moveNext(L);
+	printf("index to delete = %d\n", index(L));
+	delete(L);
+	printList(stdout, L);
 	freeList(&L);
 
 	List A = newList();
