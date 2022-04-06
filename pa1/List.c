@@ -459,9 +459,11 @@ void delete(List L){
 	}
 	if(L->cursor == L->front){
 		deleteFront(L);
+		return;
 	}
 	else if(L->cursor == L->back){
 		deleteBack(L);
+		return;
 	}
 	else{
 		Node N = L->cursor;
@@ -476,17 +478,21 @@ void delete(List L){
 
 //copyList(List L) returns new list representing the same sequence as L. Cursor is undefined in the new list
 List copyList(List L){
-	List A = newList();
-	moveFront(L);
-	int x;
-	while(index(L) >= 0){
-		x = get(L);
-		append(A, x);
-		moveNext(L);
+	List temp = newList();
+	if(length(L) == 0){
+		return temp;
 	}
-	A->cursor = NULL;
-	A->index = -1;
-	return A;
+	else{
+		moveFront(L);
+		int x;
+		while(index(L) >= 0){
+			x = get(L);
+			append(temp, x);
+			moveNext(L);
+		}
+		L->index = 0;
+		return temp;
+	}
 }
 
 void printList(FILE* out, List L){
@@ -499,7 +505,7 @@ void printList(FILE* out, List L){
 	}
 }
 
-
+/*
 
 int main(void){
 	List L = newList();
@@ -568,3 +574,4 @@ int main(void){
 	freeList(&B);
 	return 1;
 }
+*/

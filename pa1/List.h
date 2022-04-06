@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 typedef struct ListObj* List;
+typedef struct NodeObj* Node;
 
 List newList(void);
 void freeList(List *pL);
