@@ -21,7 +21,6 @@ int main(int argc, char *argv[]){
 	}
 	int lineCount;
 	char line[MAX_LEN];
-	char buffer[MAX_LEN]
 	//maybe call fgets in a loop and read in each line, every time incrementing line count.
 	while(fgets(line, MAX_LEN, in) != NULL){
 		lineCount += 1;
