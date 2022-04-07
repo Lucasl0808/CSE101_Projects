@@ -24,6 +24,6 @@ int main(int argc, char *argv[]){
 	//maybe call fgets in a loop and read in each line, every time incrementing line count.
 	while(fgets(line, MAX_LEN, in) != NULL){
 		lineCount += 1;
-		
+		line[strlen(author) -1] = '\0';
 	}
 }
