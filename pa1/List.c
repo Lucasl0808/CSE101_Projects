@@ -157,6 +157,8 @@ bool equals(List A, List B){
 		AF = AF->next;
 		BF = BF->next;
 	}
+	AF = NULL;
+	BF = NULL;
 	return eq;
 }
 
