@@ -32,6 +32,7 @@ int main(void){
         printList(stdout, L);
         printf("\n");
         deleteBack(L);
+	deleteFront(L);
         printList(stdout, L);
         printf("\n");
         moveFront(L);
@@ -48,7 +49,8 @@ int main(void){
         printf("copy list = copied list = %d\n", equals(G, L));
         freeList(&G);
         freeList(&L);
-
+	
+	/*
         List A = newList();
         List B = newList();
 	List C = copyList(A);
@@ -67,17 +69,5 @@ int main(void){
         printf("\n");
         freeList(&A);
         freeList(&B);
-
-	List K = newList();
-	//List M = newList();
-	append(K, 2);
-	prepend(K, 1);
-	moveFront(K);
-	List M = copyList(K);
-	printf("equals %d\n", equals(M, K));
-	printf("\n");
-	printf("index %d\n", index(K));
-	freeList(&K);
-	freeList(&M);
-        return 1;
+	*/
 }

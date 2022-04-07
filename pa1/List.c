@@ -149,7 +149,7 @@ bool equals(List A, List B){
 	}
 	bool eq;
 	Node AF, BF;
-	eq = (A->length == B->length);
+	eq = (length(A) == length(B));
 	AF = A->front;
 	BF = B->front;
 	while(eq && AF != NULL){
@@ -169,11 +169,12 @@ void clear(List L){
 		printf("List Error: clear() on a NULL List");
 		exit(EXIT_FAILURE);
 	}
-	Node N = NULL;
+	//Node N = NULL;
 	while(L->front != NULL){
-		N = L->front;
-		L->front = L->front->next;
-		freeNode(&N);
+		deleteFront(L);
+		//N = L->front;
+		//L->front = L->front->next;
+		//freeNode(&N);
 	}
 	L->length = 0;
 	L->index = -1;
@@ -204,14 +205,12 @@ void set(List L, int x){
 
 void moveFront(List L){
 	if(L == NULL){
-		//printf("List Error: moveFront() on a NULL List");
-		//exit(EXIT_FAILURE);
-		return;
+		printf("List Error: moveFront() on a NULL List");
+		exit(EXIT_FAILURE);
 	}
 	if(length(L) <= 0){
-		//printf("List Error: moveFront() on a List of length 0");
-		//exit(EXIT_FAILURE);
-		return;
+		printf("List Error: moveFront() on a List of length 0");
+		exit(EXIT_FAILURE);
 	}
 	L->cursor = L->front;
 	L->index = 0;
@@ -422,27 +421,33 @@ void deleteBack(List L){
 		printf("List Error: deleteBack() on a List of length 0");
 		exit(EXIT_FAILURE);
 	}
-	//Node N = L->back;
+	Node N = L->back;
 	if(length(L) == 1){
-		Node N = L->back;
+		//Node N = L->back;
 		L->front = NULL;
 		L->back = NULL;
 		L->cursor = NULL;
 		L->index = -1;
-		freeNode(&N);
+		//freeNode(&N);
 	}
 	else{
+		//Node N = L->back;
 		if(L->index == length(L) -1){
+			//Node N = L->back;
 			L->index = -1;
 			L->cursor = NULL;
 			L->back = L->back->prev;
+			//freeNode(&N);
 		}
 		else{
+			//Node N = L ->back;
 			L->back = L->back->prev;
+			//freeNode(&N);
 		}
+		//freeNode(&N);
 	}
 	L->length -= 1;
-	//freeNode(&N);
+	freeNode(&N);
 }
 
 //delete(List L) deletes the cursor node in L
@@ -478,9 +483,19 @@ void delete(List L){
 
 //copyList(List L) returns new list representing the same sequence as L. Cursor is undefined in the new list
 List copyList(List L){
+	if(L == NULL){
+		printf("List Error: copyList() on a NULL List");
+		exit(EXIT_FAILURE);
+	}
 	List temp = newList();
+	temp->cursor = NULL;
+	temp->index = -1;
+	int tempIndex = L->index;
+	Node tempCursor = L->cursor;
+	//printf("%d\n", tempIndex);
 	if(length(L) == 0){
 		return temp;
+		//printf("L");
 	}
 	else{
 		moveFront(L);
@@ -490,9 +505,13 @@ List copyList(List L){
 			append(temp, x);
 			moveNext(L);
 		}
-		L->index = 0;
-		return temp;
+		//L->index = tempIndex;
+		//return temp;
 	}
+	L->index = tempIndex;
+	L->cursor = tempCursor;
+	//printf("%d\n", L->index);
+	return temp;
 }
 
 void printList(FILE* out, List L){
