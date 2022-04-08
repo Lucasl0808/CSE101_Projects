@@ -1,6 +1,8 @@
-#include "List.h"
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
+#include "List.h"
 #define MAX_LEN 300
 
 int main(int argc, char *argv[]){
@@ -19,11 +21,62 @@ int main(int argc, char *argv[]){
 		printf("Unable to open file %s for writing\n", argv[2]);
 		exit(1);
 	}
-	int lineCount;
+	int lineCount = 0;
 	char line[MAX_LEN];
-	//maybe call fgets in a loop and read in each line, every time incrementing line count.
 	while(fgets(line, MAX_LEN, in) != NULL){
 		lineCount += 1;
-		line[strlen(author) -1] = '\0';
 	}
+	char **strArray = malloc(sizeof(char *) * lineCount);
+	//for(int i = 0; i < lineCount; i += 1){
+	//	strArray[i] = malloc(sizeof(char) * MAX_LEN);
+	//}
+	
+	//allocated array fseek to reread file
+	fseek(in, 0, SEEK_SET);
+	int x = 0;
+	while(fgets(line, MAX_LEN, in) != NULL){
+		char *temp = malloc(sizeof(char) * MAX_LEN);
+		line[strlen(line) -1] = '\0';
+		strcpy(temp, line);
+		strArray[x] = temp;
+		x += 1;
+	}
+	List L = newList();
+	for(int i = 0; i < lineCount; i += 1){
+		if(length(L) == 0){
+			append(L, i);
+		}
+		else{
+			if(strcmp(strArray[get(L)], strArray[i]) >= 0){
+				prepend(L, i);
+			}
+			else{
+				while(index(L) >= 0){
+					if(strcmp(strArray[get(L)], strArray[i]) >= 0){
+						insertBefore(L, i);
+						break;
+					}
+					moveNext(L);
+				}
+				if(index(L) == -1){
+					append(L, i);
+				}
+			}
+		}
+		moveFront(L);
+	}
+	int y;
+	while(index(L) >= 0){
+		y = get(L);
+		fprintf(out, "%s\n", strArray[y]);
+		moveNext(L);
+	}
+	for(int i = 0; i < lineCount; i += 1){
+		free(strArray[i]);
+	}
+	free(strArray);
+	freeList(&L);
+	fclose(in);
+	fclose(out);
+	return 1;
 }

@@ -157,8 +157,6 @@ bool equals(List A, List B){
 		AF = AF->next;
 		BF = BF->next;
 	}
-	AF = NULL;
-	BF = NULL;
 	return eq;
 }
 
@@ -425,28 +423,18 @@ void deleteBack(List L){
 	}
 	Node N = L->back;
 	if(length(L) == 1){
-		//Node N = L->back;
 		L->front = NULL;
 		L->back = NULL;
 		L->cursor = NULL;
 		L->index = -1;
-		//freeNode(&N);
 	}
 	else{
-		//Node N = L->back;
 		if(L->index == length(L) -1){
-			//Node N = L->back;
 			L->index = -1;
 			L->cursor = NULL;
-			L->back = L->back->prev;
-			//freeNode(&N);
 		}
-		else{
-			//Node N = L ->back;
-			L->back = L->back->prev;
-			//freeNode(&N);
-		}
-		//freeNode(&N);
+		L->back = L->back->prev;
+		L->back->next = NULL;
 	}
 	L->length -= 1;
 	freeNode(&N);
