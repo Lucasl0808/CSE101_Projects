@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "List.h"
 
+//INF should be a negative number, NIL should be a non-positive number
+#define INF -1
+#define NIL -2
 //Initialize Graph
 
 typedef struct GraphObj* Graph;
