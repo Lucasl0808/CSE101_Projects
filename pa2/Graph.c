@@ -80,3 +80,16 @@ int getParent(Graph G, int u){
 	return G->parent[u];
 }
 
+int getDist(Graph G, int u){
+	if(G == NULL){
+		printf("Graph Error: getDist() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	if(u < 0 || u > getSize(G)){
+		printf("Graph Error: getDist() u value is invalid");
+		exit(EXIT_FAILURE);
+	}
+	return G->distance[u];
+}
+
+
