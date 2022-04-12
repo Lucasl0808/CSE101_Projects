@@ -40,3 +40,29 @@ void freeGraph(Graph *pG){
 }
 
 //Access Functions
+
+int getOrder(Graph G){
+	if(G == NULL){
+		printf("Graph Error: getOrder() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	return G->order;
+}
+
+int getSize(Graph G){
+	if(G == NULL){
+		printf("Graph Error: getSize() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	return G->size;
+}
+
+int getSource(Graph G){
+	if(G == NULL){
+		printf("Graph Error: getSource() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	return G->source; //source is initialized as NIL
+}
+
+
