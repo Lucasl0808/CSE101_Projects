@@ -18,6 +18,9 @@ Graph newGraph(int n){
 	Graph G = malloc(sizeof(GraphObj));
 	//allocate space for n 
 	G->listArr = malloc(sizeof(ListObj *) * n+1);
+	G->color = malloc(sizeof(int) * n + 1);
+	G->parent = malloc(sizeof(int) * n + 1);
+	G->distance = malloc(sizeof(int) * n + 1);
 	for(int i = 1; i < n+1; i += 1){
 		G->listArr[i] = newList();
 		G->color[i] = NIL;
@@ -73,7 +76,7 @@ int getParent(Graph G, int u){
 		printf("Graph Error: getParent() on a NULL Graph");
 		exit(EXIT_FAILURE);
 	}
-	if(u < 0 || u > getSize(G)){
+	if(u < 1 || u > getOrder(G)){
 		printf("Graph Error: getParent() u value is invalid");
 		exit(EXIT_FAILURE);
 	}
@@ -85,11 +88,32 @@ int getDist(Graph G, int u){
 		printf("Graph Error: getDist() on a NULL Graph");
 		exit(EXIT_FAILURE);
 	}
-	if(u < 0 || u > getSize(G)){
+	if(u < 1 || u > getOrder(G)){
 		printf("Graph Error: getDist() u value is invalid");
 		exit(EXIT_FAILURE);
 	}
+	if(getSource(G) == NIL){
+		return INF;
+	}
 	return G->distance[u];
 }
-
+void getPath(List L, Graph G, int u){
+	if(G == NULL){
+		printf("Graph Error: getPath() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	if(u < 1 || u > getOrder(G)){
+		printf("Graph Error: getPath() u value is invalid");
+		exit(EXIT_FAILURE);
+	}
+	if(getSource(G) == NIL){
+		printf("Graph Error: getPath() source is NIL");
+		exit(EXIT_FAILURE);
+	}
+	if(getDist(G, u) == INF){
+		append(L, INF);
+		return;
+	}
+	
+}
 
