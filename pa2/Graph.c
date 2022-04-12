@@ -65,4 +65,18 @@ int getSource(Graph G){
 	return G->source; //source is initialized as NIL
 }
 
+//u is the vertex to get the parent for
+//vertex u is parent[u]
+//each vertex parent initialized as NIL
+int getParent(Graph G, int u){
+	if(G == NULL){
+		printf("Graph Error: getParent() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	if(u < 0 || u > getSize(G)){
+		printf("Graph Error: getParent() u value is invalid");
+		exit(EXIT_FAILURE);
+	}
+	return G->parent[u];
+}
 
