@@ -114,6 +114,12 @@ void getPath(List L, Graph G, int u){
 		append(L, INF);
 		return;
 	}
-	
+	int curr = u;
+	while(curr != G->source){
+		append(L, curr);
+		curr = getParent(G, curr);
+	}
+	append(L, curr);
+	return;
 }
 
