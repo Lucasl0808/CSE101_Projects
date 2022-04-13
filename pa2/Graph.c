@@ -152,15 +152,16 @@ void addEdge(Graph G, int u, int v){
 		exit(EXIT_FAILURE);
 	}
 	//append/prepend/insertBefore/insertAfter to have sorted listArr
-	if(length(G->listArr[u]) == 0 || length(G->listArr[v]) == 0){
-		if(length(G->listArr[u]) == 0){
-                	append(G->listArr[u], v);
-        	}
-        	if(length(G->listArr[v]) == 0){
-                	append(G->listArr[v], u);
-        	}
+	if(length(G->listArr[u]) == 0){
+		append(G->listArr[u], v);
 	}
 	else{
-		//if length of adj list of u and v are not empty
+		//if length of adj list of u is not empty
+	}
+	if(length(G->listArr[v]) == 0){
+		append(G->listArr[v], u);
+	}
+	else{
+		//if length of adj list of v is not empty
 	}
 }
