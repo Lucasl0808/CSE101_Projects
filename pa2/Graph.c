@@ -123,3 +123,19 @@ void getPath(List L, Graph G, int u){
 	return;
 }
 
+//manipulation procedures
+
+//makeNull deletes all edges in G, doesnt free arrays or list
+void makeNull(Graph G){
+	if(G == NULL){
+		printf("Graph Error: makeNull() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	for(int i = 1; i < getOrder(G) + 1; i += 1){
+		clear(G->listArr[i]);
+		G->parent[i] = NIL;
+		G->distance[i] = NIL;
+	}
+	G->size = NIL;
+}
+
