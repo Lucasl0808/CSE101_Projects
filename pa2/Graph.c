@@ -139,3 +139,28 @@ void makeNull(Graph G){
 	G->size = NIL;
 }
 
+//addEdge adds int u to adjacency list of v, and v to the adjacency list of u
+//pre: both ints have to be between 1 and getOrder
+//increments Graph size
+void addEdge(Graph G, int u, int v){
+	if(G == NULL){
+		printf("Graph Error: addEdge() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	if(u < 1 || u >getOrder(G) || v < 1 || v > getOrder(G)){
+		printf("Graph Error: addEdge() u or v value is invalid");
+		exit(EXIT_FAILURE);
+	}
+	//append/prepend/insertBefore/insertAfter to have sorted listArr
+	if(length(G->listArr[u]) == 0 || length(G->listArr[v]) == 0){
+		if(length(G->listArr[u]) == 0){
+                	append(G->listArr[u], v);
+        	}
+        	if(length(G->listArr[v]) == 0){
+                	append(G->listArr[v], u);
+        	}
+	}
+	else{
+		//if length of adj list of u and v are not empty
+	}
+}
