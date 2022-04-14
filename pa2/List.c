@@ -170,6 +170,9 @@ void clear(List L){
 		exit(EXIT_FAILURE);
 	}
 	//Node N = NULL;
+	if(length(L) == 0){
+		return;
+	}
 	while(L->front != NULL){
 		deleteFront(L);
 		//N = L->front;

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "List.h"
@@ -21,7 +23,7 @@ int getSize(Graph G);
 int getSource(Graph G);
 int getParent(Graph G, int u);
 int getDist(Graph G, int u);
-void getPath(ListL, Graph G, int u);
+void getPath(List L, Graph G, int u);
 
 //Manipulation Procedures
 

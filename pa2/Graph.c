@@ -5,10 +5,10 @@
 
 //create GraphObj Struct
 typedef struct GraphObj{
-	List **listArr;
-	int color[];
-	int parent[];
-	int distance[];
+	List *listArr;
+	int *color;
+	int *parent;
+	int *distance;
 	int order;
 	int size;
 	int source;
@@ -17,7 +17,7 @@ typedef struct GraphObj{
 Graph newGraph(int n){
 	Graph G = malloc(sizeof(GraphObj));
 	//allocate space for n 
-	G->listArr = malloc(sizeof(ListObj *) * n+1);
+	G->listArr = malloc(sizeof(List) * n + 1);
 	G->color = malloc(sizeof(int) * n + 1);
 	G->parent = malloc(sizeof(int) * n + 1);
 	G->distance = malloc(sizeof(int) * n + 1);
@@ -37,6 +37,13 @@ Graph newGraph(int n){
 void freeGraph(Graph *pG){
 	if(pG != NULL && *pG != NULL){
 		makeNull(*pG);
+		for(int i = 1; i < getOrder(*pG)+1; i += 1){
+			freeList(&(*pG)->listArr[i]);
+		}
+		free((*pG)->listArr);
+		free((*pG)->color);
+		free((*pG)->parent);
+		free((*pG)->distance);
 		free(*pG);
 		*pG = NULL;
 	}
@@ -130,6 +137,9 @@ void makeNull(Graph G){
 	if(G == NULL){
 		printf("Graph Error: makeNull() on a NULL Graph");
 		exit(EXIT_FAILURE);
+	}
+	if(getSize(G) == 0){
+		return;
 	}
 	for(int i = 1; i < getOrder(G) + 1; i += 1){
 		clear(G->listArr[i]);
@@ -267,3 +277,9 @@ void addArc(Graph G, int u, int v){
 	G->size += 1;
 }
 
+int main(void){
+	Graph G = newGraph(5);
+	printf("getOrder() = %d\n", getOrder(G));
+	addEdge(G, 1, 3);
+	freeGraph(&G);
+}
