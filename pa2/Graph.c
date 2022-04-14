@@ -17,10 +17,10 @@ typedef struct GraphObj{
 Graph newGraph(int n){
 	Graph G = malloc(sizeof(GraphObj));
 	//allocate space for n 
-	G->listArr = malloc(sizeof(List) * n + 1);
-	G->color = malloc(sizeof(int) * n + 1);
-	G->parent = malloc(sizeof(int) * n + 1);
-	G->distance = malloc(sizeof(int) * n + 1);
+	G->listArr = malloc(sizeof(List) * (n + 1));
+	G->color = malloc(sizeof(int) * (n + 1));
+	G->parent = malloc(sizeof(int) * (n + 1));
+	G->distance = malloc(sizeof(int) * (n + 1));
 	for(int i = 1; i < n+1; i += 1){
 		G->listArr[i] = newList();
 		G->color[i] = NIL;
