@@ -155,7 +155,11 @@ void addEdge(Graph G, int u, int v){
 		printf("Graph Error: addEdge() u or v value is invalid");
 		exit(EXIT_FAILURE);
 	}
+	addArc(G, u, v);
+	addArc(G, v, u);
+	G->size -= 1;
 	//append/prepend/insertBefore/insertAfter to have sorted listArr
+	/*
 	if(length(G->listArr[u]) == 0){
 		append(G->listArr[u], v);
 	}
@@ -179,6 +183,7 @@ void addEdge(Graph G, int u, int v){
 			}
 		}
 	}
+	
 	if(length(G->listArr[v]) == 0){
 		append(G->listArr[v], u);
 	}
@@ -202,9 +207,63 @@ void addEdge(Graph G, int u, int v){
 		}
 	}
 	//increment size variable after adding the edge to the graph
-	G->size += 1;	
+	G->size += 1;
+	*/
 }
 
 void addArc(Graph G, int u, int v){
-
+	if(G == NULL){
+		printf("Graph Error: addArc() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	if(u < 1 || u > getOrder(G) || v < 1 || v > getOrder(G)){
+		printf("Graph Error: addArd() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	if(length(G->listArr[u]) == 0){
+		append(G->listArr[u], v);
+	}
+	else{
+		moveFront(G->listArr[u]);
+		if(v <= front(G->listArr[u])){
+			prepend(G->listArr[u], v);
+		}
+		else{
+			while(index(G->listArr[u]) >= 0){
+				if(v <= get(G->listArr[u])){
+					insertBefore(G->listArr[u], v);
+					break;
+				}
+				moveNext(G->listArr[u]);
+			}
+			if(index(G->listArr[u]) == -1){
+				append(G->listArr[u], v);
+			}
+		}
+	}
+	/*
+	if(length(G->listArr[v]) == 0){
+		append(G->listArr[v], u);
+	}
+	else{
+		moveFront(G->listArr[v]);
+		if(u <= front(G->listArr[v])){
+			prepend(G->listArr[v], u);
+		}
+		else{
+			while(index(G->listArr[v]) >= 0){
+				if(u <= get(G->listArr[v])){
+					insertBefore(G->listArr[v], u);
+					break;
+				}
+				moveNext(G->listArr[v]);
+			}
+			if(index(G->listArr[v]) == -1){
+				append(G->listArr[v], u);
+			}
+		}
+	}
+	*/
+	G->size += 1;
 }
+
