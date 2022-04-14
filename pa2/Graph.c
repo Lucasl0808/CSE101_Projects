@@ -195,7 +195,7 @@ void addEdge(Graph G, int u, int v){
 					break;
 				}
 				moveNext(G->listArr[v]);
-			}
+		}
 			if(index(G->listArr[v]) == -1){
 				append(G->listArr[v], u);
 			}
@@ -203,4 +203,8 @@ void addEdge(Graph G, int u, int v){
 	}
 	//increment size variable after adding the edge to the graph
 	G->size += 1;	
+}
+
+void addArc(Graph G, int u, int v){
+
 }
