@@ -142,6 +142,10 @@ void makeNull(Graph G){
 //addEdge adds int u to adjacency list of v, and v to the adjacency list of u
 //pre: both ints have to be between 1 and getOrder
 //increments Graph size
+//COULD USE addArc() to cut down lines in program
+//addArc(u, v)
+//addArc(v, u)
+//decrement size by 1
 void addEdge(Graph G, int u, int v){
 	if(G == NULL){
 		printf("Graph Error: addEdge() on a NULL Graph");
@@ -157,11 +161,46 @@ void addEdge(Graph G, int u, int v){
 	}
 	else{
 		//if length of adj list of u is not empty
+		moveFront(G->listArr[u]);
+		if(v <= front(G->listArr[u])){
+			prepend(G->listArr[u], v);
+		}
+		else{
+			while(index(G->listArr[u]) >= 0){
+				if(v <= get(G->listArr[u])){
+					insertBefore(G->listArr[u], v);
+					break;
+				}
+				moveNext(G->listArr[u]);
+			}
+			//if index falls off and is not inserted in the middle somewhere
+			if(index(G->listArr[u]) == -1){
+				append(G->listArr[u], v);
+			}
+		}
 	}
 	if(length(G->listArr[v]) == 0){
 		append(G->listArr[v], u);
 	}
 	else{
 		//if length of adj list of v is not empty
+		moveFront(G->listArr[v]);
+		if(u <= front(G->listArr[v])){
+			prepend(G->listArr[v], u);
+		}
+		else{
+			while(index(G->listArr[v]) >= 0){
+				if(u <= get(G->listArr[v])){
+					insertBefore(G->listArr[v], u);
+					break;
+				}
+				moveNext(G->listArr[v]);
+			}
+			if(index(G->listArr[v]) == -1){
+				append(G->listArr[v], u);
+			}
+		}
 	}
+	//increment size variable after adding the edge to the graph
+	G->size += 1;	
 }
