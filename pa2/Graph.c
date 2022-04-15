@@ -277,9 +277,19 @@ void addArc(Graph G, int u, int v){
 	G->size += 1;
 }
 
+void printGraph(FILE *out, Graph G){
+	for(int i = 1; i < getOrder(G) + 1; i +=1){
+		fprintf(out, "%d: ", i);
+		printList(out, G->listArr[i]);
+		fprintf(out, "\n");
+	}
+}
+
 int main(void){
 	Graph G = newGraph(5);
 	printf("getOrder() = %d\n", getOrder(G));
 	addEdge(G, 1, 3);
+	printf("getSize() = %d\n", getSize(G));
+	printGraph(stdout, G);
 	freeGraph(&G);
 }

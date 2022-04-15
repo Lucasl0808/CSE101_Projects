@@ -508,6 +508,9 @@ List copyList(List L){
 }
 
 void printList(FILE* out, List L){
+	if(length(L) == 0){
+		return;
+	}
 	moveFront(L);
 	int x;
 	while(index(L) >= 0){
