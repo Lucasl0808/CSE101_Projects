@@ -284,7 +284,7 @@ void printGraph(FILE *out, Graph G){
 		fprintf(out, "\n");
 	}
 }
-
+/*
 int main(void){
 	Graph G = newGraph(5);
 	printf("getOrder() = %d\n", getOrder(G));
@@ -293,3 +293,4 @@ int main(void){
 	printGraph(stdout, G);
 	freeGraph(&G);
 }
+*/

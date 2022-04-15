@@ -28,7 +28,7 @@ void getPath(List L, Graph G, int u);
 //Manipulation Procedures
 
 void makeNull(Graph G);
-void addEEdge(Graph G, int u, int v);
+void addEdge(Graph G, int u, int v);
 void addArc(Graph G, int u, int v);
 void BFS(Graph G, int s);
 
