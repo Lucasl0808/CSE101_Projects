@@ -307,6 +307,9 @@ void BFS(Graph G, int s){
 		//dequeue element = store front node in variable, deleteFront()
 		int x = front(L);
 		deleteFront(L);
+		if(length(G->listArr[x]) == 0){
+			break;
+		}
 		moveFront(G->listArr[x]);
 		while(index(G->listArr[x]) >= 0){
 			int y = get(G->listArr[x]);
@@ -330,7 +333,7 @@ void printGraph(FILE *out, Graph G){
 		fprintf(out, "\n");
 	}
 }
-
+/*
 int main(void){
 	Graph G = newGraph(6);
 	printf("getOrder() = %d\n", getOrder(G));
@@ -346,7 +349,43 @@ int main(void){
 	printf("getSource = %d\n", getSource(G));
 	printf("getParent 4 = %d\n", getParent(G, 4));
 	printf("getSize() = %d\n", getSize(G));
+	int x = 4;
+	while(x != NIL){
+		printf("path = %d\n", x);
+		x = getParent(G, x);
+	}
+	List L = newList();
+	getPath(L, G, 4);
+	printList(stdout, L);
+	printf("\n");
 	printGraph(stdout, G);
+	
+	printf("\n");
+	Graph A = newGraph(100);
+	if(getSize(A) != 0){
+		return 1;
+	}
+	addArc(A, 54, 1);
+	addArc(A, 54, 2);
+	addArc(A, 54, 3);
+	addArc(A, 1, 54);
+	addArc(A, 1, 55);
+	if(getSize(A) != 5){
+		return 2;
+	}
+	BFS(A, 67);
+	if(getSize(A) != 5){
+		return 3;
+	}
+	addArc(A, 55, 1);
+	if(getSize(A) != 6){
+		return 4;
+	}
+	printf("passed tests");
+	//return 0;
+	freeList(&L);
+	freeGraph(&A);
 	freeGraph(&G);
+	return 0;
 }
-
+*/
