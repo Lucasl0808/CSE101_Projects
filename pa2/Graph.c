@@ -344,6 +344,8 @@ void printGraph(FILE *out, Graph G){
 		fprintf(out, "\n");
 	}
 }
+
+//IN FindPath.c - read file by using parameters in fscanf to read lines maybe
 /*
 int main(void){
 	Graph G = newGraph(6);
