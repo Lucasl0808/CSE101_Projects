@@ -277,6 +277,52 @@ void addArc(Graph G, int u, int v){
 	G->size += 1;
 }
 
+//BFS(Graph G, int s) s = source, sets source, color, distance, and parent parameters of
+//each vertex to corresponding values
+//color: 0 = white, 1 = gray, 2 = black
+void BFS(Graph G, int s){
+	if(G == NULL){
+		printf("Graph Error: BFS() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	if(s <= 0 || s > getOrder(G)){
+		printf("Graph Error: BFS() on an invalid source");
+		exit(EXIT_FAILURE);
+	}
+	for(int i = 1; i < getOrder(G) +1; i += 1){
+		if(i == s){
+			continue;
+		}
+		G->color[i] = 0;
+		G->distance[i] = INF;
+		G->parent[i] = NIL;
+	}
+	G->color[s] = 1;
+	G->distance[s] = 0;
+	G->parent[s] = NIL;
+	G->source = s;
+	List L = newList();
+	append(L, s);
+	while(length(L) != 0){
+		//dequeue element = store front node in variable, deleteFront()
+		int x = front(L);
+		deleteFront(L);
+		moveFront(G->listArr[x]);
+		while(index(G->listArr[x]) >= 0){
+			int y = get(G->listArr[x]);
+			if(G->color[y] == 0){
+				G->color[y] = 1;
+				G->distance[y] = G->distance[x] + 1;
+				G->parent[y] = x;
+				append(L, y);
+			}
+			moveNext(G->listArr[x]);
+		}
+		G->color[x] = 2;
+	}
+	freeList(&L);
+}
+
 void printGraph(FILE *out, Graph G){
 	for(int i = 1; i < getOrder(G) + 1; i +=1){
 		fprintf(out, "%d: ", i);
@@ -284,13 +330,23 @@ void printGraph(FILE *out, Graph G){
 		fprintf(out, "\n");
 	}
 }
-/*
+
 int main(void){
-	Graph G = newGraph(5);
+	Graph G = newGraph(6);
 	printf("getOrder() = %d\n", getOrder(G));
-	addEdge(G, 1, 3);
+	addEdge(G, 1, 2);
+	addEdge(G, 1, 6);
+	addEdge(G, 2, 5);
+	addEdge(G, 2, 3);
+	addEdge(G, 6, 5);
+	addEdge(G, 5, 4);
+	addEdge(G, 4, 3);
+	BFS(G, 1);
+	printf("getDist 4 = %d\n", getDist(G, 4));
+	printf("getSource = %d\n", getSource(G));
+	printf("getParent 4 = %d\n", getParent(G, 4));
 	printf("getSize() = %d\n", getSize(G));
 	printGraph(stdout, G);
 	freeGraph(&G);
 }
-*/
+
