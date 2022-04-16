@@ -118,16 +118,27 @@ void getPath(List L, Graph G, int u){
 		exit(EXIT_FAILURE);
 	}
 	if(getDist(G, u) == INF){
-		append(L, INF);
+		append(L, NIL);
 		return;
 	}
+	if(u == G->source){
+		append(L, u);
+	}
+	else if(getParent(G, u) == NIL){
+		printf("not reachable from source %d\n", G->source);
+	}
+	else{
+		getPath(L, G, getParent(G, u));
+		append(L, u);
+	}
+	/*
 	int curr = u;
 	while(curr != G->source){
 		append(L, curr);
 		curr = getParent(G, curr);
 	}
 	append(L, curr);
-	return;
+	*/
 }
 
 //manipulation procedures

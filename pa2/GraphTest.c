@@ -24,9 +24,6 @@ int main(void){
                 printf("path = %d\n", x);
                 x = getParent(G, x);
         }
-        List L = newList();
-        getPath(L, G, 4);
-        printList(stdout, L);
         printf("\n");
         printGraph(stdout, G);
 
@@ -51,10 +48,12 @@ int main(void){
         if(getSize(A) != 6){
                 return 4;
         }
-        printf("passed tests");
+        printf("passed tests\n");
+
 	freeList(&L);
 	freeGraph(&A);
 	freeGraph(&G);
+
 	return 0;
 
 }
