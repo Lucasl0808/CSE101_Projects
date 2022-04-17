@@ -28,32 +28,12 @@ int main(void){
         printGraph(stdout, G);
 
         printf("\n");
-        Graph A = newGraph(100);
-        if(getSize(A) != 0){
-                return 1;
-        }
-        addArc(A, 54, 1);
-        addArc(A, 54, 2);
-        addArc(A, 54, 3);
-        addArc(A, 1, 54);
-        addArc(A, 1, 55);
-        if(getSize(A) != 5){
-                return 2;
-        }
-        BFS(A, 67);
-        if(getSize(A) != 5){
-                return 3;
-        }
-        addArc(A, 55, 1);
-        if(getSize(A) != 6){
-                return 4;
-        }
-        printf("passed tests\n");
 
+	List L = newList();
+	getPath(L, G, 4);
+	printList(stdout, L);
 	freeList(&L);
-	freeGraph(&A);
 	freeGraph(&G);
-
 	return 0;
 
 }
