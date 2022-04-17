@@ -1,7 +1,7 @@
 /* Lucas Lee
  * luclee
  * CSE101-02 Spring 2022
- * pa1
+ * pa2
  */
 
 #include "List.h"
