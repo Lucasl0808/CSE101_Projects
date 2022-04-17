@@ -1,3 +1,8 @@
+/* Lucas Lee
+ * luclee
+ * CSE101-02 Spring 2022
+ * pa2
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "List.h"
