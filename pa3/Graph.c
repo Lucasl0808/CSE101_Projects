@@ -35,8 +35,8 @@ Graph newGraph(int n){
 		G->color[i] = NIL;
 		G->parent[i] = NIL;
 		G->distance[i] = NIL;
-		G->discover[i] = NIL;
-		G->finish[i] = NIL;
+		G->discover[i] = UNDEF;
+		G->finish[i] = UNDEF;
 	}
 	G->order = n;
 	G->size = 0;
@@ -377,6 +377,25 @@ void BFS(Graph G, int s){
 	freeList(&L);
 }
 
+//void DFS(Graph G, List S) runs DFS algorithm on a graph
+//pre: length(S) == getOrder(G)
+//This function will need a Visit() function to perform recursion
+
+void DFS(Graph G, List S){
+	if(G == NULL){
+		printf("Graph Error: DFS() on a NULL Graph");
+		exit(EXIT_FAILURE);
+	}
+	if(length(S) != getOrder(G)){
+		printf("Graph Error: DFS() length(S) != getOrder(G)");
+		exit(EXIT_FAILURE);
+	}
+	//mark each vertex of G as white color and have a NIL parent
+	for(int i = 1; i < getOrder(G) + 1; i += 1){
+		G->color[i] = 0;
+		G->parent[i] = NIL;
+	}
+}
 void printGraph(FILE *out, Graph G){
 	for(int i = 1; i < getOrder(G) + 1; i +=1){
 		fprintf(out, "%d: ", i);
