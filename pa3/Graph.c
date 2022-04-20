@@ -13,10 +13,10 @@ typedef struct GraphObj{
 	List *listArr;
 	int *color;
 	int *parent;
-	int *distance;
+	//int *distance;
 	int order;
 	int size;
-	int source;
+	//int source;
 	int *discover;
 	int *finish;
 }GraphObj;
@@ -27,20 +27,20 @@ Graph newGraph(int n){
 	G->listArr = malloc(sizeof(List) * (n + 1));
 	G->color = malloc(sizeof(int) * (n + 1));
 	G->parent = malloc(sizeof(int) * (n + 1));
-	G->distance = malloc(sizeof(int) * (n + 1));
+	//G->distance = malloc(sizeof(int) * (n + 1));
 	G->discover = malloc(sizeof(int) * (n + 1));
 	G->finish = malloc(sizeof(int) * (n + 1));
 	for(int i = 1; i < n+1; i += 1){
 		G->listArr[i] = newList();
 		G->color[i] = NIL;
 		G->parent[i] = NIL;
-		G->distance[i] = NIL;
+		//G->distance[i] = NIL;
 		G->discover[i] = UNDEF;
 		G->finish[i] = UNDEF;
 	}
 	G->order = n;
 	G->size = 0;
-	G->source = NIL;
+	//G->source = NIL;
 	return G;
 }
 
@@ -56,7 +56,7 @@ void freeGraph(Graph *pG){
 		free((*pG)->discover);
 		free((*pG)->finish);
 		free((*pG)->parent);
-		free((*pG)->distance);
+		//free((*pG)->distance);
 		free(*pG);
 		*pG = NULL;
 	}
@@ -79,7 +79,7 @@ int getSize(Graph G){
 	}
 	return G->size;
 }
-
+/*
 int getSource(Graph G){
 	if(G == NULL){
 		printf("Graph Error: getSource() on a NULL Graph");
@@ -87,7 +87,7 @@ int getSource(Graph G){
 	}
 	return G->source; //source is initialized as NIL
 }
-
+*/
 //u is the vertex to get the parent for
 //vertex u is parent[u]
 //each vertex parent initialized as NIL
@@ -102,7 +102,7 @@ int getParent(Graph G, int u){
 	}
 	return G->parent[u];
 }
-
+/*
 int getDist(Graph G, int u){
 	if(G == NULL){
 		printf("Graph Error: getDist() on a NULL Graph");
@@ -117,6 +117,8 @@ int getDist(Graph G, int u){
 	}
 	return G->distance[u];
 }
+*/
+/*
 void getPath(List L, Graph G, int u){
 	if(G == NULL){
 		printf("Graph Error: getPath() on a NULL Graph");
@@ -144,15 +146,16 @@ void getPath(List L, Graph G, int u){
 		getPath(L, G, getParent(G, u));
 		append(L, u);
 	}
-	/*
+	
 	int curr = u;
 	while(curr != G->source){
 		append(L, curr);
 		curr = getParent(G, curr);
 	}
 	append(L, curr);
-	*/
+	
 }
+*/
 
 //getDiscover(Graph G, int u) return the value for the discovery time of the vertex u
 int getDiscover(Graph G, int u){
@@ -331,6 +334,7 @@ void addArc(Graph G, int u, int v){
 //BFS(Graph G, int s) s = source, sets source, color, distance, and parent parameters of
 //each vertex to corresponding values
 //color: 0 = white, 1 = gray, 2 = black
+/*
 void BFS(Graph G, int s){
 	if(G == NULL){
 		printf("Graph Error: BFS() on a NULL Graph");
@@ -376,7 +380,7 @@ void BFS(Graph G, int s){
 	}
 	freeList(&L);
 }
-
+*/
 //void DFS(Graph G, List S) runs DFS algorithm on a graph
 //pre: length(S) == getOrder(G)
 //This function will need a Visit() function to perform recursion
@@ -395,6 +399,18 @@ void DFS(Graph G, List S){
 		G->color[i] = 0;
 		G->parent[i] = NIL;
 	}
+	int time = 0;
+	for(int i = 1; i < getOrder(G) + 1; i += 1){
+		if(G->color[i] == white){
+			Visit(G, i, &time, S);
+			//after finishing the vertex, push it onto the stack in visit()
+		}
+	}
+}
+
+void Visit(Graph G, int x, int *time, List S){
+	//after finishing a vertex, append it to the stack
+	
 }
 void printGraph(FILE *out, Graph G){
 	for(int i = 1; i < getOrder(G) + 1; i +=1){
