@@ -410,7 +410,10 @@ void DFS(Graph G, List S){
 
 void Visit(Graph G, int x, int *time, List S){
 	//after finishing a vertex, append it to the stack
-	
+	&time += 1;
+	G->discover[x] = *time;
+	G->color[x] = 1;
+	//for all y in adj[x]
 }
 void printGraph(FILE *out, Graph G){
 	for(int i = 1; i < getOrder(G) + 1; i +=1){
