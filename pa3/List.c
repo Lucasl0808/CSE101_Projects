@@ -212,8 +212,9 @@ void moveFront(List L){
 		exit(EXIT_FAILURE);
 	}
 	if(length(L) <= 0){
-		printf("List Error: moveFront() on a List of length 0");
-		exit(EXIT_FAILURE);
+		return;
+		//printf("List Error: moveFront() on a List of length 0");
+		//exit(EXIT_FAILURE);
 	}
 	L->cursor = L->front;
 	L->index = 0;

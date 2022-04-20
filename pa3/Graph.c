@@ -400,20 +400,57 @@ void DFS(Graph G, List S){
 		G->parent[i] = NIL;
 	}
 	int time = 0;
+	for(int i = 1; i < getOrder(G) +1; i +=1){
+		int y = front(S);
+		if(G->color[y] == 0){
+			Visit(G, y, &time, S);
+		}
+		deleteFront(S);
+	}
+	//After DFS runs, List S will be the stack in decreasing finish times.
+	/*
+	int count = 1;
+	//traverses graph in order of the List S
+	moveFront(S);
+	while(index(S) >= 0 || count < getOrder(G) +1){
+		int y = get(S);
+		if(G->color[y] == 0){
+			Visit(G, y, &time, S);
+		}
+		moveNext(S);
+		count += 1;
+	}
+	*/
+
+	/*
 	for(int i = 1; i < getOrder(G) + 1; i += 1){
-		if(G->color[i] == white){
+		if(G->color[i] == 0){
 			Visit(G, i, &time, S);
 			//after finishing the vertex, push it onto the stack in visit()
 		}
 	}
+	*/
 }
 
 void Visit(Graph G, int x, int *time, List S){
 	//after finishing a vertex, append it to the stack
-	&time += 1;
+	*time += 1;
 	G->discover[x] = *time;
 	G->color[x] = 1;
 	//for all y in adj[x]
+	moveFront(G->listArr[x]);
+	while(index(G->listArr[x]) >= 0){
+		int y = get(G->listArr[x]);
+		if(G->color[y] == 0){
+			G->parent[y] = x;
+			Visit(Graph G, y, &time, S);
+		}
+		moveNext(G->listArr[x]);
+	}
+	G->color[x] = 2;
+	append(S, x);
+	*time += 1;
+	G->finish[x] = *time;
 }
 void printGraph(FILE *out, Graph G){
 	for(int i = 1; i < getOrder(G) + 1; i +=1){
