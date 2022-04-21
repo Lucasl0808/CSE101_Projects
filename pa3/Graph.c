@@ -469,6 +469,19 @@ Graph transpose(Graph G){
 	}
 	return T;
 }
+
+Graph copyGraph(Graph G){
+	Graph C = newGraph(getOrder(G));
+	for(int i = 1; i < getOrder(G) + 1; i += 1){
+		moveFront(G->listArr[i]);
+		while(index(G->listArr[i]) >= 0){
+			int y = get(G->listArr[i]);
+			addArc(C, i, y);
+			moveNext(G->listArr[i]);
+		}
+	}
+	return C;
+}
 void printGraph(FILE *out, Graph G){
 	for(int i = 1; i < getOrder(G) + 1; i +=1){
 		fprintf(out, "%d: ", i);

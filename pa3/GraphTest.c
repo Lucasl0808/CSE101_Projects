@@ -50,7 +50,10 @@ int main(void){
 	printf("finish time 1 = %d\n", getFinish(G, 1));
 	Graph T = transpose(G);
 	printGraph(stdout, T);
+	Graph C = copyGraph(G);
+	printGraph(stdout, C);
 	freeList(&L);
 	freeGraph(&G);
 	freeGraph(&T);
+	freeGraph(&C);
 }
