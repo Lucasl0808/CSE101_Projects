@@ -13,10 +13,8 @@ typedef struct GraphObj{
 	List *listArr;
 	int *color;
 	int *parent;
-	//int *distance;
 	int order;
 	int size;
-	//int source;
 	int *discover;
 	int *finish;
 }GraphObj;
@@ -27,20 +25,17 @@ Graph newGraph(int n){
 	G->listArr = malloc(sizeof(List) * (n + 1));
 	G->color = malloc(sizeof(int) * (n + 1));
 	G->parent = malloc(sizeof(int) * (n + 1));
-	//G->distance = malloc(sizeof(int) * (n + 1));
 	G->discover = malloc(sizeof(int) * (n + 1));
 	G->finish = malloc(sizeof(int) * (n + 1));
 	for(int i = 1; i < n+1; i += 1){
 		G->listArr[i] = newList();
 		G->color[i] = NIL;
 		G->parent[i] = NIL;
-		//G->distance[i] = NIL;
 		G->discover[i] = UNDEF;
 		G->finish[i] = UNDEF;
 	}
 	G->order = n;
 	G->size = 0;
-	//G->source = NIL;
 	return G;
 }
 
@@ -56,7 +51,6 @@ void freeGraph(Graph *pG){
 		free((*pG)->discover);
 		free((*pG)->finish);
 		free((*pG)->parent);
-		//free((*pG)->distance);
 		free(*pG);
 		*pG = NULL;
 	}
@@ -79,15 +73,6 @@ int getSize(Graph G){
 	}
 	return G->size;
 }
-/*
-int getSource(Graph G){
-	if(G == NULL){
-		printf("Graph Error: getSource() on a NULL Graph");
-		exit(EXIT_FAILURE);
-	}
-	return G->source; //source is initialized as NIL
-}
-*/
 //u is the vertex to get the parent for
 //vertex u is parent[u]
 //each vertex parent initialized as NIL
@@ -102,60 +87,6 @@ int getParent(Graph G, int u){
 	}
 	return G->parent[u];
 }
-/*
-int getDist(Graph G, int u){
-	if(G == NULL){
-		printf("Graph Error: getDist() on a NULL Graph");
-		exit(EXIT_FAILURE);
-	}
-	if(u < 1 || u > getOrder(G)){
-		printf("Graph Error: getDist() u value is invalid");
-		exit(EXIT_FAILURE);
-	}
-	if(getSource(G) == NIL){
-		return INF;
-	}
-	return G->distance[u];
-}
-*/
-/*
-void getPath(List L, Graph G, int u){
-	if(G == NULL){
-		printf("Graph Error: getPath() on a NULL Graph");
-		exit(EXIT_FAILURE);
-	}
-	if(u < 1 || u > getOrder(G)){
-		printf("Graph Error: getPath() u value is invalid");
-		exit(EXIT_FAILURE);
-	}
-	if(getSource(G) == NIL){
-		printf("Graph Error: getPath() source is NIL");
-		exit(EXIT_FAILURE);
-	}
-	if(getDist(G, u) == INF){
-		append(L, NIL);
-		return;
-	}
-	if(u == G->source){
-		append(L, u);
-	}
-	else if(getParent(G, u) == NIL){
-		printf("not reachable from source %d\n", G->source);
-	}
-	else{
-		getPath(L, G, getParent(G, u));
-		append(L, u);
-	}
-	
-	int curr = u;
-	while(curr != G->source){
-		append(L, curr);
-		curr = getParent(G, curr);
-	}
-	append(L, curr);
-	
-}
-*/
 
 //getDiscover(Graph G, int u) return the value for the discovery time of the vertex u
 int getDiscover(Graph G, int u){
@@ -223,57 +154,6 @@ void addEdge(Graph G, int u, int v){
 	addArc(G, u, v);
 	addArc(G, v, u);
 	G->size -= 1;
-	//append/prepend/insertBefore/insertAfter to have sorted listArr
-	/*
-	if(length(G->listArr[u]) == 0){
-		append(G->listArr[u], v);
-	}
-	else{
-		//if length of adj list of u is not empty
-		moveFront(G->listArr[u]);
-		if(v <= front(G->listArr[u])){
-			prepend(G->listArr[u], v);
-		}
-		else{
-			while(index(G->listArr[u]) >= 0){
-				if(v <= get(G->listArr[u])){
-					insertBefore(G->listArr[u], v);
-					break;
-				}
-				moveNext(G->listArr[u]);
-			}
-			//if index falls off and is not inserted in the middle somewhere
-			if(index(G->listArr[u]) == -1){
-				append(G->listArr[u], v);
-			}
-		}
-	}
-	
-	if(length(G->listArr[v]) == 0){
-		append(G->listArr[v], u);
-	}
-	else{
-		//if length of adj list of v is not empty
-		moveFront(G->listArr[v]);
-		if(u <= front(G->listArr[v])){
-			prepend(G->listArr[v], u);
-		}
-		else{
-			while(index(G->listArr[v]) >= 0){
-				if(u <= get(G->listArr[v])){
-					insertBefore(G->listArr[v], u);
-					break;
-				}
-				moveNext(G->listArr[v]);
-		}
-			if(index(G->listArr[v]) == -1){
-				append(G->listArr[v], u);
-			}
-		}
-	}
-	//increment size variable after adding the edge to the graph
-	G->size += 1;
-	*/
 }
 
 void addArc(Graph G, int u, int v){
@@ -320,82 +200,9 @@ void addArc(Graph G, int u, int v){
 			}
 		}
 	}
-	/*
-	if(length(G->listArr[v]) == 0){
-		append(G->listArr[v], u);
-	}
-	else{
-		moveFront(G->listArr[v]);
-		if(u <= front(G->listArr[v])){
-			prepend(G->listArr[v], u);
-		}
-		else{
-			while(index(G->listArr[v]) >= 0){
-				if(u <= get(G->listArr[v])){
-					insertBefore(G->listArr[v], u);
-					break;
-				}
-				moveNext(G->listArr[v]);
-			}
-			if(index(G->listArr[v]) == -1){
-				append(G->listArr[v], u);
-			}
-		}
-	}
-	*/
 	G->size += 1;
 }
 
-//BFS(Graph G, int s) s = source, sets source, color, distance, and parent parameters of
-//each vertex to corresponding values
-//color: 0 = white, 1 = gray, 2 = black
-/*
-void BFS(Graph G, int s){
-	if(G == NULL){
-		printf("Graph Error: BFS() on a NULL Graph");
-		exit(EXIT_FAILURE);
-	}
-	if(s <= 0 || s > getOrder(G)){
-		printf("Graph Error: BFS() on an invalid source");
-		exit(EXIT_FAILURE);
-	}
-	for(int i = 1; i < getOrder(G) +1; i += 1){
-		if(i == s){
-			continue;
-		}
-		G->color[i] = 0;
-		G->distance[i] = INF;
-		G->parent[i] = NIL;
-	}
-	G->color[s] = 1;
-	G->distance[s] = 0;
-	G->parent[s] = NIL;
-	G->source = s;
-	List L = newList();
-	append(L, s);
-	while(length(L) != 0){
-		//dequeue element = store front node in variable, deleteFront()
-		int x = front(L);
-		deleteFront(L);
-		if(length(G->listArr[x]) == 0){
-			break;
-		}
-		moveFront(G->listArr[x]);
-		while(index(G->listArr[x]) >= 0){
-			int y = get(G->listArr[x]);
-			if(G->color[y] == 0){
-				G->color[y] = 1;
-				G->distance[y] = G->distance[x] + 1;
-				G->parent[y] = x;
-				append(L, y);
-			}
-			moveNext(G->listArr[x]);
-		}
-		G->color[x] = 2;
-	}
-	freeList(&L);
-}
-*/
 //void DFS(Graph G, List S) runs DFS algorithm on a graph
 //pre: length(S) == getOrder(G)
 //This function will need a Visit() function to perform recursion
@@ -423,29 +230,6 @@ void DFS(Graph G, List S){
 		}
 		deleteFront(S);
 	}
-	//After DFS runs, List S will be the stack in decreasing finish times.
-	/*
-	int count = 1;
-	//traverses graph in order of the List S
-	moveFront(S);
-	while(index(S) >= 0 || count < getOrder(G) +1){
-		int y = get(S);
-		if(G->color[y] == 0){
-			Visit(G, y, &time, S);
-		}
-		moveNext(S);
-		count += 1;
-	}
-	*/
-
-	/*
-	for(int i = 1; i < getOrder(G) + 1; i += 1){
-		if(G->color[i] == 0){
-			Visit(G, i, &time, S);
-			//after finishing the vertex, push it onto the stack in visit()
-		}
-	}
-	*/
 }
 
 void Visit(Graph G, int x, int *time, List S){
@@ -503,63 +287,3 @@ void printGraph(FILE *out, Graph G){
 		fprintf(out, "\n");
 	}
 }
-
-
-
-//IN FindPath.c - read file by using parameters in fscanf to read lines maybe
-/*
-int main(void){
-	Graph G = newGraph(6);
-	printf("getOrder() = %d\n", getOrder(G));
-	addEdge(G, 1, 2);
-	addEdge(G, 1, 6);
-	addEdge(G, 2, 5);
-	addEdge(G, 2, 3);
-	addEdge(G, 6, 5);
-	addEdge(G, 5, 4);
-	addEdge(G, 4, 3);
-	BFS(G, 1);
-	printf("getDist 4 = %d\n", getDist(G, 4));
-	printf("getSource = %d\n", getSource(G));
-	printf("getParent 4 = %d\n", getParent(G, 4));
-	printf("getSize() = %d\n", getSize(G));
-	int x = 4;
-	while(x != NIL){
-		printf("path = %d\n", x);
-		x = getParent(G, x);
-	}
-	List L = newList();
-	getPath(L, G, 4);
-	printList(stdout, L);
-	printf("\n");
-	printGraph(stdout, G);
-	
-	printf("\n");
-	Graph A = newGraph(100);
-	if(getSize(A) != 0){
-		return 1;
-	}
-	addArc(A, 54, 1);
-	addArc(A, 54, 2);
-	addArc(A, 54, 3);
-	addArc(A, 1, 54);
-	addArc(A, 1, 55);
-	if(getSize(A) != 5){
-		return 2;
-	}
-	BFS(A, 67);
-	if(getSize(A) != 5){
-		return 3;
-	}
-	addArc(A, 55, 1);
-	if(getSize(A) != 6){
-		return 4;
-	}
-	printf("passed tests");
-	//return 0;
-	freeList(&L);
-	freeGraph(&A);
-	freeGraph(&G);
-	return 0;
-}
-*/
