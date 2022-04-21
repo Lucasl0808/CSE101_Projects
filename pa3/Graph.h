@@ -33,8 +33,9 @@ void getPath(List L, Graph G, int u);
 void makeNull(Graph G);
 void addEdge(Graph G, int u, int v);
 void addArc(Graph G, int u, int v);
-void BFS(Graph G, int s);
+//void BFS(Graph G, int s);
 void DFS(Graph G, List S);
+void Visit(Graph G, int x, int *time, List S);
 //Other operations
 Graph transpose(Graph G);
 Graph copyGraph(Graph G);

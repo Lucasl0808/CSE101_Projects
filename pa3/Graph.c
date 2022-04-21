@@ -198,7 +198,8 @@ void makeNull(Graph G){
 	for(int i = 1; i < getOrder(G) + 1; i += 1){
 		clear(G->listArr[i]);
 		G->parent[i] = NIL;
-		G->distance[i] = NIL;
+		//G->distance[i] = NIL;
+
 	}
 	G->size = NIL;
 }
@@ -443,7 +444,7 @@ void Visit(Graph G, int x, int *time, List S){
 		int y = get(G->listArr[x]);
 		if(G->color[y] == 0){
 			G->parent[y] = x;
-			Visit(Graph G, y, &time, S);
+			Visit(G, y, time, S);
 		}
 		moveNext(G->listArr[x]);
 	}
