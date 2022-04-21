@@ -401,6 +401,7 @@ void DFS(Graph G, List S){
 		G->parent[i] = NIL;
 	}
 	int time = 0;
+	moveBack(S);
 	for(int i = 1; i < getOrder(G) +1; i +=1){
 		int y = front(S);
 		if(G->color[y] == 0){
@@ -449,7 +450,7 @@ void Visit(Graph G, int x, int *time, List S){
 		moveNext(G->listArr[x]);
 	}
 	G->color[x] = 2;
-	append(S, x);
+	insertAfter(S, x);
 	*time += 1;
 	G->finish[x] = *time;
 }
