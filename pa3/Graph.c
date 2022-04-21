@@ -454,6 +454,21 @@ void Visit(Graph G, int x, int *time, List S){
 	*time += 1;
 	G->finish[x] = *time;
 }
+
+//transpose(Graph G) returns a graph with all arcs reversed in G
+
+Graph transpose(Graph G){
+	Graph T = newGraph(getOrder(G));
+	for(int i = 1; i < getOrder(G) +1; i +=1){
+		moveFront(G->listArr[i]);
+		while(index(G->listArr[i]) >= 0){
+			int y = get(G->listArr[i]);
+			addArc(T, y, i);
+			moveNext(G->listArr[i]);
+		}
+	}
+	return T;
+}
 void printGraph(FILE *out, Graph G){
 	for(int i = 1; i < getOrder(G) + 1; i +=1){
 		fprintf(out, "%d: ", i);

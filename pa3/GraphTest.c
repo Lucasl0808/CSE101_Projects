@@ -44,4 +44,13 @@ int main(void){
 	DFS(G, L);
 	printList(stdout, L);
 	printf("\n");
+	printf("discover time 1 = %d\n", getDiscover(G, 1));
+	printf("discover time 8 = %d\n", getDiscover(G, 8));
+	printf("finish time 8 = %d\n", getFinish(G, 8));
+	printf("finish time 1 = %d\n", getFinish(G, 1));
+	Graph T = transpose(G);
+	printGraph(stdout, T);
+	freeList(&L);
+	freeGraph(&G);
+	freeGraph(&T);
 }
