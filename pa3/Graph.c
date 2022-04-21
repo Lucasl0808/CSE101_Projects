@@ -282,11 +282,25 @@ void addArc(Graph G, int u, int v){
 		exit(EXIT_FAILURE);
 	}
 	if(u < 1 || u > getOrder(G) || v < 1 || v > getOrder(G)){
-		printf("Graph Error: addArd() on a NULL Graph");
+		printf("Graph Error: addArc() on a NULL Graph");
 		exit(EXIT_FAILURE);
 	}
+	//if v is in the adj list of u, return nothing
 	if(length(G->listArr[u]) == 0){
 		append(G->listArr[u], v);
+		G->size += 1;
+		return;
+	}
+	moveFront(G->listArr[u]);
+	while(index(G->listArr[u]) >= 0){
+		int y = get(G->listArr[u]);
+		if(v == y){
+			return;
+		}
+		moveNext(G->listArr[u]);
+	}
+	if(length(G->listArr[u]) == 0){
+		return;
 	}
 	else{
 		moveFront(G->listArr[u]);
