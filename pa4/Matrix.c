@@ -81,6 +81,18 @@ int equals(Matrix A, Matrix B){
 	if(size(A) != size(B)){
 		return 0;
 	}
-	bool eq;
-	
+	for(int i = 1; i < size(A) + 1; i += 1){
+		List AL = A->Matrix[i];
+		List BL = B->Matrix[i];
+		moveFront(AL);
+		moveFront(BL);
+		while(index(AL) >= 0){
+			Entry AE = get(AL);
+			Entry BE = get(BL);
+			if( (AE->col != BE->col) || (AE->value != BE->value)){
+				return 0;
+			}
+		}
+	}
+	return 1;
 }
