@@ -13,7 +13,7 @@
 typedef struct NodeObj* Node;
 
 typedef struct NodeObj{
-	int value;
+	void* value;
 	Node next;
 	Node prev;
 }NodeObj;
@@ -26,7 +26,7 @@ typedef struct ListObj{
 	Node back;
 }ListObj;
 
-Node nodeCreate(int x){
+Node nodeCreate(void* x){
 	Node N = malloc(sizeof(NodeObj));
 	N->value = x;
 	N->next = NULL;
@@ -64,7 +64,7 @@ void freeList(List* pL){
 //Access Functions
 
 //length(List L) returns total number of elements in L.
-void* length(List L){
+int length(List L){
 	if(L == NULL){
 		printf("List Error: length() on a NULL List");
 		exit(EXIT_FAILURE);
@@ -74,7 +74,7 @@ void* length(List L){
 
 //index(List L) returns index of the cursor element if it is defined, otherwise it returns -1
 //inside constructor, cursor element is initialized as -1
-void* index(List L){
+int index(List L){
 	if(L == NULL){
 		printf("List Error: index on a NULL List");
 		exit(EXIT_FAILURE);
@@ -133,7 +133,7 @@ void* get(List L){
 		printf("List Error: get() on an index of less than 0");
 		exit(EXIT_FAILURE);
 	}
-	return(L->cursor->value);
+	return L->cursor->value;
 }
 
 //Manipulation procedures
@@ -164,7 +164,7 @@ void clear(List L){
 
 //set(List L, int x) overwrites cursor element with x
 //pre: length() > 0 and index() >= 0
-void set(List L, int x){
+void set(List L, void* x){
 	if(L == NULL){
 		printf("List Error: set() on a NULL List");
 		exit(EXIT_FAILURE);
@@ -247,7 +247,7 @@ void moveNext(List L){
 
 //prepend(List L, int x) inserts element before the front element in the list
 
-void prepend(List L, int x){
+void prepend(List L, void* x){
 	if(L == NULL){
 		printf("List Error: prepend() on a NULL List");
 		exit(EXIT_FAILURE);
@@ -274,13 +274,12 @@ void prepend(List L, int x){
 
 //append(List L, int x) adds an element to the back of the list 
 
-void append(List L, int x){
+void append(List L, void* x){
 	if(L == NULL){
 		printf("List Error: append() on a NULL List");
 		exit(EXIT_FAILURE);
 	}
 	Node N = nodeCreate(x);
-
 	if(length(L) == 0){
 		L->front = N;
 		L->back = N;
@@ -296,7 +295,7 @@ void append(List L, int x){
 //insertBefore(List L, int x) inserts a new element before the cursor node
 //pre: length(L) > 0 and index(L) >= 0
 
-void insertBefore(List L, int x){
+void insertBefore(List L, void* x){
 	if(L == NULL){
 		printf("List Error: insertBefore() on a NULL List");
 		exit(EXIT_FAILURE);
@@ -328,7 +327,7 @@ void insertBefore(List L, int x){
 //insertAfter(List L, int x) inserts a new element after the cursor node
 //pre: length(L) > 0 and index(L) >= 0
 
-void insertAfter(List L, int x){
+void insertAfter(List L, void* x){
 	if(L == NULL){
 		printf("List Error: insertAfter() on a NULL List");
 		exit(EXIT_FAILURE);
@@ -458,7 +457,7 @@ void printList(FILE* out, List L){
 	moveFront(L);
 	int x;
 	while(index(L) >= 0){
-		x = get(L);
+		x = *(int *)get(L);
 		fprintf(out, "%d ", x);
 		moveNext(L);
 	}
