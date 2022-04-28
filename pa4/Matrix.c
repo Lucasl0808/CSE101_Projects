@@ -30,7 +30,7 @@ Entry newEntry(int c, double v){
 void freeEntry(Entry *pE){
 	if(pE != NULL && *pE != NULL){
 		free(*pE);
-		*pE == NULL;
+		*pE = NULL;
 	}
 }
 
@@ -48,6 +48,15 @@ Matrix newMatrix(int n){
 void freeMatrix(Matrix *pM){
 	if(pM != NULL && *pM != NULL){
 		for(int i = 1; i > size(*pM) + 1; i += 1){
+			//free entries, then free lists
+			moveFront((*pM)->Matrix[i]);
+			while(index((*pM)->Matrix[i]) >= 0){
+				//for each item in the lists free the entry
+				Entry E = get((*pM)->Matrix[i]);
+				freeEntry(&E);
+				E = NULL;
+				moveNext((*pM)->Matrix[i]);
+			}
 			freeList(&(*pM)->Matrix[i]);
 		} 
 	}
@@ -96,3 +105,20 @@ int equals(Matrix A, Matrix B){
 	}
 	return 1;
 }
+
+void makeZero(Matrix M){
+	if(NNZ(M) == 0){
+		return;
+	}
+	for(int i = 1; i < size(M) + 1; i += 1){
+		moveFront(M->Matrix[i]);
+		while(index(M->Matrix[i]) >= 0){
+			Entry E = get(M->Matrix[i]);
+			freeEntry(&E);
+			E = NULL;
+			moveNext(M->Matrix[i]);
+		}
+	}
+}
+
+
