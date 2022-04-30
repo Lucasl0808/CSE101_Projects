@@ -235,18 +235,55 @@ void printMatrix(FILE* out, Matrix M){
 		fprintf(out, "\n");
 	}
 }
+/*
+Matrix transpose(Matrix A){
+	Matrix M = newMatrix(size(A));
+	for(int i = 1; i < size(A) + 1; i += 1){
+		List L = M->Matrix[i];
+		//switch values at i j
+	}
+}
+
+*/
+Matrix scalarMult(double x, Matrix A){
+	Matrix M = newMatrix(size(A));
+	for(int i = 1; i < size(A) + 1; i += 1){
+		List L = A->Matrix[i];
+		if(length(L) == 0){
+			continue;
+		}
+		moveFront(L);
+		while(index(L) >= 0){
+			Entry E = get(L);
+			double y = (E->value * x);
+			Entry N = newEntry(E->col, y);
+			append(M->Matrix[i], N);
+			M->elements += 1;
+			moveNext(L);
+		}
+	}
+	return M;
+}
+
 int main(void){
 	Matrix M = newMatrix(10);
 	Matrix R = newMatrix(10);
-	changeEntry(R, 1, 2, 4);
-	changeEntry(R, 1, 1, 3.5);
-	changeEntry(R, 1, 5, 10.5);
-	changeEntry(R, 1, 2, 0);
+	changeEntry(R, 1, 1, 1);
+	changeEntry(R, 1, 2, 2);
+	changeEntry(R, 1, 3, 3);
+	changeEntry(R, 2, 1, 4);
+	changeEntry(R, 2, 2, 5);
+	changeEntry(R, 2, 3, 6);
+	changeEntry(R, 3, 1, 7);
+	changeEntry(R, 3, 2, 8);
+	changeEntry(R, 3, 3, 9);
 	Matrix C = copy(R);
 	if(equals(C, R) == 1){
-		printf("Matrices are equal");
+		printf("Matrices are equal\n");
 	}
+	Matrix S = scalarMult(1.5, R);
 	printMatrix(stdout, R);
+	printMatrix(stdout, S);
 	freeMatrix(&C);
 	freeMatrix(&R);
 	freeMatrix(&M);
