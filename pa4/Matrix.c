@@ -262,7 +262,7 @@ Matrix transpose(Matrix A){
 
 Matrix scalarMult(double x, Matrix A){
 	if(A == NULL){
-		printf("Matrix Error: scalarMult() on a NULL Matrix");
+		printf("Matrix Error: scalarMult() on a NULL Matrix\n");
 		exit(EXIT_FAILURE);
 	}
 	Matrix M = newMatrix(size(A));
@@ -282,6 +282,63 @@ Matrix scalarMult(double x, Matrix A){
 		}
 	}
 	return M;
+}
+
+Matrix sum(Matrix A, Matrix B){
+	if(A == NULL || B == NULL){
+		printf("Matrix Error: sum() on a NULL Matrix A or B\n");
+		exit(EXIT_FAILURE);
+	}
+	if(size(A) != size(B)){
+		printf("Matrix Error: sum() matrices are of unequal size\n");
+		exit(EXIT_FAILURE);
+	}
+	Matrix M = newMatrix(size(A));
+	for(int i = 1; i < size(A) + 1; i += 1){
+		List AL = A->Matrix[i];
+		List BL = B->Matrix[i];
+		//if current list in Matrix A is empty 
+		if(length(AL) == 0){
+			if(length(BL) == 0){
+				continue;
+			}
+			else{
+				moveFront(BL);
+				while(index(BL) >= 0){
+					Entry E = get(BL);
+					Entry N = newEntry(E->col, E->value);
+					append(M->Matrix[i], N);
+					M->elements += 1;
+					moveNext(BL);
+				}
+			}
+		}
+		//if current list in Matrix B is empty
+		else if(length(BL) == 0){
+			if(length(AL) != 0){
+				moveFront(AL);
+				while(index(AL) >= 0){
+					Entry F = get(AL);
+					Entry P = newEntry(F->col, F->value);
+					append(M->Matrix[i], P);
+					M->elements +=1;
+					moveNext(AL);
+				}
+			}
+		}
+		//if both are NOT empty
+		else{
+			moveFront(AL);
+			moveFront(BL);
+			while(index(AL) >= 0){
+				Entry AE = get(AL);
+				Entry BE = get(BL);
+				if(AE->col > BE->col){
+					//left off here
+				}
+			}
+		}
+	}
 }
 
 int main(void){
