@@ -293,6 +293,7 @@ Matrix sum(Matrix A, Matrix B){
 		printf("Matrix Error: sum() matrices are of unequal size\n");
 		exit(EXIT_FAILURE);
 	}
+	
 	Matrix M = newMatrix(size(A));
 	for(int i = 1; i < size(A) + 1; i += 1){
 		List AL = A->Matrix[i];
@@ -330,20 +331,65 @@ Matrix sum(Matrix A, Matrix B){
 		else{
 			moveFront(AL);
 			moveFront(BL);
-			while(index(AL) >= 0){
+			while(index(AL) >= 0 && index(BL) >= 0){
+				if(index(AL) == -1){
+					while(index(BL) >= 0){
+						Entry BE = get(BL);
+						Entry new = newEntry(BE->col, BE->value);
+						append(M->Matrix[i], new);
+						M->elements += 1;
+						moveNext(BL);
+					}
+					break;
+				}
+				if(index(BL) == -1){
+					while(index(AL) >= 0){
+						Entry AE = get(AL);
+						Entry new = newEntry(AE->col, AE->value);
+						append(M->Matrix[i], new);
+						M->elements += 1;
+						moveNext(AL);
+					}
+					break;
+				}
 				Entry AE = get(AL);
 				Entry BE = get(BL);
-				if(AE->col > BE->col){
+				if(AE->col == BE->col){
 					//left off here
+					double v = (AE->value + BE->value);
+					Entry new = newEntry(AE->col, v);
+					append(M->Matrix[i], new);
+					M->elements += 1;
+					moveNext(AL);
+					moveNext(BL);
+				}
+				else if(AE->col < BE->col){
+					Entry new = newEntry(AE->col, AE->value);
+					append(M->Matrix[i], new);
+					M->elements += 1;
+					moveNext(AL);
+				}
+				else if(BE->col < AE->col){
+					Entry new = newEntry(BE->col, BE->value);
+					append(M->Matrix[i], new);
+					M->elements += 1;
+					moveNext(BL);
 				}
 			}
 		}
 	}
+	return M;
 }
 
 int main(void){
 	Matrix M = newMatrix(10);
 	Matrix R = newMatrix(10);
+	Matrix B = newMatrix(10);
+	changeEntry(B, 1, 1, 1);
+	changeEntry(B, 1, 3, 1);
+	changeEntry(B, 3, 1, 1);
+	changeEntry(B, 3, 2, 1);
+	changeEntry(B, 3, 3, 1);
 	changeEntry(R, 1, 1, 1);
 	changeEntry(R, 1, 2, 2);
 	changeEntry(R, 1, 3, 3);
@@ -359,12 +405,17 @@ int main(void){
 	}
 	Matrix S = scalarMult(1.5, R);
 	Matrix T = transpose(R);
+	Matrix Sum = sum(R, B);
 	printMatrix(stdout, R);
 	printMatrix(stdout, S);
 	printMatrix(stdout, T);
+	printMatrix(stdout, Sum);
+	freeMatrix(&Sum);
+	freeMatrix(&B);
 	freeMatrix(&S);
 	freeMatrix(&T);
 	freeMatrix(&C);
 	freeMatrix(&R);
 	freeMatrix(&M);
 }
+
