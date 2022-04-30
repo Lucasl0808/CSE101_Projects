@@ -101,6 +101,8 @@ int equals(Matrix A, Matrix B){
 			if( (AE->col != BE->col) || (AE->value != BE->value)){
 				return 0;
 			}
+			moveNext(AL);
+			moveNext(BL);
 		}
 	}
 	return 1;
@@ -135,8 +137,60 @@ void changeEntry(Matrix M, int i, int j, double x){
 		printf("Matrix Error: changeEntry() invalid j value (column)\n");
 		exit(EXIT_FAILURE);
 	}
+	
 	//M->Matrix[i] = Current list
 	//if x is 0, remove an entry, do with: if x = 0 ... else append entry
+	List L = M->Matrix[i];
+	if(x == 0.0){
+		if(length(L) == 0){
+			return;
+		}
+		else{
+			moveFront(L);
+			while(index(L) >= 0){
+				Entry E = get(L);
+				if(E->col == j){
+					freeEntry(&E);
+					delete(L);
+					M->elements -= 1;
+					return;
+				}
+				moveNext(L);
+			}
+			return;
+		}
+	}
+	else{
+		if(length(L) == 0){
+			Entry E = newEntry(j, x);
+			append(L, E);
+			M->elements += 1;
+			return;
+		}
+		else{
+			moveFront(L);
+			while(index(L) >= 0){
+				Entry E = get(L);
+				if(E->col == j){
+					E->value = x;
+					return;
+				}
+				if(j < E->col){
+					Entry R = newEntry(j, x);
+					insertBefore(L, R);
+					M->elements += 1;
+					return;
+				}
+				moveNext(L);
+			}
+			if(index(L) == -1){
+				Entry R = newEntry(j, x);
+				append(L, R);
+				M->elements += 1;
+				return;
+			}
+		}
+	}
 	//if column entry already exists, replace value, dont increment M->elements
 	//iterate through M->Matrix[i], if list is empty, append new entry
 	//otherwise, insert entry in sorted column order
@@ -153,21 +207,47 @@ Matrix copy(Matrix A){
 		moveFront(L);
 		while(index(L) >= 0){
 			Entry E = get(L);
-			//Entry N = newEntry(E->col, E->value);
-			//append(M->Matrix[i], N);
-			changeEntry(M, i, E->col, E->value);
+			Entry N = newEntry(E->col, E->value);
+			append(M->Matrix[i], N);
+			M->elements += 1;
+			//changeEntry(M, i, E->col, E->value);
 			moveNext(L);
 		}
 	}
 	return M;
 }
 
+void printMatrix(FILE* out, Matrix M){
+	fprintf(out, "Matrix size = %d\n", size(M));
+	fprintf(out, "NNZ Matrix = %d\n", NNZ(M));
+	for(int i = 1; i < size(M) + 1; i += 1){
+		List L = M->Matrix[i];
+		if(length(L) == 0){
+			continue;
+		}
+		moveFront(L);
+		fprintf(out, "%d: ", i);
+		while(index(L) >= 0){
+			Entry E = get(L);
+			fprintf(out, "(%d, %.1f) ", E->col, E->value);
+			moveNext(L);
+		}
+		fprintf(out, "\n");
+	}
+}
 int main(void){
 	Matrix M = newMatrix(10);
 	Matrix R = newMatrix(10);
-	if(equals(M, R) == 1){
+	changeEntry(R, 1, 2, 4);
+	changeEntry(R, 1, 1, 3.5);
+	changeEntry(R, 1, 5, 10.5);
+	changeEntry(R, 1, 2, 0);
+	Matrix C = copy(R);
+	if(equals(C, R) == 1){
 		printf("Matrices are equal");
 	}
+	printMatrix(stdout, R);
+	freeMatrix(&C);
 	freeMatrix(&R);
 	freeMatrix(&M);
 }
