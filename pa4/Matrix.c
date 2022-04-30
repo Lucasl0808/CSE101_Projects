@@ -198,6 +198,10 @@ void changeEntry(Matrix M, int i, int j, double x){
 }
 
 Matrix copy(Matrix A){
+	if(A == NULL){
+		printf("Matrix Error: copy() on a NULL Matrix");
+		exit(EXIT_FAILURE);
+	}
 	Matrix M = newMatrix(size(A));
 	for(int i = 1; i < size(A) +1; i += 1){
 		List L = A->Matrix[i];
@@ -235,17 +239,32 @@ void printMatrix(FILE* out, Matrix M){
 		fprintf(out, "\n");
 	}
 }
-/*
+
 Matrix transpose(Matrix A){
 	Matrix M = newMatrix(size(A));
 	for(int i = 1; i < size(A) + 1; i += 1){
-		List L = M->Matrix[i];
-		//switch values at i j
+		List L = A->Matrix[i];
+		if(length(L) == 0){
+			continue;
+		}
+		moveFront(L);
+		while(index(L) >= 0){
+			Entry E = get(L);
+			Entry N = newEntry(i, E->value);
+			append(M->Matrix[E->col], N);
+			M->elements += 1;
+			moveNext(L);
+		}
 	}
+	return M;
 }
 
-*/
+
 Matrix scalarMult(double x, Matrix A){
+	if(A == NULL){
+		printf("Matrix Error: scalarMult() on a NULL Matrix");
+		exit(EXIT_FAILURE);
+	}
 	Matrix M = newMatrix(size(A));
 	for(int i = 1; i < size(A) + 1; i += 1){
 		List L = A->Matrix[i];
@@ -282,8 +301,12 @@ int main(void){
 		printf("Matrices are equal\n");
 	}
 	Matrix S = scalarMult(1.5, R);
+	Matrix T = transpose(R);
 	printMatrix(stdout, R);
 	printMatrix(stdout, S);
+	printMatrix(stdout, T);
+	freeMatrix(&S);
+	freeMatrix(&T);
 	freeMatrix(&C);
 	freeMatrix(&R);
 	freeMatrix(&M);
