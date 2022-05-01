@@ -492,6 +492,7 @@ double vectorDot(List P, List Q){
 	if(length(P) == 0 || length(Q) == 0){
 		return 0.0;
 	}
+	int indexP = index(P);
 	double sum = 0.0;
 	//if columns dont match, moveNext on the lower one
 	moveFront(P);
@@ -513,6 +514,10 @@ double vectorDot(List P, List Q){
 			moveNext(Q);
 		}
 	}
+	moveFront(P);
+	for(int i = 0; i < indexP; i += 1){
+		moveNext(P);
+	}
 	return sum;
 }
 
@@ -525,8 +530,44 @@ Matrix product(Matrix A, Matrix B){
 		printf("Matrix Error: product() matrices are of unequal size\n");
 		exit(EXIT_FAILURE);
 	}
-	//Matrix BT = transpose(B);
-	return A;
+	Matrix M = newMatrix(size(A));
+	Matrix BT = transpose(B);
+	
+	for(int i = 1; i < size(A) + 1; i += 1){
+		for(int j = 1; j < size(A) + 1; j += 1){
+			List AL = A->Matrix[i];
+			moveFront(AL);
+			List BL = BT->Matrix[j];
+			double x = vectorDot(AL, BL);
+			Entry new = newEntry(j, x);
+			append(M->Matrix[i], new);
+			M->elements += 1;
+			moveNext(AL);
+			if(x == 0.0){
+				freeEntry(&new);
+				deleteBack(M->Matrix[i]);
+				M->elements -= 1;
+			}
+			/*
+			while(index(AL) >= 0){
+				List BL = BT->Matrix[j];
+				double x = vectorDot(AL, BL);
+				Entry new = newEntry(j, x);
+				append(M->Matrix[i], new);
+				M->elements += 1;
+				moveNext(AL);
+				if(x == 0.0){
+					freeEntry(&new);
+					deleteBack(M->Matrix[i]);
+					M->elements -=1;
+				}
+			}
+			*/
+		}
+	}
+	
+	freeMatrix(&BT);
+	return M;
 }
 
 int main(void){
@@ -552,17 +593,20 @@ int main(void){
 		printf("Matrices are equal\n");
 	}
 	Matrix S = scalarMult(1.5, R);
-	Matrix T = transpose(R);
+	Matrix T = transpose(B);
 	Matrix Sum = sum(R, B);
 	Matrix SelfDiff = diff(R, R);
 	Matrix Diff = diff(R, B);
+	Matrix Mult = product(R, B);
 	printMatrix(stdout, R);
 	printMatrix(stdout, S);
 	printMatrix(stdout, T);
 	printMatrix(stdout, Sum);
 	printMatrix(stdout, SelfDiff);
 	printMatrix(stdout, Diff);
-	printf("vector dot = %.1f\n", vectorDot(R->Matrix[1], B->Matrix[1]));
+	printMatrix(stdout, Mult);
+	printf("vector dot = %.1f\n", vectorDot(B->Matrix[1], T->Matrix[2]));
+	freeMatrix(&Mult);
 	freeMatrix(&SelfDiff);
 	freeMatrix(&Diff);
 	freeMatrix(&Sum);
