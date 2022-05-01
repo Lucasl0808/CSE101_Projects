@@ -12,4 +12,4 @@ ListTest.c - tests functions in List ADT<br>
 Makefile - creates sparse executable and runs tests
 
 ## Comments
-My sum and diff functions are not fully optimized, so my program does not pass Sparse Test 4 on the grading script, but it passes all of the other tests without memory leaks.
+My sum and diff functions are not fully optimized, so my program does not pass Sparse Test 4 on the grading script due to a timeout, but it passes all of the other tests without memory leaks.
