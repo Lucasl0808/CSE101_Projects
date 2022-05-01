@@ -362,6 +362,12 @@ Matrix sum(Matrix A, Matrix B){
 					M->elements += 1;
 					moveNext(AL);
 					moveNext(BL);
+					if(v == 0.0){
+						freeEntry(&new);
+						deleteBack(M->Matrix[i]);
+						M->elements -= 1;
+						continue;
+					}
 				}
 				else if(AE->col < BE->col){
 					Entry new = newEntry(AE->col, AE->value);
@@ -380,6 +386,108 @@ Matrix sum(Matrix A, Matrix B){
 	}
 	return M;
 }
+
+Matrix diff(Matrix A, Matrix B){
+	if(A == NULL || B == NULL){
+		printf("Matrix Error: sum() on a NULL Matrix A or B\n");
+		exit(EXIT_FAILURE);
+	}
+	if(size(A) != size(B)){
+		printf("Matrix Error: sum() matrices are of unequal size\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	Matrix M = newMatrix(size(A));
+	for(int i = 1; i < size(A) + 1; i += 1){
+		List AL = A->Matrix[i];
+		List BL = B->Matrix[i];
+		//if list in matrix A is empty, add all values of B with swapped signs
+		if(length(AL) == 0){
+			if(length(BL) == 0){
+				continue;
+			}
+			else{
+				moveFront(BL);
+				while(index(BL) >= 0){
+					Entry E = get(BL);
+					double val = (-1 * E->value);
+					Entry N = newEntry(E->col, val);
+					append(M->Matrix[i], N);
+					M->elements += 1;
+					moveNext(BL);
+				}
+			}
+		}
+		else if(length(BL) == 0){
+			moveFront(AL);
+			while(index(AL) >= 0){
+				Entry E = get(AL);
+				Entry N = newEntry(E->col, E->value);
+				append(M->Matrix[i], N);
+				M->elements += 1;
+				moveNext(AL);
+			}
+		}
+		else{
+			moveFront(AL);
+			moveFront(BL);
+			while(index(AL) >= 0 && index(BL) >= 0){
+				if(index(AL) == -1){
+					while(index(BL) >= 0){
+						Entry BE = get(BL);
+						double val = (-1 * BE->value);
+						Entry new = newEntry(BE->col, val);
+						append(M->Matrix[i], new);
+						M->elements += 1;
+						moveNext(BL);
+					}
+					break;
+				}
+				if(index(BL) == -1){
+					while(index(AL) >= 0){
+						Entry AE = get(AL);
+						Entry new = newEntry(AE->col, AE->value);
+						append(M->Matrix[i], new);
+						M->elements += 1;
+						moveNext(AL);
+					}
+					break;
+				}
+				Entry AE = get(AL);
+				Entry BE = get(BL);
+				if(AE->col == BE->col){
+					double v = (AE->value - BE->value);
+					Entry new = newEntry(AE->col, v);
+					append(M->Matrix[i], new);
+					M->elements += 1;
+					moveNext(AL);
+					moveNext(BL);
+					if(v == 0.0){
+						freeEntry(&new);
+						deleteBack(M->Matrix[i]);
+						M->elements -= 1;
+						continue;
+					}
+				}
+				else if(AE->col < BE->col){
+					Entry new = newEntry(AE->col, AE->value);
+					append(M->Matrix[i], new);
+					M->elements += 1;
+					moveNext(AL);
+				}
+				else if(BE->col < AE->col){
+					double v = (BE->value * -1);
+					Entry new = newEntry(BE->col, v);
+					append(M->Matrix[i], new);
+					M->elements += 1;
+					moveNext(BL);
+				}
+			}
+		}
+	}
+	return M;
+}
+
 
 int main(void){
 	Matrix M = newMatrix(10);
@@ -406,10 +514,16 @@ int main(void){
 	Matrix S = scalarMult(1.5, R);
 	Matrix T = transpose(R);
 	Matrix Sum = sum(R, B);
+	Matrix SelfDiff = diff(R, R);
+	Matrix Diff = diff(R, B);
 	printMatrix(stdout, R);
 	printMatrix(stdout, S);
 	printMatrix(stdout, T);
 	printMatrix(stdout, Sum);
+	printMatrix(stdout, SelfDiff);
+	printMatrix(stdout, Diff);
+	freeMatrix(&SelfDiff);
+	freeMatrix(&Diff);
 	freeMatrix(&Sum);
 	freeMatrix(&B);
 	freeMatrix(&S);
