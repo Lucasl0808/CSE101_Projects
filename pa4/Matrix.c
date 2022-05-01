@@ -1,3 +1,8 @@
+/* Lucas Lee
+ * luclee
+ * pa4
+ * CSE101-02 Spring 2022
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "List.h"
@@ -113,12 +118,17 @@ void makeZero(Matrix M){
 		return;
 	}
 	for(int i = 1; i < size(M) + 1; i += 1){
-		moveFront(M->Matrix[i]);
-		while(index(M->Matrix[i]) >= 0){
-			Entry E = get(M->Matrix[i]);
+		List L = M->Matrix[i];
+		if(length(L) == 0){
+			continue;
+		}
+		moveFront(L);
+		while(index(L) >= 0){
+			Entry E = get(L);
+			deleteFront(L);
 			freeEntry(&E);
 			E = NULL;
-			moveNext(M->Matrix[i]);
+			moveFront(L);
 		}
 	}
 	M->elements = 0;
@@ -222,8 +232,8 @@ Matrix copy(Matrix A){
 }
 
 void printMatrix(FILE* out, Matrix M){
-	fprintf(out, "Matrix size = %d\n", size(M));
-	fprintf(out, "NNZ Matrix = %d\n", NNZ(M));
+	//fprintf(out, "Matrix size = %d\n", size(M));
+	//fprintf(out, "NNZ Matrix = %d\n", NNZ(M));
 	for(int i = 1; i < size(M) + 1; i += 1){
 		List L = M->Matrix[i];
 		if(length(L) == 0){
@@ -279,6 +289,11 @@ Matrix scalarMult(double x, Matrix A){
 			append(M->Matrix[i], N);
 			M->elements += 1;
 			moveNext(L);
+			if(y == 0.0){
+				freeEntry(&N);
+				deleteBack(M->Matrix[i]);
+				M->elements -= 1;
+			}
 		}
 	}
 	return M;
@@ -293,11 +308,37 @@ Matrix sum(Matrix A, Matrix B){
 		printf("Matrix Error: sum() matrices are of unequal size\n");
 		exit(EXIT_FAILURE);
 	}
-	
+	//if adding itself
+	Matrix BC = copy(B);
 	Matrix M = newMatrix(size(A));
+	/*
+	if(equals(A, B) == 1){
+		for(int i = 1; i < size(A) + 1; i += 1){
+			List BL = BC->Matrix[i];
+			if(length(BL) == 0){
+				continue;
+			}
+			else{
+				moveFront(BL);
+				while(index(BL) >= 0){
+					Entry BE = get(BL);
+					double x = 2 * BE->value;
+					Entry N = newEntry(BE->col, x);
+					append(M->Matrix[i], N);
+					M->elements += 1;
+					moveNext(BL);
+				}
+			}
+		}
+		freeMatrix(&BC);
+		return M;
+	}
+	*/
+	//Matrix BC = copy(B);
+	//Matrix M = newMatrix(size(A));
 	for(int i = 1; i < size(A) + 1; i += 1){
 		List AL = A->Matrix[i];
-		List BL = B->Matrix[i];
+		List BL = BC->Matrix[i];
 		//if current list in Matrix A is empty 
 		if(length(AL) == 0){
 			if(length(BL) == 0){
@@ -312,6 +353,7 @@ Matrix sum(Matrix A, Matrix B){
 					M->elements += 1;
 					moveNext(BL);
 				}
+				continue;
 			}
 		}
 		//if current list in Matrix B is empty
@@ -325,13 +367,14 @@ Matrix sum(Matrix A, Matrix B){
 					M->elements +=1;
 					moveNext(AL);
 				}
+				continue;
 			}
 		}
 		//if both are NOT empty
 		else{
 			moveFront(AL);
 			moveFront(BL);
-			while(index(AL) >= 0 && index(BL) >= 0){
+			while(index(AL) >= 0 || index(BL) >= 0){
 				if(index(AL) == -1){
 					while(index(BL) >= 0){
 						Entry BE = get(BL);
@@ -368,6 +411,7 @@ Matrix sum(Matrix A, Matrix B){
 						M->elements -= 1;
 						continue;
 					}
+					
 				}
 				else if(AE->col < BE->col){
 					Entry new = newEntry(AE->col, AE->value);
@@ -384,6 +428,7 @@ Matrix sum(Matrix A, Matrix B){
 			}
 		}
 	}
+	freeMatrix(&BC);
 	return M;
 }
 
@@ -396,11 +441,11 @@ Matrix diff(Matrix A, Matrix B){
 		printf("Matrix Error: diff() matrices are of unequal size\n");
 		exit(EXIT_FAILURE);
 	}
-	
+	Matrix BC = copy(B);
 	Matrix M = newMatrix(size(A));
 	for(int i = 1; i < size(A) + 1; i += 1){
 		List AL = A->Matrix[i];
-		List BL = B->Matrix[i];
+		List BL = BC->Matrix[i];
 		//if list in matrix A is empty, add all values of B with swapped signs
 		if(length(AL) == 0){
 			if(length(BL) == 0){
@@ -431,7 +476,7 @@ Matrix diff(Matrix A, Matrix B){
 		else{
 			moveFront(AL);
 			moveFront(BL);
-			while(index(AL) >= 0 && index(BL) >= 0){
+			while(index(AL) >= 0 || index(BL) >= 0){
 				if(index(AL) == -1){
 					while(index(BL) >= 0){
 						Entry BE = get(BL);
@@ -485,6 +530,7 @@ Matrix diff(Matrix A, Matrix B){
 			}
 		}
 	}
+	freeMatrix(&BC);
 	return M;
 }
 
@@ -569,7 +615,7 @@ Matrix product(Matrix A, Matrix B){
 	freeMatrix(&BT);
 	return M;
 }
-
+/*
 int main(void){
 	Matrix M = newMatrix(10);
 	Matrix R = newMatrix(10);
@@ -617,4 +663,4 @@ int main(void){
 	freeMatrix(&R);
 	freeMatrix(&M);
 }
-
+*/
