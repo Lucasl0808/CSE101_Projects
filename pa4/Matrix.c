@@ -389,11 +389,11 @@ Matrix sum(Matrix A, Matrix B){
 
 Matrix diff(Matrix A, Matrix B){
 	if(A == NULL || B == NULL){
-		printf("Matrix Error: sum() on a NULL Matrix A or B\n");
+		printf("Matrix Error: diff() on a NULL Matrix A or B\n");
 		exit(EXIT_FAILURE);
 	}
 	if(size(A) != size(B)){
-		printf("Matrix Error: sum() matrices are of unequal size\n");
+		printf("Matrix Error: diff() matrices are of unequal size\n");
 		exit(EXIT_FAILURE);
 	}
 	
@@ -488,6 +488,46 @@ Matrix diff(Matrix A, Matrix B){
 	return M;
 }
 
+double vectorDot(List P, List Q){
+	if(length(P) == 0 || length(Q) == 0){
+		return 0.0;
+	}
+	double sum = 0.0;
+	//if columns dont match, moveNext on the lower one
+	moveFront(P);
+	moveFront(Q);
+	//if either P or Q falls off list, dot product ends (mult by 0 for the rest)
+	while(index(P) >= 0 && index(Q) >= 0){
+		Entry PE = get(P);
+		Entry QE = get(Q);
+		if(PE->col == QE->col){
+			sum += (PE->value * QE->value);
+			moveNext(P);
+			moveNext(Q);
+			continue;
+		}
+		else if(PE->col < QE->col){
+			moveNext(P);
+		}
+		else if(QE->col < PE->col){
+			moveNext(Q);
+		}
+	}
+	return sum;
+}
+
+Matrix product(Matrix A, Matrix B){
+	if(A == NULL || B == NULL){
+		printf("Matrix Error: product() on a NULL Matrix A or B\n");
+		exit(EXIT_FAILURE);
+	}
+	if(size(A) != size(B)){
+		printf("Matrix Error: product() matrices are of unequal size\n");
+		exit(EXIT_FAILURE);
+	}
+	//Matrix BT = transpose(B);
+	return A;
+}
 
 int main(void){
 	Matrix M = newMatrix(10);
@@ -522,6 +562,7 @@ int main(void){
 	printMatrix(stdout, Sum);
 	printMatrix(stdout, SelfDiff);
 	printMatrix(stdout, Diff);
+	printf("vector dot = %.1f\n", vectorDot(R->Matrix[1], B->Matrix[1]));
 	freeMatrix(&SelfDiff);
 	freeMatrix(&Diff);
 	freeMatrix(&Sum);
