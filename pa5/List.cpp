@@ -67,14 +67,14 @@ int List::position() const{
 
 ListElement List::peekNext() const{
 	if(pos_cursor >= num_elements){
-		throw std::length_error("List: peekNext(): cursor at end of List");
+		throw std::range_error("List: peekNext(): cursor at end of List");
 	}
 	return(afterCursor->data);
 }
 
 ListElement List::peekPrev() const{
 	if(pos_cursor <= 0){
-		throw std::length_error("List: peekPrev(): cursor at beginning of List");
+		throw std::range_error("List: peekPrev(): cursor at beginning of List");
 	}
 	return(beforeCursor->data);
 }
