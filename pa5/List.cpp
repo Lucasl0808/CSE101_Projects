@@ -94,3 +94,14 @@ void List::moveBack(){
 	beforeCursor = backDummy->prev;
 }
 
+ListElement List::moveNext(){
+	if(pos_cursor >= num_elements){
+		throw std::range_error("List: moveNext(): cursor is at end of List");
+	}
+	pos_cursor += 1;
+	beforeCursor = afterCursor;
+	afterCursor = afterCursor->next;
+	return(beforeCursor->data);
+}
+
+
