@@ -79,4 +79,18 @@ ListElement List::peekPrev() const{
 	return(beforeCursor->data);
 }
 
+//clear() here
+
+
+void List::moveFront(){
+	pos_cursor = 0;
+	beforeCursor = frontDummy;
+	afterCursor = frontDummy->next;
+}
+
+void List::moveBack(){
+	pos_cursor = num_elements;
+	afterCursor = backDummy;
+	beforeCursor = backDummy->prev;
+}
 
