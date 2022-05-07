@@ -79,8 +79,15 @@ ListElement List::peekPrev() const{
 	return(beforeCursor->data);
 }
 
-//clear() here
-
+void List::clear(){
+	if(num_elements == 0){
+		return;
+	}
+	moveFront();
+	while(frontDummy->next != backDummy){
+		eraseAfter();
+	}
+}
 
 void List::moveFront(){
 	pos_cursor = 0;
@@ -104,4 +111,33 @@ ListElement List::moveNext(){
 	return(beforeCursor->data);
 }
 
+ListElement List::movePrev(){
+	if(pos_cursor <= 0){
+		throw std::range_error("List: movePrev(): cursor is at beginning of List");
+	}
+	pos_cursor -= 1;
+	afterCursor = beforeCursor;
+	beforeCursor = beforeCursor->prev;
+	return(afterCursor->data);
+}
 
+void List::insertAfter(ListElement x){
+	Node* N = new Node(x);
+	if(num_elements == 0){
+		frontDummy->next = N;
+		backDummy->prev = N;
+		N->prev = frontDummy;
+		N->next = backDummy;
+		num_elements += 1;
+		return;
+	}
+	else{
+		beforeCursor->next = N;
+		afterCursor->prev = N;
+		N->prev = beforeCursor;
+		N->next = afterCursor;
+		afterCursor = N;
+		num_elements += 1;
+		return;
+	}
+}
