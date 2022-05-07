@@ -3,7 +3,7 @@
 #include<stdexcept>
 #include"List.h"
 
-List::Node:Node(ListElement x){
+List::Node::Node(ListElement x){
 	data = x;
 	next = nullptr;
 	prev = nullptr;
@@ -30,8 +30,8 @@ List::List(const List& L){
 	pos_cursor = 0;
 	num_elements = 0;
 	
-	Node* N = L.front;
-	while(N != nullptr){
+	Node* N = frontDummy->next;
+	while(N != backDummy){
 		this->insertBefore(N->data);
 		N = N->next;
 	}
@@ -128,6 +128,7 @@ void List::insertAfter(ListElement x){
 		backDummy->prev = N;
 		N->prev = frontDummy;
 		N->next = backDummy;
+		afterCursor = N;
 		num_elements += 1;
 		return;
 	}
@@ -137,6 +138,28 @@ void List::insertAfter(ListElement x){
 		N->prev = beforeCursor;
 		N->next = afterCursor;
 		afterCursor = N;
+		num_elements += 1;
+		return;
+	}
+}
+
+void List::insertBefore(ListElement x){
+	Node *N = new Node(x);
+	if(num_elements == 0){
+		frontDummy->next = N;
+		backDummy->prev = N;
+		N->prev = frontDummy;
+		N->next = backDummy;
+		beforeCursor = N;
+		num_elements += 1;
+		return;
+	}
+	else{
+		beforeCursor->next = N;
+		afterCursor->prev = N;
+		N->prev = beforeCursor;
+		N->next = afterCursor;
+		beforeCursor = N;
 		num_elements += 1;
 		return;
 	}
