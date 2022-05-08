@@ -228,3 +228,17 @@ void List::eraseBefore(){
 		beforeCursor = afterCursor->prev;
 	}
 }
+
+std::string List::to_string() const{
+	Node* N = nullptr;
+	std::string s = "";
+	
+	for(N = frontDummy->next; N != backDummy; N = N->next){
+		s += std::to_string(N->data)+" ";
+	}
+	return s;
+}
+
+std::ostream& operator<< (std::ostream& stream, const List& L){
+	return stream << L.List::to_string();
+}

@@ -7,7 +7,7 @@ using namespace std;
 
 int main(){
 	List L;
-	cout << endl;
+	//cout << endl;
 	L.insertAfter(2);
 	L.insertAfter(1);
 	cout << "List L = " << L << endl;
