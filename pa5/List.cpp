@@ -164,3 +164,67 @@ void List::insertBefore(ListElement x){
 		return;
 	}
 }
+
+void List::setAfter(ListElement x){
+	if(pos_cursor >= num_elements){
+		throw std::range_error("List: setAfter(): cursor is at end of List");
+	}
+	afterCursor->data = x;
+}
+
+void List::setBefore(ListElement x){
+	if(pos_cursor <= 0){
+		throw std::range_error("List: setBefore(): cursor is at beginnging of List");
+	}
+	beforeCursor->data = x;
+}
+
+void List::eraseAfter(){
+	if(pos_cursor >= num_elements){
+		throw std::range_error("List: eraseAfter(): cursor is at end of List");
+	}
+	if(num_elements == 1){
+		frontDummy->next = backDummy;
+		backDummy->prev = frontDummy;
+		num_elements -= 1;
+		afterCursor->prev = nullptr;
+		afterCursor->next = nullptr;
+		delete afterCursor;
+		afterCursor = backDummy;
+	}
+	else{
+		beforeCursor->next = afterCursor->next;
+		afterCursor->next->prev = beforeCursor;
+		afterCursor->next = nullptr;
+		afterCursor->prev = nullptr;
+		delete afterCursor;
+		afterCursor = beforeCursor->next;
+		num_elements -= 1;
+	}
+}
+
+void List::eraseBefore(){
+	if(pos_cursor <= 0){
+		throw std::range_error("List: eraseBefore(): cursor is at the beginning of List");
+	}
+	if(num_elements == 1){
+		frontDummy->next = backDummy;
+		backDummy->prev = frontDummy;
+		num_elements -=1;
+		beforeCursor->next = nullptr;
+		beforeCursor->prev = nullptr;
+		delete beforeCursor;
+		beforeCursor = frontDummy;
+		pos_cursor -=1;
+	}
+	else{
+		afterCursor->prev = beforeCursor->prev;
+		beforeCursor->prev->next = afterCursor;
+		beforeCursor->next = nullptr;
+		beforeCursor->prev = nullptr;
+		delete beforeCursor;
+		num_elements -=1;
+		pos_cursor -=1;
+		beforeCursor = afterCursor->prev;
+	}
+}
