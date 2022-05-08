@@ -229,6 +229,32 @@ void List::eraseBefore(){
 	}
 }
 
+int List::findNext(ListElement x){
+	Node* N = nullptr;
+	for(N = afterCursor; N != backDummy; N = N->next){
+		if(N->data == x){
+			moveNext();
+			return beforeCursor->data;
+		}
+		moveNext();
+	}
+	return -1;
+}
+
+int List::findPrev(ListElement x){
+	Node* N = nullptr;
+	for(N = beforeCursor; N != frontDummy; N = N->prev){
+		if(N->data == x){
+			movePrev();
+			return afterCursor->data;
+		}
+		movePrev();
+	}
+	return -1;
+}
+
+
+
 std::string List::to_string() const{
 	Node* N = nullptr;
 	std::string s = "";

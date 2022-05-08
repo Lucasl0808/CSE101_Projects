@@ -10,5 +10,17 @@ int main(){
 	//cout << endl;
 	L.insertAfter(2);
 	L.insertAfter(1);
+	L.moveNext();
+	L.moveNext();
+	L.insertAfter(4);
+	L.insertBefore(3);
+	L.insertAfter(4);
 	cout << "List L = " << L << endl;
+	cout << L.position() <<endl;
+	L.moveFront();
+	L.findNext(4);
+	cout << L.position() << endl;
+	L.moveBack();
+	L.findPrev(1);
+	cout << L.position() << endl;
 }
