@@ -23,4 +23,10 @@ int main(){
 	L.moveBack();
 	L.findPrev(1);
 	cout << L.position() << endl;
+	List Y;
+	Y.insertBefore(1);
+	Y.insertBefore(1);
+	Y.insertBefore(1);
+	List P = L.concat(Y);
+	cout << "List P = " << P << endl;
 }

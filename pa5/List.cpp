@@ -253,7 +253,22 @@ int List::findPrev(ListElement x){
 	return -1;
 }
 
+//cleanup here
 
+List List::concat(const List& L) const{
+	List G;
+	Node* N = this->frontDummy->next;
+	Node* M = L.frontDummy->next;
+	while(N != this->backDummy){
+		G.insertBefore(N->data);
+		N = N->next;
+	}
+	while(M != L.backDummy){
+		G.insertBefore(M->data);
+		M = M->next;
+	}
+	return G;
+}
 
 std::string List::to_string() const{
 	Node* N = nullptr;
