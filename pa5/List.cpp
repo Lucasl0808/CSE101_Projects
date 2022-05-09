@@ -244,14 +244,17 @@ int List::findNext(ListElement x){
 }
 
 int List::findPrev(ListElement x){
+	
 	Node* N = nullptr;
 	for(N = beforeCursor; N != frontDummy; N = N->prev){
+		//movePrev();
 		if(N->data == x){
 			movePrev();
 			return pos_cursor;
 		}
 		movePrev();
 	}
+	
 	return -1;
 }
 
@@ -266,12 +269,21 @@ void List::cleanup(){
 		index = N_iter;
 		for(P = N->next; P != backDummy; P = P->next){
 			if(N->data == P->data){
+				if(index <= pos_cursor){
+					pos_cursor -=1;
+				}
+				if(P == beforeCursor){
+					beforeCursor = P->prev;
+				}
+				if(P == afterCursor){
+					afterCursor = P->next;
+				}
 				P->prev->next = P->next;
 				P->next->prev = P->prev;
 				delete P;
-				if(index <= pos_cursor){
-					movePrev();
-				}
+				//if(index <= pos_cursor){
+				//	movePrev();
+				//}
 				num_elements -=1;
 			}
 			index += 1;

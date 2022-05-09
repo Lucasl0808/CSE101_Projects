@@ -61,21 +61,4 @@ int main(){
 	F.movePrev();
 	F.eraseAfter();
 	cout << "List F = " << F << endl;
-	List A;
-	A.insertBefore(34);
-	A.insertBefore(77);
-	A.insertBefore(77);
-	A.insertBefore(1);
-	A.insertBefore(34);
-	A.insertBefore(1);
-	A.insertBefore(55);
-	A.insertBefore(77);
-	cout << "List A = " << A << endl;
-	cout << A.position() << endl;
-	A.moveBack();
-	A.cleanup();
-	cout << "List A = " << A << endl;
-	cout << A.position() << endl;
-	cout << A.peekPrev() << endl;
-	cout << A.findPrev(1) << endl;
 }
