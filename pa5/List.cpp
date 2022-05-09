@@ -280,6 +280,22 @@ std::string List::to_string() const{
 	return s;
 }
 
+bool List::equals(const List& R) const{
+	bool eq = false;
+	Node *N = nullptr;
+	Node *M = nullptr;
+	
+	eq = (this->num_elements == R.num_elements);
+	N = this->frontDummy->next;
+	M = R.frontDummy->next;
+	while(eq && N != backDummy){
+		eq = (N->data == M->data);
+		N = N->next;
+		M = M->next;
+	}
+	return eq;
+}
+
 std::ostream& operator<< (std::ostream& stream, const List& L){
 	return stream << L.List::to_string();
 }

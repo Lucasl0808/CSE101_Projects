@@ -28,5 +28,13 @@ int main(){
 	Y.insertBefore(1);
 	Y.insertBefore(1);
 	List P = L.concat(Y);
+	List M;
+	M.insertBefore(1);
+	M.insertBefore(2);
+	M.insertBefore(3);
+	M.insertBefore(4);
+	M.insertBefore(4);
+	cout << "List M = " << M << endl;
 	cout << "List P = " << P << endl;
+	cout << L.equals(M) << endl;
 }
