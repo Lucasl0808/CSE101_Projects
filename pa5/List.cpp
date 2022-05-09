@@ -30,8 +30,8 @@ List::List(const List& L){
 	pos_cursor = 0;
 	num_elements = 0;
 	
-	Node* N = frontDummy->next;
-	while(N != backDummy){
+	Node* N = L.frontDummy->next;
+	while(N != L.backDummy){
 		this->insertBefore(N->data);
 		N = N->next;
 	}
@@ -298,4 +298,22 @@ bool List::equals(const List& R) const{
 
 std::ostream& operator<< (std::ostream& stream, const List& L){
 	return stream << L.List::to_string();
+}
+
+bool operator== (const List& A, const List& B){
+	return A.List::equals(B);
+}
+
+List& List::operator=(const List& L){
+	if(this != &L){
+		List temp = L;
+		
+		std::swap(frontDummy, temp.frontDummy);
+		std::swap(backDummy, temp.backDummy);
+		std::swap(beforeCursor, temp.beforeCursor);
+		std::swap(afterCursor, temp.afterCursor);
+		std::swap(pos_cursor, temp.pos_cursor);
+		std::swap(num_elements, temp.num_elements);
+	}
+	return *this;
 }

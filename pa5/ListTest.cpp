@@ -36,5 +36,7 @@ int main(){
 	M.insertBefore(4);
 	cout << "List M = " << M << endl;
 	cout << "List P = " << P << endl;
-	cout << L.equals(M) << endl;
+	cout << "L == M " << (L==M?"true":"false") << endl;
+	List G = L;
+	cout << "List G = " << G << endl;
 }
