@@ -152,6 +152,7 @@ void List::insertBefore(ListElement x){
 		N->next = backDummy;
 		beforeCursor = N;
 		num_elements += 1;
+		pos_cursor += 1;
 		return;
 	}
 	else{
@@ -161,6 +162,7 @@ void List::insertBefore(ListElement x){
 		N->next = afterCursor;
 		beforeCursor = N;
 		num_elements += 1;
+		pos_cursor += 1;
 		return;
 	}
 }
@@ -234,7 +236,7 @@ int List::findNext(ListElement x){
 	for(N = afterCursor; N != backDummy; N = N->next){
 		if(N->data == x){
 			moveNext();
-			return beforeCursor->data;
+			return pos_cursor;
 		}
 		moveNext();
 	}
@@ -246,7 +248,7 @@ int List::findPrev(ListElement x){
 	for(N = beforeCursor; N != frontDummy; N = N->prev){
 		if(N->data == x){
 			movePrev();
-			return afterCursor->data;
+			return pos_cursor;
 		}
 		movePrev();
 	}
@@ -254,6 +256,28 @@ int List::findPrev(ListElement x){
 }
 
 //cleanup here
+void List::cleanup(){
+	Node* N = nullptr;
+	int index = 0;
+	int N_iter = 0;
+	for(N = frontDummy->next; N != backDummy; N = N->next){
+		Node* P = nullptr;
+		N_iter += 1;
+		index = N_iter;
+		for(P = N->next; P != backDummy; P = P->next){
+			if(N->data == P->data){
+				P->prev->next = P->next;
+				P->next->prev = P->prev;
+				delete P;
+				if(index <= pos_cursor){
+					movePrev();
+				}
+				num_elements -=1;
+			}
+			index += 1;
+		}
+	}
+}
 
 List List::concat(const List& L) const{
 	List G;
@@ -267,6 +291,7 @@ List List::concat(const List& L) const{
 		G.insertBefore(M->data);
 		M = M->next;
 	}
+	G.moveFront();
 	return G;
 }
 
