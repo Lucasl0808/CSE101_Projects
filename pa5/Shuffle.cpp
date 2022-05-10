@@ -1,3 +1,9 @@
+/* Lucas Lee
+ * luclee
+ * pa5
+ * CSE101-02 Spring 2022
+ */
+
 #include<iostream>
 #include<string>
 #include<stdexcept>
@@ -42,41 +48,6 @@ void shuffle(List& D){
 			L.moveNext();
 		}
 	}
-	/*
-	Node* N = D.frontDummy->next;
-	if(D.length() % 2 == 0){
-		for(int i = 0; i < D.length() / 2; i += 1){
-			L.insertBefore(N->data);
-			N = N->next;
-		}
-		for(int j = 0; j < D.length() /2 ; j += 1){
-			R.insertBefore(N->data);
-			N = N->next;
-		}
-	}
-	else{
-		for(int i = 0; i < D.length() / 2; i += 1){
-			L.insertBefore(N->data);
-			N = N->next;
-		}
-		for(int j = 0; j < (D.length() / 2) +1; j += 1){
-			R.insertBefore(N->data);
-			N = N->next;
-		}
-	}
-	D.clear();
-	int added_elements = 0;
-	while(added_elements != D.num_elements){
-		D.insertBefore(R.afterCursor->data);
-		added_elements += 1;
-		if(added_elements == D.num_elements){
-			break;
-		}
-		D.insertBefore(L.afterCursor->data);
-		L.moveNext();
-		R.moveNext();
-	}
-	*/
 }
 
 int main(int argc, char *argv[]){
