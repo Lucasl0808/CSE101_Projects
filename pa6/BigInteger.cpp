@@ -45,11 +45,47 @@ BigInteger::BigInteger(const BigInteger& N){
 	
 	//iterate through N and insert all List elements in N.digits into this
 	N.digits.moveFront();
-	ListElement A = N.digits.peekNext();
+	long A = N.digits.peekNext();
 	for(int P = 0; P < N.digits.length(); P += 1){
 		this->digits.insertBefore(A);
 		N.digits.moveNext();
 		A = N.digits.peekNext();
+	}
+}
+
+int BigInteger::sign() const{
+	return signum;
+}
+
+int BigInteger::compare(const BigInteger& N) const{
+	N.digits.moveFront();
+	this->digits.moveFront();
+	long B = N.digits.peekNext();
+	long A = this->digits.peekNext();
+	while(A != N.digits.backDummy || B != this->digits.backDummy){
+		if(A < B){
+			return 1;
+		}
+		if(B < A){
+			return -1;
+		}
+		N.digits.moveNext();
+		B = N.digits.peekNext();
+		this->digits.moveNext();
+		A = N.digits.peekNext();
+	}
+	return 0;
+}
+
+void BigInteger::makeZero(){
+	if(digits.length() == 0){
+		return;
+	}
+	digits.moveFront();
+	long A = digits.peekNext();
+	while(A != digits.backDummy){
+		digits.eraseAfter();
+		A = digits.peekNext();
 	}
 }
 
