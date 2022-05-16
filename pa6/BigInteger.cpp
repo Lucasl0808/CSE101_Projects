@@ -77,7 +77,7 @@ int BigInteger::compare(const BigInteger& N) const{
 	this->digits.moveFront();
 	long B = N.digits.peekNext();
 	long A = this->digits.peekNext();
-	while(A != N.digits.backDummy || B != this->digits.backDummy){
+	while(N.position()!= N.length() || this->digits.position() != this->digits.length()){
 		if(A < B){
 			return 1;
 		}
