@@ -1,8 +1,11 @@
 #include<iostream>
 #include<string>
 #include<stdexcept>
+#include<ctype.h>
 #include"List.h"
 
+#define power 9
+#define base 1000000000
 BigInteger::BigInteger(){
 	signum = 0;
 	digits = List L;
@@ -12,30 +15,40 @@ BigInteger::BigInteger(std::string s){
 	//s.substr(0, p) gets numbers from index 0 - p, then delete beginning part of the string to read next
 	//s.erase(0, p) deletes front p numbers from string
 	//use s.substr(0, 1) to read frontmost character in order to check sign
-	
+	if(s.length() == 0){
+		throw std::invalid_argument("BigInteger: string Constructor: empty string");
+	}
 	signum = 0;
 	digits = List L;
-	
-	std::string sub = s.substr(0,1);
-	if(sub == '-'){
+	for(int i = 0; i < s.length(); i += 1){
+		if(!(std::isdigit(s[i]))){
+			throw std::invalid_argument("BigInteger: string Constructor: non-numeric string");
+		}
+	}
+	//std::string sub = s.substr(0,1);
+	if(s[0] == '-'){
 		signum = -1;
 		s.erase(0,1);
 	}
-	if(sub == '+'){
+	if(s[0] == '+'){
 		signum = 1;
 		s.erase(0,1);
 	}
-	char* end;
-	long int n;
-	digits.moveFront();
-	while(s.length() > 0){
-		std::string q = s.substr(0, 1);
-		if(q.length() != 1){
-			throw std::invalid_argument("Numerical string could not be parsed");
-		}
-		n = strtol(q, &end, 10);
-		digits.insertBefore(n);
+	while(s[0] == '0'){
 		s.erase(0,1);
+	}
+	char* end;
+	long n;
+	while(s.length() >= power){
+		std::string q = s.substr(0, power);
+		
+		n = strtol(q, &end, base);
+		digits.insertBefore(n);
+		s.erase(0,power);
+	}
+	if(s.length() != 0){
+		n = strtol(s, &end, base);
+		digits.insertBefore(n);
 	}
 }
 
@@ -86,6 +99,33 @@ void BigInteger::makeZero(){
 	while(A != digits.backDummy){
 		digits.eraseAfter();
 		A = digits.peekNext();
+	}
+}
+
+void BigInteger::negate(){
+	digits.moveFront();
+	long A = digits.peekNext();
+	if(A == 0){
+		return;
+	}
+	if(signum == 0){
+		signum = -1;
+	}
+	else{
+		signum *= -1
+	}
+}
+
+//helper functions
+//negateList reverses all the signs of the List given 
+void negateList(List& L){
+	L.moveFront();
+	long A = L.peekNext();
+	while(A != L.backDummy){
+		long temp = (-1 * A);
+		L.setAfter(temp);
+		L.moveNext();
+		A = L.peekNext();
 	}
 }
 
