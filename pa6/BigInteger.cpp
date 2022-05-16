@@ -2,13 +2,15 @@
 #include<string>
 #include<stdexcept>
 #include<ctype.h>
+#include"BigInteger.h"
 #include"List.h"
 
 #define power 9
 #define base 1000000000
 BigInteger::BigInteger(){
 	signum = 0;
-	digits = List L;
+	//List L;
+	digits = List();
 }
 
 BigInteger::BigInteger(std::string s){
@@ -19,7 +21,7 @@ BigInteger::BigInteger(std::string s){
 		throw std::invalid_argument("BigInteger: string Constructor: empty string");
 	}
 	signum = 0;
-	digits = List L;
+	digits = List();
 	for(int i = 0; i < s.length(); i += 1){
 		if(!(std::isdigit(s[i]))){
 			throw std::invalid_argument("BigInteger: string Constructor: non-numeric string");
@@ -37,24 +39,24 @@ BigInteger::BigInteger(std::string s){
 	while(s[0] == '0'){
 		s.erase(0,1);
 	}
-	char* end;
-	long n;
+	//char* end;
+	long int n;
 	while(s.length() >= power){
 		std::string q = s.substr(0, power);
 		
-		n = strtol(q, &end, base);
+		n = stol(q, base);
 		digits.insertBefore(n);
 		s.erase(0,power);
 	}
 	if(s.length() != 0){
-		n = strtol(s, &end, base);
+		n = stol(s,base);
 		digits.insertBefore(n);
 	}
 }
 
 BigInteger::BigInteger(const BigInteger& N){
 	signum = 0;
-	digits = List L;
+	digits = List();
 	
 	//iterate through N and insert all List elements in N.digits into this
 	N.digits.moveFront();
@@ -112,7 +114,7 @@ void BigInteger::negate(){
 		signum = -1;
 	}
 	else{
-		signum *= -1
+		signum *= -1;
 	}
 }
 
@@ -129,4 +131,6 @@ void negateList(List& L){
 	}
 }
 
-
+int normalizeList(List& L){
+	
+}
