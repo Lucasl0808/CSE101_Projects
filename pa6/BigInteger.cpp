@@ -22,7 +22,7 @@ BigInteger::BigInteger(std::string s){
 	}
 	signum = 0;
 	digits = List();
-	for(int i = 0; i < s.length(); i += 1){
+	for(unsigned long i = 0; i < s.length(); i += 1){
 		if(!(std::isdigit(s[i]))){
 			throw std::invalid_argument("BigInteger: string Constructor: non-numeric string");
 		}
@@ -42,14 +42,13 @@ BigInteger::BigInteger(std::string s){
 	//char* end;
 	long int n;
 	while(s.length() >= power){
-		std::string q = s.substr(0, power);
-		
-		n = stol(q, base);
-		digits.insertBefore(n);
-		s.erase(0,power);
+		std::string q = s.substr(s.length()-power , power);	
+		n = stol(q);
+		digits.insertAfter(n);
+		s.erase(s.length() - power ,power);
 	}
 	if(s.length() != 0){
-		n = stol(s,base);
+		n = stol(s);
 		digits.insertBefore(n);
 	}
 }
@@ -59,12 +58,14 @@ BigInteger::BigInteger(const BigInteger& N){
 	digits = List();
 	
 	//iterate through N and insert all List elements in N.digits into this
-	N.digits.moveFront();
-	long A = N.digits.peekNext();
-	for(int P = 0; P < N.digits.length(); P += 1){
-		this->digits.insertBefore(A);
-		N.digits.moveNext();
-		A = N.digits.peekNext();
+	List Ndigits = N.digits;
+	List thisDigits = this->digits;
+	Ndigits.moveFront();
+	long A = Ndigits.peekNext();
+	for(int P = 0; P < Ndigits.length(); P += 1){
+		thisDigits.insertBefore(A);
+		Ndigits.moveNext();
+		A = Ndigits.peekNext();
 	}
 }
 
@@ -73,21 +74,23 @@ int BigInteger::sign() const{
 }
 
 int BigInteger::compare(const BigInteger& N) const{
-	N.digits.moveFront();
-	this->digits.moveFront();
-	long B = N.digits.peekNext();
-	long A = this->digits.peekNext();
-	while(N.position()!= N.length() || this->digits.position() != this->digits.length()){
+	List Ndigits = N.digits;
+	Ndigits.moveFront();
+	List thisdigits = this->digits;
+	thisdigits.moveFront();
+	long B = Ndigits.peekNext();
+	long A = thisdigits.peekNext();
+	while(Ndigits.position()!= Ndigits.length() || thisdigits.position() != thisdigits.length()){
 		if(A < B){
 			return 1;
 		}
 		if(B < A){
 			return -1;
 		}
-		N.digits.moveNext();
+		Ndigits.moveNext();
 		B = N.digits.peekNext();
-		this->digits.moveNext();
-		A = N.digits.peekNext();
+		thisdigits.moveNext();
+		A = Ndigits.peekNext();
 	}
 	return 0;
 }
@@ -97,10 +100,8 @@ void BigInteger::makeZero(){
 		return;
 	}
 	digits.moveFront();
-	long A = digits.peekNext();
-	while(A != digits.backDummy){
+	while(digits.position() != digits.length()){
 		digits.eraseAfter();
-		A = digits.peekNext();
 	}
 }
 
@@ -123,7 +124,7 @@ void BigInteger::negate(){
 void negateList(List& L){
 	L.moveFront();
 	long A = L.peekNext();
-	while(A != L.backDummy){
+	while(L.position() != L.length()){
 		long temp = (-1 * A);
 		L.setAfter(temp);
 		L.moveNext();
@@ -132,5 +133,42 @@ void negateList(List& L){
 }
 
 int normalizeList(List& L){
-	
+	return 0;
+}
+
+std::string BigInteger::to_string const{
+	std::string s = "";
+	if(signum == 1){
+		s += "+";
+	}
+	if(signum == -1){
+		s += "-";
+	}
+	digits.moveFront();
+	int fronttemp = 0;
+	while(digits.position() != 0){
+		if(fronttemp == 0){
+			std::string temp = std::to_string(digits.moveNext());
+			fronttemp += 1;
+			s += temp;
+		}
+		else{
+			std::string temp = std::to_string(digits.moveNext());
+			unsigned long tlen = temp.length();
+			while(tlen != power){
+				s += "0";
+				tlen += 1;
+			}
+			s += temp;
+		}
+	}
+	return s;
+}
+std::ostream& operator<< (std::ostream& stream, const BigInteger& N){
+	return stream << N.BigInteger::to_string();
+}
+
+int main(void){
+	BigInteger A = BigInteger("+123456789");
+	std::cout << A << endl;
 }
