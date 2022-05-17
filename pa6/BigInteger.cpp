@@ -222,6 +222,12 @@ void sumList(List& S, List A, List B, int sgn){
 	}
 	normalizeList(S);
 }
+
+BigInteger BigInteger::sum(const BigInteger& N){
+	//return new Biginteger = sum of this and N
+	BigInteger R;
+	
+}
 std::string BigInteger::to_string(){
 	
 	std::string s = "";
