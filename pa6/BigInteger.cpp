@@ -10,7 +10,7 @@
 BigInteger::BigInteger(){
 	signum = 0;
 	//List L;
-	digits = List();
+	//digits = List();
 }
 
 BigInteger::BigInteger(std::string s){
@@ -21,12 +21,14 @@ BigInteger::BigInteger(std::string s){
 		throw std::invalid_argument("BigInteger: string Constructor: empty string");
 	}
 	signum = 0;
-	digits = List();
+	//digits = List();
+	/*
 	for(unsigned long i = 0; i < s.length(); i += 1){
 		if(!(std::isdigit(s[i]))){
 			throw std::invalid_argument("BigInteger: string Constructor: non-numeric string");
 		}
 	}
+	*/
 	//std::string sub = s.substr(0,1);
 	if(s[0] == '-'){
 		signum = -1;
@@ -39,6 +41,11 @@ BigInteger::BigInteger(std::string s){
 	while(s[0] == '0'){
 		s.erase(0,1);
 	}
+	for(unsigned long i = 0; i < s.length(); i += 1){
+		if(!(std::isdigit(s[i]))){
+			throw std::invalid_argument("BigInteger: string Constructor: non-numeric string");
+		}
+	}
 	//char* end;
 	long int n;
 	while(s.length() >= power){
@@ -49,13 +56,14 @@ BigInteger::BigInteger(std::string s){
 	}
 	if(s.length() != 0){
 		n = stol(s);
+		//std::cout << "n = " << std::to_string(n) << std::endl;
 		digits.insertBefore(n);
 	}
 }
 
 BigInteger::BigInteger(const BigInteger& N){
 	signum = 0;
-	digits = List();
+	//digits = List();
 	
 	//iterate through N and insert all List elements in N.digits into this
 	List Ndigits = N.digits;
@@ -63,9 +71,9 @@ BigInteger::BigInteger(const BigInteger& N){
 	Ndigits.moveFront();
 	long A = Ndigits.peekNext();
 	for(int P = 0; P < Ndigits.length(); P += 1){
-		thisDigits.insertBefore(A);
-		Ndigits.moveNext();
-		A = Ndigits.peekNext();
+		thisDigits.insertAfter(A);
+		A = Ndigits.moveNext();
+		//A = Ndigits.peekNext();
 	}
 }
 
@@ -74,23 +82,38 @@ int BigInteger::sign() const{
 }
 
 int BigInteger::compare(const BigInteger& N) const{
+	if(N.signum == -1 && this->signum == 1){
+		std::cout << "first if" << std::endl;
+		return 1;
+	}
+	if(this->signum == -1 && N.signum == 1){
+		std::cout << "second if" << std::endl;
+		return -1;
+	}
 	List Ndigits = N.digits;
 	Ndigits.moveFront();
 	List thisdigits = this->digits;
 	thisdigits.moveFront();
 	long B = Ndigits.peekNext();
 	long A = thisdigits.peekNext();
-	while(Ndigits.position()!= Ndigits.length() || thisdigits.position() != thisdigits.length()){
+	while(Ndigits.position()!= Ndigits.length()+1 || thisdigits.position() != thisdigits.length()+1){
+		//std::cout << "Ndigits pos = " << Ndigits.position() << "Ndigits len = " << Ndigits.length() <<std::endl;
+        	//std::cout << "this pos = " << thisdigits.position() << "this len = " << thisdigits.length() <<std::endl;
+
+		//std::cout << "A = " << A << " B = " << B << std::endl;
 		if(A < B){
-			return 1;
-		}
-		if(B < A){
+		//	std::cout << "third if" << std::endl;
+		//	std::cout << "A = " << A << "B = " << B << std::endl;
 			return -1;
 		}
-		Ndigits.moveNext();
-		B = N.digits.peekNext();
-		thisdigits.moveNext();
-		A = Ndigits.peekNext();
+		if(B < A){
+			//std::cout << "fourth if" << std::endl;
+			return 1;
+		}
+		B = Ndigits.moveNext();
+		//B = N.digits.peekNext();
+		A = thisdigits.moveNext();
+		//A = Ndigits.peekNext();
 	}
 	return 0;
 }
@@ -136,7 +159,9 @@ int normalizeList(List& L){
 	return 0;
 }
 
-std::string BigInteger::to_string const{
+std::string BigInteger::to_string(){
+	
+	std::cout << "digits list = " << digits << std::endl;
 	std::string s = "";
 	if(signum == 1){
 		s += "+";
@@ -146,7 +171,7 @@ std::string BigInteger::to_string const{
 	}
 	digits.moveFront();
 	int fronttemp = 0;
-	while(digits.position() != 0){
+	while(digits.position() != digits.length()){
 		if(fronttemp == 0){
 			std::string temp = std::to_string(digits.moveNext());
 			fronttemp += 1;
@@ -162,13 +187,18 @@ std::string BigInteger::to_string const{
 			s += temp;
 		}
 	}
+	std::cout << "signum = " << signum << std::endl;
+	std::cout << "s = " << s << std::endl;
 	return s;
 }
-std::ostream& operator<< (std::ostream& stream, const BigInteger& N){
+std::ostream& operator<< (std::ostream& stream, BigInteger& N){
 	return stream << N.BigInteger::to_string();
 }
 
 int main(void){
-	BigInteger A = BigInteger("+123456789");
-	std::cout << A << endl;
+	BigInteger A = BigInteger("+123456789417293471");
+	BigInteger B = BigInteger("+123456789417293999");
+	std::cout << "A > B is = " << A.compare(B) << std::endl;
+	std::cout << A.sign() << std::endl;
+	std::cout << A << std::endl;
 }
