@@ -223,6 +223,22 @@ void sumList(List& S, List A, List B, int sgn){
 	//normalizeList(S);
 }
 
+void shiftList(List& L, int p){
+	L.moveBack();
+	for(int i = 0; i < p; i += 1){
+		L.insertBefore(0);
+	}
+}
+
+void scalarMultList(List& L, ListElement m){
+	L.moveBack();
+	while(L.position() > 0){
+		long mult = L.peekPrev() * m;
+		L.setBefore(mult);
+		L.movePrev();
+	}
+}
+
 BigInteger BigInteger::add(const BigInteger& N) const{
 	//return new Biginteger = sum of this and N
 	BigInteger R;
@@ -304,5 +320,11 @@ int main(void){
 	std::cout << Q << std::endl;
 	BigInteger M = A.sub(B);
 	std::cout << M << std::endl;
+	//shiftList(L, 3);
+	//std::cout << L << std::endl;
+	scalarMultList(L, 11);
+	std::cout << L << std::endl;
+	normalizeList(L);
+	std::cout << L << std::endl;
 	//somthing(A);
 }
