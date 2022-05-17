@@ -5,8 +5,8 @@
 #include"BigInteger.h"
 #include"List.h"
 
-#define power 9
-#define base 1000000000
+#define power 3
+#define base 100
 BigInteger::BigInteger(){
 	signum = 0;
 	//List L;
@@ -161,7 +161,41 @@ int normalizeList(List& L){
 	if(L.front() < 0){
 		negateList(L);
 	}
-	return 1;
+	//long carry = 0;
+	//long result = 0;
+	L.moveBack();
+	while(L.position() != 0){
+		long A = L.movePrev();
+		if(A >= base){
+			//value is over base
+			//long carry;
+			//long result;
+			long carry = A / base;
+			long result = A % base;
+			L.setAfter(result);
+			if(L.position() == 0){
+				L.insertBefore(carry);
+				break;
+			}
+			else{
+				L.setBefore(L.peekPrev() + carry);
+			}
+		}
+		if(A < 0){
+			//value is negative
+			long carry = (A / base) -1;
+			long result = (A % base) + base;
+			L.setAfter(result);
+			L.setBefore(L.peekPrev() + carry);
+		}
+	}
+	if(L.front() < 0){
+		return -1;
+	}
+	else{
+		return 1;
+	}
+	//return 1;
 	
 }
 
@@ -213,5 +247,12 @@ int main(void){
 	B.negate();
 	std::cout << B << std::endl;
 	std::cout << C << std::endl;
+	List L;
+	L.insertBefore(21);
+	L.insertBefore(-33);
+	L.insertBefore(15);
+	std::cout << L << std::endl;
+	normalizeList(L);
+	std::cout << L << std::endl;
 	//somthing(A);
 }
