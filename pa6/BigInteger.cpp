@@ -6,7 +6,7 @@
 #include"List.h"
 
 #define power 3
-#define base 100
+#define base 1000
 BigInteger::BigInteger(){
 	signum = 0;
 	//List L;
@@ -220,13 +220,23 @@ void sumList(List& S, List A, List B, int sgn){
 		A.movePrev();
 		B.movePrev();
 	}
-	normalizeList(S);
+	//normalizeList(S);
 }
 
-BigInteger BigInteger::sum(const BigInteger& N){
+BigInteger BigInteger::add(const BigInteger& N) const{
 	//return new Biginteger = sum of this and N
 	BigInteger R;
-	
+	sumList(R.digits, this->digits, N.digits, 1);
+//	std::cout << R.digits << std::endl;
+	R.signum = normalizeList(R.digits);
+	return R;
+}
+
+BigInteger BigInteger::sub(const BigInteger& N) const{
+	BigInteger R;
+	sumList(R.digits, this->digits, N.digits, -1);
+	R.signum = normalizeList(R.digits);
+	return R;
 }
 std::string BigInteger::to_string(){
 	
@@ -267,8 +277,8 @@ void somthing(BigInteger& N){
 }
 */
 int main(void){
-	BigInteger A = BigInteger("+123456789417293471");
-	BigInteger B = BigInteger("+123456789417293999");
+	BigInteger A = BigInteger("+355797");
+	BigInteger B = BigInteger("+149082");
 	BigInteger C = BigInteger("+12345034001");
 	std::cout << "A > B is = " << A.compare(B) << std::endl;
 	std::cout << B.sign() << std::endl;
@@ -288,7 +298,11 @@ int main(void){
 	std::cout << L << std::endl;
 	//normalizeList(L);
 	std::cout << S << std::endl;
-	sumList(P, L, S, -1);
+	sumList(P, L, S, 1);
 	std::cout << P << std::endl;
+	BigInteger Q = A.add(B);
+	std::cout << Q << std::endl;
+	BigInteger M = A.sub(B);
+	std::cout << M << std::endl;
 	//somthing(A);
 }
