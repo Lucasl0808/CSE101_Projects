@@ -61,34 +61,35 @@ BigInteger::BigInteger(std::string s){
 	}
 }
 
-/*
+
 BigInteger::BigInteger(const BigInteger& N){
-	signum = 0;
+	signum = N.sign();
 	//digits = List();
-	
 	//iterate through N and insert all List elements in N.digits into this
 	List Ndigits = N.digits;
-	List thisDigits = this->digits;
+	this->digits = Ndigits;
+	/*
 	Ndigits.moveFront();
-	long A = Ndigits.peekNext();
+	//long A = Ndigits.peekNext();
 	for(int P = 0; P < Ndigits.length(); P += 1){
-		thisDigits.insertAfter(A);
-		A = Ndigits.moveNext();
+		long A = Ndigits.moveNext();
+		std::cout << A << std::endl;
+		thisDigits.insertBefore(A);
+		//A = Ndigits.moveNext();
 		//A = Ndigits.peekNext();
 	}
+	*/
 }
-*/
+
 int BigInteger::sign() const{
 	return signum;
 }
 
 int BigInteger::compare(const BigInteger& N) const{
 	if(N.signum == -1 && this->signum == 1){
-		std::cout << "first if" << std::endl;
 		return 1;
 	}
 	if(this->signum == -1 && N.signum == 1){
-		std::cout << "second if" << std::endl;
 		return -1;
 	}
 	List Ndigits = N.digits;
@@ -103,12 +104,9 @@ int BigInteger::compare(const BigInteger& N) const{
 
 		//std::cout << "A = " << A << " B = " << B << std::endl;
 		if(A < B){
-		//	std::cout << "third if" << std::endl;
-		//	std::cout << "A = " << A << "B = " << B << std::endl;
 			return -1;
 		}
 		if(B < A){
-			//std::cout << "fourth if" << std::endl;
 			return 1;
 		}
 		B = Ndigits.moveNext();
@@ -199,6 +197,31 @@ int normalizeList(List& L){
 	
 }
 
+void sumList(List& S, List A, List B, int sgn){
+	//S = A + sgn* B
+	S.clear();
+	A.moveBack();
+	B.moveBack();
+	while(A.position() > 0 || B.position() > 0){
+		if(A.position() == 0){
+			long val = B.peekPrev() * sgn;
+			S.insertAfter(val);
+			B.movePrev();
+			continue;
+		}
+		if(B.position() == 0){
+			long val = A.peekPrev();
+			S.insertAfter(val);
+			A.movePrev();
+			continue;
+		}
+		long sum = A.peekPrev() + (B.peekPrev() * sgn);
+		S.insertAfter(sum);
+		A.movePrev();
+		B.movePrev();
+	}
+	normalizeList(S);
+}
 std::string BigInteger::to_string(){
 	
 	std::string s = "";
@@ -242,17 +265,24 @@ int main(void){
 	BigInteger B = BigInteger("+123456789417293999");
 	BigInteger C = BigInteger("+12345034001");
 	std::cout << "A > B is = " << A.compare(B) << std::endl;
-	std::cout << A.sign() << std::endl;
+	std::cout << B.sign() << std::endl;
 	std::cout << A << std::endl;
-	B.negate();
+	//B.negate();
 	std::cout << B << std::endl;
 	std::cout << C << std::endl;
 	List L;
-	L.insertBefore(21);
-	L.insertBefore(-33);
-	L.insertBefore(15);
+	List S;
+	List P;
+	L.insertBefore(35);
+	L.insertBefore(57);
+	L.insertBefore(97);
+	S.insertBefore(14);
+	S.insertBefore(90);
+	S.insertBefore(82);
 	std::cout << L << std::endl;
-	normalizeList(L);
-	std::cout << L << std::endl;
+	//normalizeList(L);
+	std::cout << S << std::endl;
+	sumList(P, L, S, -1);
+	std::cout << P << std::endl;
 	//somthing(A);
 }
