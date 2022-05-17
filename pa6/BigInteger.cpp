@@ -61,6 +61,7 @@ BigInteger::BigInteger(std::string s){
 	}
 }
 
+/*
 BigInteger::BigInteger(const BigInteger& N){
 	signum = 0;
 	//digits = List();
@@ -76,7 +77,7 @@ BigInteger::BigInteger(const BigInteger& N){
 		//A = Ndigits.peekNext();
 	}
 }
-
+*/
 int BigInteger::sign() const{
 	return signum;
 }
@@ -146,26 +147,31 @@ void BigInteger::negate(){
 //negateList reverses all the signs of the List given 
 void negateList(List& L){
 	L.moveFront();
-	long A = L.peekNext();
+	//long A = L.peekNext();
 	while(L.position() != L.length()){
+		long A = L.moveNext();
 		long temp = (-1 * A);
-		L.setAfter(temp);
-		L.moveNext();
-		A = L.peekNext();
+		L.setBefore(temp);
+		//L.moveNext();
+		//A = L.peekNext();
 	}
 }
 
 int normalizeList(List& L){
-	return 0;
+	if(L.front() < 0){
+		negateList(L);
+	}
+	return 1;
+	
 }
 
 std::string BigInteger::to_string(){
 	
-	std::cout << "digits list = " << digits << std::endl;
 	std::string s = "";
-	if(signum == 1){
+	/*if(signum == 1){
 		s += "+";
 	}
+	*/
 	if(signum == -1){
 		s += "-";
 	}
@@ -187,18 +193,25 @@ std::string BigInteger::to_string(){
 			s += temp;
 		}
 	}
-	std::cout << "signum = " << signum << std::endl;
-	std::cout << "s = " << s << std::endl;
 	return s;
 }
-std::ostream& operator<< (std::ostream& stream, BigInteger& N){
-	return stream << N.BigInteger::to_string();
+std::ostream& operator<< (std::ostream& stream, BigInteger N){
+	return stream << N.to_string();
 }
-
+/*
+void somthing(BigInteger& N){
+	std::cout << N.digits.to_string() << std::endl;
+}
+*/
 int main(void){
 	BigInteger A = BigInteger("+123456789417293471");
 	BigInteger B = BigInteger("+123456789417293999");
+	BigInteger C = BigInteger("+12345034001");
 	std::cout << "A > B is = " << A.compare(B) << std::endl;
 	std::cout << A.sign() << std::endl;
 	std::cout << A << std::endl;
+	B.negate();
+	std::cout << B << std::endl;
+	std::cout << C << std::endl;
+	//somthing(A);
 }
