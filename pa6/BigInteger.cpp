@@ -1,3 +1,9 @@
+/* Lucas Lee
+ * luclee
+ * pa6
+ * CSE101-02 Spring 2022
+ */
+
 #include<iostream>
 #include<string>
 #include<stdexcept>
