@@ -2,11 +2,15 @@
 
 #include "List.h"
 
+typedef struct MatrixObj* Matrix;
+typedef struct EntryObj* Entry;
+
 //define matrix struct here
 Matrix newMatrix(int n);
 void freeMatrix(Matrix* pM);
 
 int size(Matrix M);
+int NNZ(Matrix M);
 int equals(Matrix A, Matrix B);
 
 void makeZero(Matrix M);
