@@ -5,8 +5,8 @@
 #include"BigInteger.h"
 #include"List.h"
 
-#define power 3
-#define base 1000
+#define power 9
+#define base 1000000000
 BigInteger::BigInteger(){
 	signum = 0;
 	//List L;
@@ -264,14 +264,16 @@ BigInteger BigInteger::mult(const BigInteger& N) const{
 	m.moveBack();
 	int iteration = 0;
 	while(m.position() > 0){
-		shiftList(copyN, iteration);
+		//shiftList(copyN, iteration);
 		long number = m.movePrev();
 		scalarMultList(copyN, number);
+		shiftList(copyN, iteration);
+		List tempR = R.digits;
+		sumList(R.digits, copyN, tempR, 1);
 		normalizeList(copyN);
-		iteration = 1;
+		iteration += 1;
 		
 	}
-	
 	return R;
 }
 std::string BigInteger::to_string(){
@@ -346,5 +348,11 @@ int main(void){
 	std::cout << L << std::endl;
 	normalizeList(L);
 	std::cout << L << std::endl;
+	BigInteger N = BigInteger("123");
+	BigInteger D = BigInteger("456");
+	BigInteger G = N.mult(D);
+	std::cout << G << std::endl;
+	BigInteger LL = A.mult(B);
+	std::cout << LL << std::endl;
 	//somthing(A);
 }
