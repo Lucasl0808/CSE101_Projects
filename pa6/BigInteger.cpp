@@ -260,15 +260,16 @@ BigInteger BigInteger::mult(const BigInteger& N) const{
 	BigInteger R;
 	List Nd = N.digits;
 	List copyN = N.digits;
-	List th = this->digits;
-	th.moveBack();
-	while(th.position() > 0){
-		long number = th.movePrev();
-		Nd.moveBack();
-		while(Nd.position() > 0){
-			long number2 = Nd.movePrev();
-			//left off here
-		}
+	List m = this->digits;
+	m.moveBack();
+	int iteration = 0;
+	while(m.position() > 0){
+		shiftList(copyN, iteration);
+		long number = m.movePrev();
+		scalarMultList(copyN, number);
+		normalizeList(copyN);
+		iteration = 1;
+		
 	}
 	
 	return R;
