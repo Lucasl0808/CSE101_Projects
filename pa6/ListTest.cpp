@@ -67,4 +67,5 @@ int main(){
 	F.movePrev();
 	F.eraseAfter();
 	cout << "List F = " << F << endl;
+	
 }
