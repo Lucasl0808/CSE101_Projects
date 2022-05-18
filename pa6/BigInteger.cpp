@@ -34,9 +34,12 @@ BigInteger::BigInteger(std::string s){
 		signum = -1;
 		s.erase(0,1);
 	}
-	if(s[0] == '+'){
+	else if(s[0] == '+'){
 		signum = 1;
 		s.erase(0,1);
+	}
+	else{
+		signum = 1;
 	}
 	while(s[0] == '0'){
 		s.erase(0,1);
@@ -82,6 +85,9 @@ BigInteger::BigInteger(const BigInteger& N){
 }
 
 int BigInteger::sign() const{
+	//if(signum == 0){
+	//	return 1;
+	//}
 	return signum;
 }
 
@@ -128,16 +134,12 @@ void BigInteger::makeZero(){
 	while(digits.position() != digits.length()){
 		digits.eraseAfter();
 	}
+	signum = 0;
 }
 
 void BigInteger::negate(){
-	digits.moveFront();
-	long A = digits.peekNext();
-	if(A == 0){
-		return;
-	}
 	if(signum == 0){
-		signum = -1;
+		return;
 	}
 	else{
 		signum *= -1;
@@ -166,9 +168,9 @@ int normalizeList(List& L){
 	L.moveFront();
 	while(L.front() == 0){
 		L.eraseAfter();
-	}
-	if(L.length() == 0){
-		return sign;
+		if(L.length() == 0){
+			return sign;
+		}
 	}
 	if(L.front() < 0){
 		negateList(L);
@@ -274,6 +276,11 @@ BigInteger BigInteger::add(const BigInteger& N) const{
 	}
 	sumList(R.digits, tempthis, tempN, 1);
 //	std::cout << R.digits << std::endl;
+	if(R.digits.length() == 0){
+		R.digits.insertBefore(0);
+		R.signum = 0;
+		return R;
+	}
 	R.signum = normalizeList(R.digits);
 	return R;
 }
@@ -282,6 +289,7 @@ BigInteger BigInteger::sub(const BigInteger& N) const{
 	BigInteger R;
 	if(this->compare(N) == 0){
 		R.digits.insertBefore(0);
+		R.signum = 0;
 		return R;
 	}
 	List tempthis = this->digits;
@@ -303,6 +311,9 @@ BigInteger BigInteger::mult(const BigInteger& N) const{
 	List Nd = N.digits;
 	List copyN = N.digits;
 	List m = this->digits;
+	if(this->signum == 0 || N.signum == 0){
+		return R;
+	}
 	m.moveBack();
 	int iteration = 0;
 	while(m.position() > 0){
@@ -321,6 +332,15 @@ BigInteger BigInteger::mult(const BigInteger& N) const{
 		iteration += 1;
 		
 	}
+	int tempNsign = N.signum;
+	int tempThissign = this->signum;
+	if(tempNsign == 0){
+		tempNsign = 1;
+	}
+	if(tempThissign == 0){
+		tempThissign = 1;
+	}
+	R.signum = tempNsign * tempThissign;
 	return R;
 }
 std::string BigInteger::to_string(){
@@ -379,7 +399,7 @@ bool operator<(const BigInteger& A, const BigInteger& B){
 }
 
 bool operator<=(const BigInteger& A, const BigInteger& B){
-	if(A.compare(B) <= -1){
+	if(A.compare(B) <= 0){
 		return true;
 	}
 	else{
