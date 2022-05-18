@@ -287,6 +287,17 @@ BigInteger BigInteger::add(const BigInteger& N) const{
 		R.signum = 0;
 		return R;
 	}
+	List P = R.digits;
+	R.digits.moveFront();
+	while(R.digits.front() == 0){
+		R.digits.eraseAfter();
+		if(R.digits.length() == 0){
+			R.digits.insertBefore(0);
+			R.signum = 0;
+			return R;
+		}
+	}
+	R.digits = P;
 	R.signum = normalizeList(R.digits);
 	return R;
 }
