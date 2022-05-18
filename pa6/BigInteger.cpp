@@ -233,9 +233,10 @@ void shiftList(List& L, int p){
 void scalarMultList(List& L, ListElement m){
 	L.moveBack();
 	while(L.position() > 0){
-		long mult = L.peekPrev() * m;
-		L.setBefore(mult);
-		L.movePrev();
+		long mult = L.movePrev() * m;
+		//long mult = L.peekPrev() * m;
+		L.setAfter(mult);
+		//L.movePrev();
 	}
 }
 
@@ -252,6 +253,24 @@ BigInteger BigInteger::sub(const BigInteger& N) const{
 	BigInteger R;
 	sumList(R.digits, this->digits, N.digits, -1);
 	R.signum = normalizeList(R.digits);
+	return R;
+}
+
+BigInteger BigInteger::mult(const BigInteger& N) const{
+	BigInteger R;
+	List Nd = N.digits;
+	List copyN = N.digits;
+	List th = this->digits;
+	th.moveBack();
+	while(th.position() > 0){
+		long number = th.movePrev();
+		Nd.moveBack();
+		while(Nd.position() > 0){
+			long number2 = Nd.movePrev();
+			//left off here
+		}
+	}
+	
 	return R;
 }
 std::string BigInteger::to_string(){
