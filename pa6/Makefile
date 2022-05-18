@@ -57,7 +57,7 @@ clean:
 	$(REMOVE) $(OBJECT) $(ADT1_TEST).o $(ADT2_TEST).o $(ADT1_OBJECT) $(ADT2_OBJECT)
 
 $(MAIN)Check: $(MAIN)
-	$(MEMCHECK) $(MAIN) in4 junk4
+	$(MEMCHECK) $(MAIN) in1 junk1
 
 $(ADT1)Check: $(ADT1_TEST)
 	$(MEMCHECK) $(ADT1_TEST)
