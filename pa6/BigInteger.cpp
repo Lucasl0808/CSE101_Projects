@@ -86,12 +86,14 @@ int BigInteger::sign() const{
 }
 
 int BigInteger::compare(const BigInteger& N) const{
-	if(N.signum == -1 && this->signum == 1){
-		return 1;
+	if(N.signum != this->signum){
+		return -1;
 	}
+	/*
 	if(this->signum == -1 && N.signum == 1){
 		return -1;
 	}
+	*/
 	List Ndigits = N.digits;
 	Ndigits.moveFront();
 	List thisdigits = this->digits;
@@ -262,7 +264,15 @@ void scalarMultList(List& L, ListElement m){
 BigInteger BigInteger::add(const BigInteger& N) const{
 	//return new Biginteger = sum of this and N
 	BigInteger R;
-	sumList(R.digits, this->digits, N.digits, 1);
+	List tempthis = this->digits;
+	if(this->signum == -1){
+		negateList(tempthis);
+	}
+	List tempN = N.digits;
+	if(N.signum == -1){
+		negateList(tempN);
+	}
+	sumList(R.digits, tempthis, tempN, 1);
 //	std::cout << R.digits << std::endl;
 	R.signum = normalizeList(R.digits);
 	return R;
@@ -274,7 +284,15 @@ BigInteger BigInteger::sub(const BigInteger& N) const{
 		R.digits.insertBefore(0);
 		return R;
 	}
-	sumList(R.digits, this->digits, N.digits, -1);
+	List tempthis = this->digits;
+	if(this->signum == -1){
+		negateList(tempthis);
+	}
+	List tempN = N.digits;
+	if(N.signum == -1){
+		negateList(tempN);
+	}
+	sumList(R.digits, tempthis, tempN, -1);
 	//std::cout << "digits= " << R.digits << std::endl;
 	R.signum = normalizeList(R.digits);
 	return R;
@@ -412,65 +430,4 @@ BigInteger operator*(const BigInteger& A, const BigInteger& B){
 BigInteger operator*=(BigInteger& A, const BigInteger& B){
 	A = A.mult(B);
 	return A;
-}
-/*
-void somthing(BigInteger& N){
-	std::cout << N.digits.to_string() << std::endl;
-}
-*/
-int main(void){
-	BigInteger A = BigInteger("+35579758422123123");
-	BigInteger B = BigInteger("+35579758422123123");
-	BigInteger C = BigInteger("+12345034001");
-	std::cout << "A < B is  " << A.compare(B) << std::endl;
-	std::cout << B.sign() << std::endl;
-	std::cout << A << std::endl;
-	//B.negate();
-	std::cout << B << std::endl;
-	std::cout << C << std::endl;
-	List L;
-	List S;
-	List P;
-	L.insertBefore(35);
-	L.insertBefore(57);
-	L.insertBefore(97);
-	S.insertBefore(14);
-	S.insertBefore(90);
-	S.insertBefore(82);
-	std::cout << L << std::endl;
-	//normalizeList(L);
-	std::cout << S << std::endl;
-	sumList(P, L, S, 1);
-	std::cout << P << std::endl;
-	BigInteger Q = A+B;
-	std::cout << Q << std::endl;
-	BigInteger M = A-B;
-	std::cout << "here " << M << std::endl;
-	//shiftList(L, 3);
-	//std::cout << L << std::endl;
-	
-	scalarMultList(L, 11);
-	std::cout << "here " << L << std::endl;
-	normalizeList(L);
-	std::cout << L << std::endl;
-	BigInteger N = BigInteger("123");
-	BigInteger D = BigInteger("456");
-	BigInteger G = N*D;
-	std::cout << G << std::endl;
-
-	BigInteger T("+999");
-	BigInteger TT("+999");
-	std::cout << T << std::endl;
-	List PO;
-	PO.insertBefore(81);
-	PO.insertBefore(81);
-	PO.insertBefore(81);
-	normalizeList(PO);
-	std::cout << PO << std::endl;
-	BigInteger TTT = T*TT;
-	std::cout << TTT << std::endl;
-	BigInteger LL = A*B;
-	std::cout << LL << std::endl;
-	//somthing(A);
-	
 }
