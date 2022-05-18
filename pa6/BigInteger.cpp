@@ -96,12 +96,13 @@ int BigInteger::compare(const BigInteger& N) const{
 	Ndigits.moveFront();
 	List thisdigits = this->digits;
 	thisdigits.moveFront();
-	long B = Ndigits.peekNext();
-	long A = thisdigits.peekNext();
-	while(Ndigits.position()!= Ndigits.length()+1 || thisdigits.position() != thisdigits.length()+1){
+	//long B = Ndigits.peekNext();
+	//long A = thisdigits.peekNext();
+	while(Ndigits.position()!= Ndigits.length() || thisdigits.position() != thisdigits.length()){
 		//std::cout << "Ndigits pos = " << Ndigits.position() << "Ndigits len = " << Ndigits.length() <<std::endl;
         	//std::cout << "this pos = " << thisdigits.position() << "this len = " << thisdigits.length() <<std::endl;
-
+		long B = Ndigits.moveNext();
+		long A = thisdigits.moveNext();
 		//std::cout << "A = " << A << " B = " << B << std::endl;
 		if(A < B){
 			return -1;
@@ -109,9 +110,9 @@ int BigInteger::compare(const BigInteger& N) const{
 		if(B < A){
 			return 1;
 		}
-		B = Ndigits.moveNext();
+		//B = Ndigits.moveNext();
 		//B = N.digits.peekNext();
-		A = thisdigits.moveNext();
+		//A = thisdigits.moveNext();
 		//A = Ndigits.peekNext();
 	}
 	return 0;
@@ -310,6 +311,15 @@ std::string BigInteger::to_string(){
 std::ostream& operator<< (std::ostream& stream, BigInteger N){
 	return stream << N.to_string();
 }
+
+bool operator==(const BigInteger& A, const BigInteger &B){
+	if(A.compare(B) == 0){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
 /*
 void somthing(BigInteger& N){
 	std::cout << N.digits.to_string() << std::endl;
@@ -317,9 +327,9 @@ void somthing(BigInteger& N){
 */
 int main(void){
 	BigInteger A = BigInteger("+35579758422");
-	BigInteger B = BigInteger("+14908223155");
+	BigInteger B = BigInteger("+35579758423");
 	BigInteger C = BigInteger("+12345034001");
-	std::cout << "A > B is = " << A.compare(B) << std::endl;
+	std::cout << "A < B is  " << A.compare(B) << std::endl;
 	std::cout << B.sign() << std::endl;
 	std::cout << A << std::endl;
 	//B.negate();
