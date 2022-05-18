@@ -5,8 +5,8 @@
 #include"BigInteger.h"
 #include"List.h"
 
-#define power 1
-#define base 10
+#define power 9
+#define base 1000000000
 BigInteger::BigInteger(){
 	signum = 0;
 	//List L;
@@ -157,8 +157,15 @@ void negateList(List& L){
 }
 
 int normalizeList(List& L){
+	int sign = 1;
+	L.moveFront();
+	while(L.front() == 0){
+		L.eraseAfter();
+	}
 	if(L.front() < 0){
 		negateList(L);
+		sign = -1;
+		
 	}
 	//long carry = 0;
 	//long result = 0;
@@ -177,6 +184,7 @@ int normalizeList(List& L){
 				break;
 			}
 			else{
+				//L.setAfter(result);
 				L.setBefore(L.peekPrev() + carry);
 			}
 		}
@@ -186,9 +194,13 @@ int normalizeList(List& L){
 			long result = (A % base) + base;
 			L.setAfter(result);
 			L.setBefore(L.peekPrev() + carry);
+			if(A == 0 && L.position() == 1){
+				L.eraseBefore();
+				break;
+			}
 		}
 	}
-	if(L.front() < 0){
+	if(sign == -1){
 		return -1;
 	}
 	else{
@@ -205,21 +217,21 @@ void sumList(List& S, List A, List B, int sgn){
 	B.moveBack();
 	while(A.position() > 0 || B.position() > 0){
 		if(A.position() == 0){
-			long val = B.peekPrev() * sgn;
+			long val = B.movePrev() * sgn;
 			S.insertAfter(val);
-			B.movePrev();
+			//B.movePrev();
 			continue;
 		}
 		if(B.position() == 0){
-			long val = A.peekPrev();
+			long val = A.movePrev();
 			S.insertAfter(val);
-			A.movePrev();
+			//A.movePrev();
 			continue;
 		}
-		long sum = A.peekPrev() + (B.peekPrev() * sgn);
+		long sum = A.movePrev() + (B.movePrev() * sgn);
 		S.insertAfter(sum);
-		A.movePrev();
-		B.movePrev();
+		//A.movePrev();
+		//B.movePrev();
 	}
 	//normalizeList(S);
 }
@@ -253,6 +265,7 @@ BigInteger BigInteger::add(const BigInteger& N) const{
 BigInteger BigInteger::sub(const BigInteger& N) const{
 	BigInteger R;
 	sumList(R.digits, this->digits, N.digits, -1);
+	//std::cout << "digits= " << R.digits << std::endl;
 	R.signum = normalizeList(R.digits);
 	return R;
 }
@@ -269,10 +282,14 @@ BigInteger BigInteger::mult(const BigInteger& N) const{
 		copyN = Nd;
 		long number = m.movePrev();
 		scalarMultList(copyN, number);
+		std::cout <<"temp sm = " << copyN << std::endl;
 		shiftList(copyN, iteration);
+                std::cout <<"temp sl = " << copyN << std::endl;
 		List tempR = R.digits;
 		sumList(R.digits, copyN, tempR, 1);
+                std::cout <<"temp sum = " << copyN << std::endl;
 		normalizeList(R.digits);
+                std::cout <<"temp norm= " << copyN << std::endl;
 		iteration += 1;
 		
 	}
@@ -326,8 +343,8 @@ void somthing(BigInteger& N){
 }
 */
 int main(void){
-	BigInteger A = BigInteger("+35579758422");
-	BigInteger B = BigInteger("+35579758423");
+	BigInteger A = BigInteger("+35579758422123123");
+	BigInteger B = BigInteger("+35579758433456456");
 	BigInteger C = BigInteger("+12345034001");
 	std::cout << "A < B is  " << A.compare(B) << std::endl;
 	std::cout << B.sign() << std::endl;
@@ -352,18 +369,32 @@ int main(void){
 	BigInteger Q = A.add(B);
 	std::cout << Q << std::endl;
 	BigInteger M = A.sub(B);
-	std::cout << M << std::endl;
+	std::cout << "here " << M << std::endl;
 	//shiftList(L, 3);
 	//std::cout << L << std::endl;
+	
 	scalarMultList(L, 11);
-	std::cout << L << std::endl;
+	std::cout << "here " << L << std::endl;
 	normalizeList(L);
 	std::cout << L << std::endl;
 	BigInteger N = BigInteger("123");
 	BigInteger D = BigInteger("456");
 	BigInteger G = N.mult(D);
 	std::cout << G << std::endl;
+
+	BigInteger T("+999");
+	BigInteger TT("+999");
+	std::cout << T << std::endl;
+	List PO;
+	PO.insertBefore(81);
+	PO.insertBefore(81);
+	PO.insertBefore(81);
+	normalizeList(PO);
+	std::cout << PO << std::endl;
+	BigInteger TTT = T.mult(TT);
+	std::cout << TTT << std::endl;
 	BigInteger LL = A.mult(B);
 	std::cout << LL << std::endl;
 	//somthing(A);
+	
 }
