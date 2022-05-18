@@ -158,9 +158,15 @@ void negateList(List& L){
 
 int normalizeList(List& L){
 	int sign = 1;
+	if(L.length() == 0){
+		return sign;
+	}
 	L.moveFront();
 	while(L.front() == 0){
 		L.eraseAfter();
+	}
+	if(L.length() == 0){
+		return sign;
 	}
 	if(L.front() < 0){
 		negateList(L);
@@ -264,6 +270,10 @@ BigInteger BigInteger::add(const BigInteger& N) const{
 
 BigInteger BigInteger::sub(const BigInteger& N) const{
 	BigInteger R;
+	if(this->compare(N) == 0){
+		R.digits.insertBefore(0);
+		return R;
+	}
 	sumList(R.digits, this->digits, N.digits, -1);
 	//std::cout << "digits= " << R.digits << std::endl;
 	R.signum = normalizeList(R.digits);
@@ -282,14 +292,14 @@ BigInteger BigInteger::mult(const BigInteger& N) const{
 		copyN = Nd;
 		long number = m.movePrev();
 		scalarMultList(copyN, number);
-		std::cout <<"temp sm = " << copyN << std::endl;
+		//std::cout <<"temp sm = " << copyN << std::endl;
 		shiftList(copyN, iteration);
-                std::cout <<"temp sl = " << copyN << std::endl;
+                //std::cout <<"temp sl = " << copyN << std::endl;
 		List tempR = R.digits;
 		sumList(R.digits, copyN, tempR, 1);
-                std::cout <<"temp sum = " << copyN << std::endl;
+                //std::cout <<"temp sum = " << copyN << std::endl;
 		normalizeList(R.digits);
-                std::cout <<"temp norm= " << copyN << std::endl;
+                //std::cout <<"temp norm= " << copyN << std::endl;
 		iteration += 1;
 		
 	}
@@ -298,6 +308,9 @@ BigInteger BigInteger::mult(const BigInteger& N) const{
 std::string BigInteger::to_string(){
 	
 	std::string s = "";
+	if(digits.length() == 0){
+		return s;
+	}
 	/*if(signum == 1){
 		s += "+";
 	}
@@ -337,6 +350,69 @@ bool operator==(const BigInteger& A, const BigInteger &B){
 		return false;
 	}
 }
+
+bool operator<(const BigInteger& A, const BigInteger& B){
+	if(A.compare(B) == -1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+bool operator<=(const BigInteger& A, const BigInteger& B){
+	if(A.compare(B) <= -1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+bool operator>(const BigInteger& A, const BigInteger& B){
+	if(A.compare(B) > 0){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+bool operator>=(const BigInteger& A, const BigInteger& B){
+	if(A.compare(B) >= 0){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+BigInteger operator+(const BigInteger& A, const BigInteger& B){
+	return A.add(B);
+}
+
+BigInteger operator+=(BigInteger& A, const BigInteger& B){
+	A = A.add(B);
+	return A;
+}
+
+BigInteger operator-(const BigInteger& A, const BigInteger& B){
+	return A.sub(B);
+}
+
+BigInteger operator-=(BigInteger& A, const BigInteger& B){
+	A = A.sub(B);
+	return A;
+}
+
+BigInteger operator*(const BigInteger& A, const BigInteger& B){
+	return A.mult(B);
+}
+
+BigInteger operator*=(BigInteger& A, const BigInteger& B){
+	A = A.mult(B);
+	return A;
+}
 /*
 void somthing(BigInteger& N){
 	std::cout << N.digits.to_string() << std::endl;
@@ -344,7 +420,7 @@ void somthing(BigInteger& N){
 */
 int main(void){
 	BigInteger A = BigInteger("+35579758422123123");
-	BigInteger B = BigInteger("+35579758433456456");
+	BigInteger B = BigInteger("+35579758422123123");
 	BigInteger C = BigInteger("+12345034001");
 	std::cout << "A < B is  " << A.compare(B) << std::endl;
 	std::cout << B.sign() << std::endl;
@@ -366,9 +442,9 @@ int main(void){
 	std::cout << S << std::endl;
 	sumList(P, L, S, 1);
 	std::cout << P << std::endl;
-	BigInteger Q = A.add(B);
+	BigInteger Q = A+B;
 	std::cout << Q << std::endl;
-	BigInteger M = A.sub(B);
+	BigInteger M = A-B;
 	std::cout << "here " << M << std::endl;
 	//shiftList(L, 3);
 	//std::cout << L << std::endl;
@@ -379,7 +455,7 @@ int main(void){
 	std::cout << L << std::endl;
 	BigInteger N = BigInteger("123");
 	BigInteger D = BigInteger("456");
-	BigInteger G = N.mult(D);
+	BigInteger G = N*D;
 	std::cout << G << std::endl;
 
 	BigInteger T("+999");
@@ -391,9 +467,9 @@ int main(void){
 	PO.insertBefore(81);
 	normalizeList(PO);
 	std::cout << PO << std::endl;
-	BigInteger TTT = T.mult(TT);
+	BigInteger TTT = T*TT;
 	std::cout << TTT << std::endl;
-	BigInteger LL = A.mult(B);
+	BigInteger LL = A*B;
 	std::cout << LL << std::endl;
 	//somthing(A);
 	
