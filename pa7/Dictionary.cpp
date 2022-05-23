@@ -19,15 +19,15 @@ Dictionary::Node::Node(keyType k, valType v){
 
 Dictionary::Dictionary(){
 	nil = new Node("*", -1);
-	root = nullptr;
-	current = nullptr;
+	root = nil;
+	current = nil;
 	num_pairs = 0;
 }
 
 Dictionary::Dictionary(const Dictionary& D){
 	nil = new Node("*", -1);
-	root = nullptr;
-	current = nullptr;
+	root = nil;
+	current = nil;
 	num_pairs = 0;
 
 	this->root = D.root;
@@ -79,4 +79,59 @@ void Dictionary::postOrderDelete(Node* R){
 	}
 }
 
+//search()
 
+
+//findMin()
+
+//findMax()
+
+//findNext()
+
+//findPrev()
+
+int Dictionary::size() const{
+	return num_pairs;
+}
+
+bool Dictionary::contains(keyType k) const{
+	if(search(root, k) == nil){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+valType& getValue(keyType k) const{
+	//dont call contains(), takes too long to run
+	
+}
+
+bool Dictionary::hasCurrent() const{
+	if(current == nil){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
+keyType Dictionary::currentKey() const{
+	if(hasCurrent()){
+		return current->key;
+	}
+	else{
+		throw std::logic_error("Dictionary: currentKey(): current is nil");
+	}
+}
+
+valType& Dictionary::currentVal() const{
+	//find out how to return address
+	if(hasCurrent()){
+		return current->val;
+	}
+	else{
+		throw std::logic_error("Dictionary: currentVal(): current is nil");
+	}
+}
