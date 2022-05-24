@@ -186,3 +186,9 @@ valType& Dictionary::currentVal() const{
 		throw std::logic_error("Dictionary: currentVal(): current is nil");
 	}
 }
+
+void Dictionary::clear(){
+	 postOrderDelete(root);
+}
+
+
