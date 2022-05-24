@@ -209,20 +209,53 @@ void Dictionary::setValue(keyType k, valType v){
 	}
 	Node* z = new Node(k, v);
 	z->parent = y;
+	//z->left = nil;
+	//z->right = nil;
 	if(y == nil){
-		root = N;
+		root = z;
 	}
-	else if(N->key < y->key){
-		y->left = N;
+	else if(z->key < y->key){
+		y->left = z;
 	}
 	else{
-		y->right = N;
+		y->right = z;
 	}
 }
 
 void Dictionary::Transplant(Node* u, Node* v){
-	if(u->parent == 
+	if(u->parent == nil){
+		root = v;
+	}
+	else if(u == u->parent->left){
+		u->parent->left = v;
+	}
+	else{
+		u->parent->right = v;
+	}
+	if(v != nil){
+		v->parent = u->parent;
+	}
 }
 void Dictionary::remove(keyType k){
-	
+	Node* z = search(root, k);
+	if(z == nil){
+		throw std::logic_error("Dictionary: remove(): tree does not contain key k");
+	}
+	if(z->left == nil){
+		Transplant(z, z->right);
+	}
+	else if(z->right == nil){
+		Transplant(z, z->left);
+	}
+	else{
+		Node* y = findMin(z->right);
+		if(y->parent != z){
+			Transplant(y, y->right);
+			y->right = z->right;
+			y->right->parent = y;
+		}
+		Transplant(z, y);
+		y->left = z->left;
+		y->left->parent = y;
+	}
 }
