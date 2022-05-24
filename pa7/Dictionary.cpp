@@ -80,7 +80,7 @@ void Dictionary::postOrderDelete(Node* R){
 }
 
 //search()
-Node* Dictionary::search(Node* R, keyType k) const{
+Dictionary::Node* Dictionary::search(Node* R, keyType k) const{
 	if(R == nil || k == R->key){
 		return R;
 	}
@@ -93,7 +93,7 @@ Node* Dictionary::search(Node* R, keyType k) const{
 }
 
 //findMin()
-Node* Dictionary::findMin(Node* R){
+Dictionary::Node* Dictionary::findMin(Node* R){
 	if(R == nil){
 		throw std::logic_error("Dictionary: findMin: nil Node");
 	}
@@ -103,7 +103,7 @@ Node* Dictionary::findMin(Node* R){
 	return R;
 }
 //findMax()
-Node* Dictionary::findMax(Node* R){
+Dictionary::Node* Dictionary::findMax(Node* R){
 	if(R == nil){
 		throw std::logic_error("Dictionary: findMax: nil Node");
 	}
@@ -113,7 +113,7 @@ Node* Dictionary::findMax(Node* R){
 	return R;
 }
 //findNext()
-Node* Dictionary::findNext(Node* N){
+Dictionary::Node* Dictionary::findNext(Node* N){
 	if(N->right != nil){
 		return(findMin(N->right));
 	}
@@ -125,7 +125,7 @@ Node* Dictionary::findNext(Node* N){
 	return y;
 }
 //findPrev()
-Node* Dictionary::findPrev(Node* N){
+Dictionary::Node* Dictionary::findPrev(Node* N){
 	if(N->left != nil){
 		return(findMax(N->left));
 	}
@@ -149,9 +149,14 @@ bool Dictionary::contains(keyType k) const{
 	}
 }
 
-valType& getValue(keyType k) const{
+valType& Dictionary::getValue(keyType k) const{
 	//dont call contains(), takes too long to run
-	return 4;
+	Node* N = search(root, k);
+	if(N == nil){	//does not contain
+		throw std::logic_error("Dictionary: getValue(): does not contain key k");
+	}
+	return N->val;
+	
 }
 
 bool Dictionary::hasCurrent() const{
