@@ -178,7 +178,6 @@ keyType Dictionary::currentKey() const{
 }
 
 valType& Dictionary::currentVal() const{
-	//find out how to return address
 	if(hasCurrent()){
 		return current->val;
 	}
@@ -194,16 +193,21 @@ void Dictionary::clear(){
 void Dictionary::setValue(keyType k, valType v){
 	Node* y = nil;
 	Node* x = root;
-	Node* z = new Node(k, v);
+	//Node* z = new Node(k, v);
 	while(x != nil){
 		y = x;
-		if(z->key < x->key){
+		if(k < x->key){
 			x = x->left;
+		}
+		else if(k == x->key){
+			x->val = v;
+			return;
 		}
 		else{
 			x = x->right;
 		}
 	}
+	Node* z = new Node(k, v);
 	z->parent = y;
 	if(y == nil){
 		root = N;
@@ -214,4 +218,11 @@ void Dictionary::setValue(keyType k, valType v){
 	else{
 		y->right = N;
 	}
+}
+
+void Dictionary::Transplant(Node* u, Node* v){
+	if(u->parent == 
+}
+void Dictionary::remove(keyType k){
+	
 }
