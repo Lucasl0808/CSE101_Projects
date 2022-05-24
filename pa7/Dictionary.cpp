@@ -191,4 +191,27 @@ void Dictionary::clear(){
 	 postOrderDelete(root);
 }
 
-
+void Dictionary::setValue(keyType k, valType v){
+	Node* y = nil;
+	Node* x = root;
+	Node* z = new Node(k, v);
+	while(x != nil){
+		y = x;
+		if(z->key < x->key){
+			x = x->left;
+		}
+		else{
+			x = x->right;
+		}
+	}
+	z->parent = y;
+	if(y == nil){
+		root = N;
+	}
+	else if(N->key < y->key){
+		y->left = N;
+	}
+	else{
+		y->right = N;
+	}
+}
