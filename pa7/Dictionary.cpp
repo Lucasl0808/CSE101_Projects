@@ -45,12 +45,12 @@ Dictionary::~Dictionary(){
 
 void Dictionary::inOrderString(std::string& s, Node *R) const{
 	if(R != nil){
-		inOrderString(R->left);
+		inOrderString(s, R->left);
 		s += R->key;
 		s += " : ";
 		s += R->val;
 		s += " \n";
-		inOrderString(R->right);
+		inOrderString(s, R->right);
 	}
 }
 
@@ -58,16 +58,16 @@ void Dictionary::preOrderString(std::string& s, Node* R) const{
 	if(R != nil){
 		s += R->key;
 		s += "\n";
-		preOrderString(R->left);
-		preOrderString(R->right);
+		preOrderString(s, R->left);
+		preOrderString(s, R->right);
 	}
 }
 
 void Dictionary::preOrderCopy(Node* R, Node* N){
 	if(R != N){
 		setValue(R->key, R->val);
-		preOrderCopy(R->left);
-		preOrderCopy(R->right);
+		preOrderCopy(R->left, N);
+		preOrderCopy(R->right, N);
 	}
 }
 
@@ -80,16 +80,62 @@ void Dictionary::postOrderDelete(Node* R){
 }
 
 //search()
-
+Node* Dictionary::search(Node* R, keyType k) const{
+	if(R == nil || k == R->key){
+		return R;
+	}
+	else if(R->key > k){
+		return search(R->left, k);
+	}
+	else{
+		return search(R->right, k);
+	}
+}
 
 //findMin()
-
+Node* Dictionary::findMin(Node* R){
+	if(R == nil){
+		throw std::logic_error("Dictionary: findMin: nil Node");
+	}
+	while(R->left != nil){
+		R = R->left;
+	}
+	return R;
+}
 //findMax()
-
+Node* Dictionary::findMax(Node* R){
+	if(R == nil){
+		throw std::logic_error("Dictionary: findMax: nil Node");
+	}
+	while(R->right != nil){
+		R = R->right;
+	}
+	return R;
+}
 //findNext()
-
+Node* Dictionary::findNext(Node* N){
+	if(N->right != nil){
+		return(findMin(N->right));
+	}
+	Node* y = N->parent;
+	while(y != nil && N == y->right){
+		N = y;
+		y = y->parent;
+	}
+	return y;
+}
 //findPrev()
-
+Node* Dictionary::findPrev(Node* N){
+	if(N->left != nil){
+		return(findMax(N->left));
+	}
+	Node* y = N->parent;
+	while(y != nil && N == y->left){
+		N = y;
+		y = y->parent;
+	}
+	return y;
+}
 int Dictionary::size() const{
 	return num_pairs;
 }
@@ -105,7 +151,7 @@ bool Dictionary::contains(keyType k) const{
 
 valType& getValue(keyType k) const{
 	//dont call contains(), takes too long to run
-	
+	return 4;
 }
 
 bool Dictionary::hasCurrent() const{
