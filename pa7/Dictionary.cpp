@@ -29,10 +29,9 @@ Dictionary::Dictionary(const Dictionary& D){
 	root = nil;
 	current = nil;
 	num_pairs = 0;
-
-	this->root = D.root;
-	this->current = D.current;
-	this->num_pairs = D.num_pairs;
+	//this->root = D.root;
+	//this->current = D.current;
+	//this->num_pairs = D.num_pairs;
 	//preorder copy to copy D's tree into this->tree, pass in D.nil to N parameter of preOrderCopy
 	this->preOrderCopy(D.root, D.nil);
 	
@@ -48,7 +47,7 @@ void Dictionary::inOrderString(std::string& s, Node *R) const{
 		inOrderString(s, R->left);
 		s += R->key;
 		s += " : ";
-		s += R->val;
+		s += std::to_string(R->val);
 		s += " \n";
 		inOrderString(s, R->right);
 	}
@@ -209,8 +208,8 @@ void Dictionary::setValue(keyType k, valType v){
 	}
 	Node* z = new Node(k, v);
 	z->parent = y;
-	//z->left = nil;
-	//z->right = nil;
+	z->left = nil;
+	z->right = nil;
 	if(y == nil){
 		root = z;
 	}
@@ -259,6 +258,8 @@ void Dictionary::remove(keyType k){
 		y->left = z->left;
 		y->left->parent = y;
 	}
+	delete z;
+	num_pairs -= 1;
 }
 
 void Dictionary::begin(){
@@ -275,4 +276,94 @@ void Dictionary::end(){
 	current = findMax(root);
 }
 
+void Dictionary::next(){
+	if(!(hasCurrent())){
+		throw std::logic_error("Dictionary: next(): current iterator is not defined");
+	}
+	current = findNext(current);
+}
 
+void Dictionary::prev(){
+	if(!(hasCurrent())){
+		throw std::logic_error("Dictionary: prev(): current iterator is not defined");
+	}
+	current = findPrev(current);
+	
+}
+
+
+
+std::string Dictionary::to_string() const{
+	std::string s = "";
+	Node* r = root;
+	inOrderString(s, r);
+	return s;
+}
+
+std::string Dictionary::pre_string() const{
+	std::string s = "";
+	Node* r = root;
+	preOrderString(s, r);
+	return s;
+}
+
+bool Dictionary::equals(const Dictionary& D) const{
+	std::string first = this->to_string();
+	std::string second = D.to_string();
+	if(first == second){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+std::ostream& operator<< (std::ostream& stream, Dictionary& D){
+	return stream << D.Dictionary::to_string();
+}
+
+bool operator== (const Dictionary& A, const Dictionary& B){
+	return A.Dictionary::equals(B);
+}
+
+Dictionary& Dictionary::operator=(const Dictionary& D){
+	if(this != &D){
+		Dictionary temp = D;
+		std::swap(nil, temp.nil);
+		std::swap(root, temp.root);
+		std::swap(current, temp.current);
+		std::swap(num_pairs, temp.num_pairs);
+	}
+	return *this;
+}
+
+int main(void){
+	Dictionary A;
+	//Dictionary B;
+	std::string S[] = {"ay", "cee", "bee", "e", "dee"};
+	for(int i = 0; i < 5; i++){
+		A.setValue(S[i], i+1);
+	}
+	std::cout << A << std::endl;
+	A.remove("cee");
+	std::cout << A << std::endl;
+	
+	std::cout << A.size() << std::endl;
+	A.begin();
+	std::cout << A.currentKey() << std::endl;
+	A.next();
+	std::cout << A.currentKey() << std::endl;
+	A.end();
+	std::cout << A.currentKey() << std::endl;
+	A.prev();
+	std::cout << A.currentKey() << std::endl;
+	A.prev();
+	A.prev();
+	std::cout << A.currentKey() << std::endl;
+	Dictionary B = A;
+	std::cout << B << std::endl;
+	B.setValue("LOL", 6);
+	if(A == B){
+		std::cout << "A = B" << std::endl;
+	}
+}
