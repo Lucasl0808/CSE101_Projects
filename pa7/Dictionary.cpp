@@ -1,9 +1,3 @@
-/* Lucas Lee
- * luclee
- * pa7
- * CSE101-02 Spring 2022
- */
-
 #include<iostream>
 #include<string>
 #include<stdexcept>
@@ -29,10 +23,6 @@ Dictionary::Dictionary(const Dictionary& D){
 	root = nil;
 	current = nil;
 	num_pairs = 0;
-	//this->root = D.root;
-	//this->current = D.current;
-	//this->num_pairs = D.num_pairs;
-	//preorder copy to copy D's tree into this->tree, pass in D.nil to N parameter of preOrderCopy
 	this->preOrderCopy(D.root, D.nil);
 	
 }
@@ -48,7 +38,7 @@ void Dictionary::inOrderString(std::string& s, Node *R) const{
 		s += R->key;
 		s += " : ";
 		s += std::to_string(R->val);
-		s += " \n";
+		s += "\n";
 		inOrderString(s, R->right);
 	}
 }
@@ -74,11 +64,11 @@ void Dictionary::postOrderDelete(Node* R){
 	if(R != nil){
 		postOrderDelete(R->left);
 		postOrderDelete(R->right);
-		remove(R->key);
+		//remove(R->key);
+		delete R;
 	}
 }
 
-//search()
 Dictionary::Node* Dictionary::search(Node* R, keyType k) const{
 	if(R == nil || k == R->key){
 		return R;
@@ -91,7 +81,6 @@ Dictionary::Node* Dictionary::search(Node* R, keyType k) const{
 	}
 }
 
-//findMin()
 Dictionary::Node* Dictionary::findMin(Node* R){
 	if(R == nil){
 		throw std::logic_error("Dictionary: findMin: nil Node");
@@ -101,7 +90,6 @@ Dictionary::Node* Dictionary::findMin(Node* R){
 	}
 	return R;
 }
-//findMax()
 Dictionary::Node* Dictionary::findMax(Node* R){
 	if(R == nil){
 		throw std::logic_error("Dictionary: findMax: nil Node");
@@ -111,7 +99,6 @@ Dictionary::Node* Dictionary::findMax(Node* R){
 	}
 	return R;
 }
-//findNext()
 Dictionary::Node* Dictionary::findNext(Node* N){
 	if(N->right != nil){
 		return(findMin(N->right));
@@ -123,7 +110,6 @@ Dictionary::Node* Dictionary::findNext(Node* N){
 	}
 	return y;
 }
-//findPrev()
 Dictionary::Node* Dictionary::findPrev(Node* N){
 	if(N->left != nil){
 		return(findMax(N->left));
@@ -149,7 +135,6 @@ bool Dictionary::contains(keyType k) const{
 }
 
 valType& Dictionary::getValue(keyType k) const{
-	//dont call contains(), takes too long to run
 	Node* N = search(root, k);
 	if(N == nil){	//does not contain
 		throw std::logic_error("Dictionary: getValue(): does not contain key k");
@@ -186,7 +171,10 @@ valType& Dictionary::currentVal() const{
 }
 
 void Dictionary::clear(){
-	 postOrderDelete(root);
+	postOrderDelete(root);
+	root = nil;
+	current = nil;
+	num_pairs = 0;
 }
 
 void Dictionary::setValue(keyType k, valType v){
@@ -200,6 +188,7 @@ void Dictionary::setValue(keyType k, valType v){
 		}
 		else if(k == x->key){
 			x->val = v;
+			//delete z;
 			return;
 		}
 		else{
@@ -297,6 +286,8 @@ std::string Dictionary::to_string() const{
 	std::string s = "";
 	Node* r = root;
 	inOrderString(s, r);
+	//s += "\n";
+	//preOrderString(s, r);
 	return s;
 }
 
@@ -337,33 +328,4 @@ Dictionary& Dictionary::operator=(const Dictionary& D){
 	return *this;
 }
 
-int main(void){
-	Dictionary A;
-	//Dictionary B;
-	std::string S[] = {"ay", "cee", "bee", "e", "dee"};
-	for(int i = 0; i < 5; i++){
-		A.setValue(S[i], i+1);
-	}
-	std::cout << A << std::endl;
-	A.remove("cee");
-	std::cout << A << std::endl;
-	
-	std::cout << A.size() << std::endl;
-	A.begin();
-	std::cout << A.currentKey() << std::endl;
-	A.next();
-	std::cout << A.currentKey() << std::endl;
-	A.end();
-	std::cout << A.currentKey() << std::endl;
-	A.prev();
-	std::cout << A.currentKey() << std::endl;
-	A.prev();
-	A.prev();
-	std::cout << A.currentKey() << std::endl;
-	Dictionary B = A;
-	std::cout << B << std::endl;
-	B.setValue("LOL", 6);
-	if(A == B){
-		std::cout << "A = B" << std::endl;
-	}
-}
+
