@@ -220,6 +220,7 @@ void Dictionary::setValue(keyType k, valType v){
 	else{
 		y->right = z;
 	}
+	num_pairs += 1;
 }
 
 void Dictionary::Transplant(Node* u, Node* v){
@@ -259,3 +260,19 @@ void Dictionary::remove(keyType k){
 		y->left->parent = y;
 	}
 }
+
+void Dictionary::begin(){
+	if(num_pairs == 0){
+		return;
+	}
+	current = findMin(root);
+}
+
+void Dictionary::end(){
+	if(num_pairs == 0){
+		return;
+	}
+	current = findMax(root);
+}
+
+
