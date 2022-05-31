@@ -209,6 +209,19 @@ void Dictionary::RB_InsertFixUp(Node* N){
 	root->color = 0;
 }
 
+void Dictionary::RB_Transplant(Node* u, Node* v){
+	if(u->parent == nil){
+		root = v;
+	}
+	else if(u == u->parent->left){
+		u->parent->left = v;
+	}
+	else{
+		u->parent->right = v;
+	}
+	v->parent = u->parent;
+}
+
 int Dictionary::size() const{
 	return num_pairs;
 }
@@ -297,6 +310,10 @@ void Dictionary::setValue(keyType k, valType v){
 		y->right = z;
 	}
 	num_pairs += 1;
+	z->left = nil;
+	z->right = nil;
+	z->color = 1;
+	RB_InsertFixUp(z);
 }
 
 void Dictionary::Transplant(Node* u, Node* v){
