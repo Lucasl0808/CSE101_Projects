@@ -280,6 +280,39 @@ void Dictionary::RB_DeleteFixUp(Node* N){
 	N->color = 0;
 }
 
+void Dictionary::RB_Delete(Node* N){
+	Node* y = N;
+	int y_orig_color = y->color;
+	if(N->left == nil){
+		Node* x = N->right;
+		RB_Transplant(N, N->right);
+	}
+	else if(N->right == nil){
+		Node* x = N->left;
+		RB_Transplant(N, N->left);
+	}
+	else{
+		y = findMin(N->right);
+		y_orig_color = y->color;
+		Node* x = y->right;
+		if(y->parent == N){
+			x->parent = y;
+		}
+		else{
+			RB_Transplant(y, y->right);
+			y->right = N->right;
+			y->right->parent = y;
+		}
+		RB_Transplant(N, y);
+		y->left = N->left;
+		y->left->parent = y;
+		y->color = N->color;
+	}
+	if(y_orig_color == 0){
+		RB_DeleteFixUp(x);
+	}
+}
+
 int Dictionary::size() const{
 	return num_pairs;
 }
