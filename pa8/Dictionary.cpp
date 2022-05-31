@@ -222,6 +222,64 @@ void Dictionary::RB_Transplant(Node* u, Node* v){
 	v->parent = u->parent;
 }
 
+void Dictionary::RB_DeleteFixUp(Node* N){
+	while(N != root && N->color == 0){
+		if(N == N->parent->left){
+			Node* w = N->parent->right;
+			if(w->color == 1){
+				w->color = 0;
+				N->parent->color = 1;
+				LeftRotate(N->parent);
+				w = N->parent->right;//case 1
+			}
+			if(w->left->color == 0 && w->right->color == 0){
+				w->color = 1;
+				N = N->parent;//case2
+			}
+			else{
+				if(w->right->color == 0){
+					w->left->color = 0;
+					w->color = 1;
+					RightRotate(w);
+					w = N->parent->right;//case3
+				}
+				w->color = N->parent->color;
+				N->parent->color = 0;
+				w->right->color = 0;
+				LeftRotate(N->parent);
+				N = root;//case4
+			}
+		}
+		else{
+			Node* w = N->parent->left;
+			if(w->color == 1){
+				w->color = 0;
+				N->parent->color = 1;
+				RightRotate(N->parent);
+				w = N->parent->left;//case 5
+			}
+			if(w->right->color == 0 && w->left->color == 0){
+				w->color = 1;
+				N = N->parent;//case 6
+			}
+			else{
+				if(w->left->color == 0){
+					w->right->color = 0;
+					w->color = 1;
+					LeftRotate(w);
+					w = N->parent->left;//case7
+				}
+				w->color = N->parent->color;
+				N->parent->color = 0;
+				w->left->color = 0;
+				RightRotate(N->parent);
+				N = root;//case8
+			}
+		}
+	}
+	N->color = 0;
+}
+
 int Dictionary::size() const{
 	return num_pairs;
 }
