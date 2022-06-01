@@ -176,15 +176,18 @@ void Dictionary::RB_InsertFixUp(Node* N){
 				y->color = 0;
 				N->parent->parent->color = 1;
 				N = N->parent->parent;//case1
+				
 			}
 			else{
 				if(N == N->parent->right){
 					N = N->parent;
 					LeftRotate(N);//case2
+					
 				}
 				N->parent->color = 0;
 				N->parent->parent->color = 1;
-				RightRotate(N);//case 3
+				RightRotate(N->parent->parent);//case 3
+				
 			}
 		}
 		else{
@@ -199,12 +202,15 @@ void Dictionary::RB_InsertFixUp(Node* N){
 				if(N == N->parent->left){
 					N = N->parent;
 					RightRotate(N);//case5
+					
 				}
 				N->parent->color = 0;
 				N->parent->parent->color = 1;
 				LeftRotate(N->parent->parent);//case6
+				
 			}
 		}
+	//root->color = 0;
 	}
 	root->color = 0;
 }
@@ -283,18 +289,19 @@ void Dictionary::RB_DeleteFixUp(Node* N){
 void Dictionary::RB_Delete(Node* N){
 	Node* y = N;
 	int y_orig_color = y->color;
+	Node* x;
 	if(N->left == nil){
-		Node* x = N->right;
+		x = N->right;
 		RB_Transplant(N, N->right);
 	}
 	else if(N->right == nil){
-		Node* x = N->left;
+		x = N->left;
 		RB_Transplant(N, N->left);
 	}
 	else{
 		y = findMin(N->right);
 		y_orig_color = y->color;
-		Node* x = y->right;
+		x = y->right;
 		if(y->parent == N){
 			x->parent = y;
 		}

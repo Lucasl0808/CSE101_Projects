@@ -88,6 +88,8 @@ private:
    // Node, or is nil, returns nil.
    Node* findPrev(Node* N);
 
+   void Transplant(Node* u, Node* v);
+
    // RBT Helper Functions (Optional) -----------------------------------------
    
    // LeftRotate()
