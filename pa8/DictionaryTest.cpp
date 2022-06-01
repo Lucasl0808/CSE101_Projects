@@ -31,59 +31,6 @@ int main(void){
         if(A == B){
                 std::cout << "A = B" << std::endl;
         }
-	std::string P[] = {"plaices",
-                     "ambusher",
-                     "crosby",
-                     "wattles",
-                     "pardoner",
-                     "pythons",
-                     "second",
-                     "forms",
-                     "impales",
-                     "pic",
-                     "verticals",
-                     "recriminator",
-                     "depressants",
-                     "cul",
-                     "potables",
-                     "norm",
-                     "reinsurer",
-                     "deschooler",
-                     "recoining",
-                     "dissocialised",
-                     "cohabit",
-                     "hemiolia",
-                     "cantling",
-                     "glamorized",
-                     "millesimal",
-                     "glagolitic"};
-	Dictionary C;
-	for(int i = 0; i < 26; i ++){
-		C.setValue(P[i], i +1);
-		std::cout << C << std::endl;
-	}
-	std::cout << C.size() << std::endl;
-	std::cout << C << std::endl;
-	
-	std::string O[] = {"second",
-                     "forms",
-                     "impales",
-                     "pic",
-                     "verticals",
-                     "recriminator",
-                     "depressants",
-                     "cul",
-                     "potables",
-                     "norm",
-                     "reinsurer",
-                     "deschooler",
-                     "recoining",      
-                  };
-
-	for(int i = 0; i < 13; i ++){
-		C.remove(O[i]);
-	}
-	std::cout << C << std::endl;
 }
 
 
