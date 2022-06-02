@@ -436,6 +436,7 @@ void Dictionary::Transplant(Node* u, Node* v){
 }
 void Dictionary::remove(keyType k){
 	Node* z = search(root, k);
+	/*
 	if(z == nil){
 		throw std::logic_error("Dictionary: remove(): tree does not contain key k");
 	}
@@ -456,6 +457,11 @@ void Dictionary::remove(keyType k){
 		y->left = z->left;
 		y->left->parent = y;
 	}
+	*/
+	if(current == z){
+		current = nil;
+	}
+	RB_Delete(z);
 	delete z;
 	num_pairs -= 1;
 }
